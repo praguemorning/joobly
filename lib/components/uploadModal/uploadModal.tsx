@@ -2,7 +2,6 @@ import Dropzone from "@/lib/components/dropzone/dropzone";
 import Input from "@/lib/components/input/input";
 import { emailValidationRegexp } from "@/lib/constant/constants";
 import locationIcon from "@/public/images/icons/location-grey.svg";
-import { Button } from "@mui/base";
 import CloseIcon from "@mui/icons-material/Close";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { Modal } from "@mui/material";
@@ -10,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import styles from "./uploadModal.module.scss";
+import Button from "../button/button";
 
 interface Inputs {
 	email: string;

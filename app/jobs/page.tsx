@@ -12,7 +12,7 @@ async function processOptions(options: JobData[]) {
 	const processedOptions = options.reduce(
 		(acc, item) => {
 			if (item.location) {
-				acc.locations.push({ id: item._id!, label: item.location }); 
+				acc.locations.push({ id: item._id!, label: item.location });
 			}
 			if (item.language) {
 				acc.languages.push({ id: item._id!, label: item.language });
@@ -36,7 +36,7 @@ async function processOptions(options: JobData[]) {
 				acc.salaryLabels.push({ id: item._id!, label: item.salaryLabel });
 			}
 
-			
+
 			return acc;
 		},
 		{
@@ -99,7 +99,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 		experienceLevel: searchParams?.experienceLevel || "",
 	});
 	const [jobs, options] = await Promise.all([getData(params), getOptions()]);
-	
+
 
 	const { locations, languages, workTypes, jobTimes, educations, salaryLabels, experienceLevels, jobCategories } = await processOptions(options);
 
@@ -113,60 +113,60 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const defaultExperienceLevel = experienceLevels.find((item) => item.label === searchParams?.experienceLevel);
 
 	return (
-	<>
-		<HeaderBackground />
-		<section className="mt-16 mb-20 px-4">
-			<div className="container mx-auto flex flex-col lg:flex-row">
-				<Topbar
-					defaultJobSearchValue={searchParams?.jobTitle}
-					defaultLocation={defaultLocation?.id}
-					defaultLanguage={defaultLanguage?.id}
-					defaultEducation={defaultEducation?.id}
-					defaultWorkType={defaultWorkType?.id}
-					defaultJobCategory={defaultJobCategory?.id}
-					defaultExperienceLevel={defaultExperienceLevel?.id}
-					defaultSalary={defaultSalaryLabel?.id}
-					defaultJobTime={defaultJobTime?.id}
-					locations={locations}
-					languages={languages}
-					educations={educations}
-					workType={workTypes}
-					jobCategories={jobCategories}
-					jobTime={jobTimes}
-					experienceLevel={experienceLevels}
-					salary={salaryLabels}
-				/>
-				<div className="px-0 md:px-2 mdl:px-6 flex-grow">
-					<div className="flex items-center justify-between mb-6 py-2 h-14">
-						<p className="text-xl text-gray-600">
-							{jobs?.length || "No"} {jobs?.length > 1 ? "jobs" : "job"} found
-						</p>
-					</div>
+		<>
+			<HeaderBackground />
+			<section className="mt-16 mb-20 px-4">
+				<div className="container mx-auto flex flex-col lg:flex-row">
+					<Topbar
+						defaultJobSearchValue={searchParams?.jobTitle}
+						defaultLocation={defaultLocation?.id}
+						defaultLanguage={defaultLanguage?.id}
+						defaultEducation={defaultEducation?.id}
+						defaultWorkType={defaultWorkType?.id}
+						defaultJobCategory={defaultJobCategory?.id}
+						defaultExperienceLevel={defaultExperienceLevel?.id}
+						defaultSalary={defaultSalaryLabel?.id}
+						defaultJobTime={defaultJobTime?.id}
+						locations={locations}
+						languages={languages}
+						educations={educations}
+						workType={workTypes}
+						jobCategories={jobCategories}
+						jobTime={jobTimes}
+						experienceLevel={experienceLevels}
+						salary={salaryLabels}
+					/>
+					<div className="px-0 md:px-2 mdl:px-6 flex-grow">
+						<div className="flex items-center justify-between mb-6 py-2 h-14">
+							<p className="text-xl text-gray-600">
+								{jobs?.length || "No"} {jobs?.length > 1 ? "jobs" : "job"} found
+							</p>
+						</div>
 
-					<div className="space-y-4">
-						<Suspense fallback={<div>Loading...</div>}>
-							{jobs.jobs?.map((result: any) => (
-								<JobItem data={result} key={result._id} />
-							))}
-						</Suspense>
-					</div>
+						<div className="space-y-4">
+							<Suspense fallback={<div>Loading...</div>}>
+								{jobs.jobs?.map((result: any) => (
+									<JobItem data={result} key={result._id} />
+								))}
+							</Suspense>
+						</div>
 
-					<div className="relative mt-16 h-[361px] bg-cover bg-center rounded-lg flex flex-col items-center justify-center text-center"
-						style={{ backgroundImage: "url('/images/green-bg-search.svg')" }}
-					>
-						<h5 className="text-4xl font-bold tracking-wider text-light">
-							Join our Job group on Facebook
-						</h5>
-						<a href="https://www.facebook.com/groups/jobsinpragueforeigners---"
-							target="_blank"
-							className="mt-5 px-8 py-4 bg-dark text-light font-bold text-xl rounded-lg hover:opacity-80"
+						<div className="relative mt-16 h-[361px] bg-cover bg-center rounded-lg flex flex-col items-center justify-center text-center"
+							style={{ backgroundImage: "url('/images/green-bg-search.svg')" }}
 						>
-							Join Here
-						</a>
+							<h5 className="text-4xl font-bold tracking-wider text-light">
+								Join our Job group on Facebook
+							</h5>
+							<a href="https://www.facebook.com/groups/jobsinpragueforeigners---"
+								target="_blank"
+								className="mt-5 px-8 py-4 bg-dark text-light font-bold text-xl rounded-lg hover:opacity-80"
+							>
+								Join Here
+							</a>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
 		</>
 	);
 };

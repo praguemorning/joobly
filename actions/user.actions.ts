@@ -3,10 +3,6 @@ import {User} from "@/models/User";
 import mongoose from "mongoose";
 import { hash } from "bcryptjs";
 
-
-
-
-
 export async function createUser(userBody: RegisterProps) {
     try {
         await mongoose.connect(process.env.MONGODB_URI as string);

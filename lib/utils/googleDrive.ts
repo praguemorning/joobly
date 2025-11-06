@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import { Readable } from 'stream';
 import mongoose from 'mongoose';
-import { Resume } from '@/models/Resume'; // Убедитесь, что путь правильный
+import { Resume } from '@/models/Resume';
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -36,7 +36,7 @@ export const uploadToGoogleDriveAndSaveToDB = async (
   metadata: { email: string; jobTitle: string; location: string }
 ) => {
   try {
-    // Подключение к базе данных
+
     await mongoose.connect(process.env.MONGODB_URI as string);
 
     const fileMetadata = {
@@ -56,7 +56,6 @@ export const uploadToGoogleDriveAndSaveToDB = async (
       body: nodeReadableStream,
     };
 
-    // Загружаем файл на Google Drive
     const response = await drive.files.create({
       requestBody: fileMetadata,
       media,
@@ -69,7 +68,6 @@ export const uploadToGoogleDriveAndSaveToDB = async (
       throw new Error('Failed to upload file to Google Drive');
     }
 
-    // Делаем файл доступным по ссылке
     await drive.permissions.create({
       fileId,
       requestBody: {
@@ -78,7 +76,6 @@ export const uploadToGoogleDriveAndSaveToDB = async (
       },
     });
 
-    // Получаем обновленную ссылку для скачивания
     const fileDetails = await drive.files.get({
       fileId,
       fields: 'webContentLink',
@@ -90,7 +87,6 @@ export const uploadToGoogleDriveAndSaveToDB = async (
       throw new Error('Failed to retrieve download link from Google Drive');
     }
 
-    // Сохраняем информацию о резюме в базе данных
     const resume = new Resume({
       fileName: file.name,
       fileLink,
@@ -104,7 +100,7 @@ export const uploadToGoogleDriveAndSaveToDB = async (
     return {
       message: 'File uploaded and saved to database successfully',
       resume,
-      link: fileLink, // Вернуть ссылку
+      link: fileLink,
     };
   } catch (error: any) {
     console.error('Error uploading file or saving to database:', error.message);

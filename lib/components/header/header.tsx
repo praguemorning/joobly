@@ -23,7 +23,7 @@ import { UserProfileTypes } from "@/models/User";
 
 const TopHeader = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	
+
 	const session = useSession();
 	const status = session.status;
 
@@ -34,14 +34,14 @@ const TopHeader = () => {
 
 	const userData = session.data?.user as UserTypes;
 	const gmailCredentials = userData?.email.indexOf("gmail");
-	
+
 
 	useEffect(() => {
 		if (gmailCredentials) {
 			if (!profileEmail) {
 				fetch('/api/profile', {
 					method: 'POST',
-					headers: {'Content-type': 'application/json'},
+					headers: { 'Content-type': 'application/json' },
 					body: JSON.stringify({
 						email: userData.email,
 						name: userData.name,
@@ -50,7 +50,7 @@ const TopHeader = () => {
 				});
 			}
 		}
-	  },[gmailCredentials]);
+	}, [gmailCredentials]);
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -97,44 +97,44 @@ const TopHeader = () => {
 					{/*hеader nav links*/}
 					<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
 						<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
-								<Image
+							<Image
 								className='w-5 h-5 package-image'
 								src={"/images/icons/home.svg"}
 								width={26}
 								height={26}
 								alt='packages'
-								/>
-								<span className="text-nowrap">Home</span>
+							/>
+							<span className="text-nowrap">Home</span>
 						</Link>
 						<Link href='/jobs' className={`flex items-center gap-1 ${pathname === '/jobs' && 'text-black'}`}>
-								<Image
+							<Image
 								className='w-5 h-5 package-image'
 								src={"images/icons/findJob.svg"}
 								width={26}
 								height={26}
 								alt='packages'
-								/>
-								<span className="text-nowrap">Find a job</span>
+							/>
+							<span className="text-nowrap">Find a job</span>
 						</Link>
 						<Link href='/post-job-info' className={`flex items-center gap-1 ${pathname === '/post-job-info' && 'text-black'}`}>
-								<Image
+							<Image
 								className='w-5 h-5 package-image'
 								src={"/images/icons/listing.svg"}
 								width={26}
 								height={26}
 								alt='packages'
-								/>
-								<span className="text-nowrap">Post a job</span>
+							/>
+							<span className="text-nowrap">Post a job</span>
 						</Link>
 						<Link href='/packages' className={`flex items-center gap-1 ${pathname === '/packages' && 'text-black'}`}>
-								<Image
-									className='w-5 h-5 package-image'
-									src={"/images/icons/package-icon.svg"}
-									width={26}
-									height={26}
-									alt='packages'
-								/>
-								<span className="text-nowrap">Packages</span>
+							<Image
+								className='w-5 h-5 package-image'
+								src={"/images/icons/package-icon.svg"}
+								width={26}
+								height={26}
+								alt='packages'
+							/>
+							<span className="text-nowrap">Packages</span>
 						</Link>
 					</div>
 				</div>
@@ -161,16 +161,16 @@ const TopHeader = () => {
 					<div className="hidden lgl:flex">
 						{status === 'authenticated' ? (
 							<div className="flex gap-4 items-center">
-								<Link 
-								href={'/dashboard'}
-								className="border-2 border-[#006c53] py-[15px] 
+								<Link
+									href={'/dashboard'}
+									className="border-2 border-[#006c53] py-[15px] 
 								px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
-									<FaUser className="text-black w-7 h-7 cursor-pointer"/>
+									<FaUser className="text-black w-7 h-7 cursor-pointer" />
 								</Link>
-								<div 
-								onClick={() => signOut()}
-								className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
-									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer"/>
+								<div
+									onClick={() => signOut()}
+									className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 								</div>
 							</div>
 						) : (
@@ -204,87 +204,87 @@ const TopHeader = () => {
 				transition={{ duration: 0.3 }}
 			>
 				<nav className='mobile-nav-links flex flex-col space-y-6 mx-auto text-lg'>
-					<Link 
-					href='/' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 md:hidden ${pathname === '/' && 'text-[#006c53]'}`}
+					<Link
+						href='/'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 md:hidden ${pathname === '/' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/home.svg"}
-						width={26}
-						height={26}
-						alt='packages'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/home.svg"}
+							width={26}
+							height={26}
+							alt='packages'
 						/>
 						<span>Home</span>
 					</Link>
-					<Link 
-					href='/jobs' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 md:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
+					<Link
+						href='/jobs'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 md:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/findJob.svg"}
-						width={26}
-						height={26}
-						alt='packages'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/findJob.svg"}
+							width={26}
+							height={26}
+							alt='packages'
 						/>
 						<span>Find a job</span>
 					</Link>
-					<Link 
-					href='/post-job-info' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 md:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
+					<Link
+						href='/post-job-info'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 md:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/listing.svg"}
-						width={26}
-						height={26}
-						alt='packages'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/listing.svg"}
+							width={26}
+							height={26}
+							alt='packages'
 						/>
 						<span>Post a job</span>
 					</Link>
-					<Link 
-					href='/packages' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 md:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
+					<Link
+						href='/packages'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 md:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/package-icon.svg"}
-						width={26}
-						height={26}
-						alt='packages'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/package-icon.svg"}
+							width={26}
+							height={26}
+							alt='packages'
 						/>
 						<span>Packages</span>
 					</Link>
-					<Link 
-					href='/contact' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+					<Link
+						href='/contact'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/contact.svg"}
-						width={26}
-						height={26}
-						alt='contact us'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/contact.svg"}
+							width={26}
+							height={26}
+							alt='contact us'
 						/>
 						<span>Contact us</span>
 					</Link>
-					<Link 
-					href='/post-resume' 
-					onClick={toggleMenu}
-					className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+					<Link
+						href='/post-resume'
+						onClick={toggleMenu}
+						className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
 					>
 						<Image
-						className='w-5 h-5 package-image'
-						src={"/images/icons/add.svg"}
-						width={26}
-						height={26}
-						alt='post resume'
+							className='w-5 h-5 package-image'
+							src={"/images/icons/add.svg"}
+							width={26}
+							height={26}
+							alt='post resume'
 						/>
 						<span>Post resume</span>
 					</Link>
@@ -292,16 +292,16 @@ const TopHeader = () => {
 				<div className="mt-6 lgl:inline">
 					{status === 'authenticated' ? (
 						<div className="flex gap-4 items-center">
-							<Link 
-							href={'/dashboard'}
-							className="border-2 border-[#006c53] py-[15px] 
+							<Link
+								href={'/dashboard'}
+								className="border-2 border-[#006c53] py-[15px] 
 							px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
-								<FaUser className="text-black w-7 h-7 cursor-pointer"/>
+								<FaUser className="text-black w-7 h-7 cursor-pointer" />
 							</Link>
-							<div 
-							onClick={() => signOut()}
-							className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
-								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer"/>
+							<div
+								onClick={() => signOut()}
+								className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 							</div>
 						</div>
 					) : (

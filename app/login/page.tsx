@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useAppSelector } from "@/lib/hooks";
 
-import {signIn, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { redirect } from 'next/navigation'
 
 import { FaLinkedin } from "react-icons/fa";
@@ -40,7 +40,7 @@ const Login = () => {
 	const loading = useAppSelector((state) => state.user.loading);
 
 	const onSubmit: SubmitHandler<Inputs> = async (values: Inputs) => {
-		const login = await signIn('credentials', {redirect: false, email: values.email, password: values.password, callbackUrl: '/'});
+		const login = await signIn('credentials', { redirect: false, email: values.email, password: values.password, callbackUrl: '/' });
 		if (login) {
 			push('/');
 		} else {
@@ -50,14 +50,14 @@ const Login = () => {
 
 
 	if (session.status === "authenticated") {
-        return redirect('/');
-    }
+		return redirect('/');
+	}
 
 	return (
 		<section className={styles["login-page"]}>
-			<form 
-			onSubmit={handleSubmit(onSubmit)}
-			className="mx-auto"
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="mx-auto"
 			>
 				<div className={styles["login-modal"]}>
 					<div className={styles["login--modal-header"]}>
@@ -66,26 +66,26 @@ const Login = () => {
 					</div>
 					<div className="flex flex-col gap-2">
 						<Button
-						onClick={() => signIn('google', {callbackUrl: '/'})}
-						className={"btn-google-login-button"}
-						type="button"
+							onClick={() => signIn('google', { callbackUrl: '/' })}
+							className={"btn-google-login-button"}
+							type="button"
 						>
 							<Image src={google} alt='' width={25} height={25} />
 							Sign in with Google
 						</Button>
 						<Button
-						onClick={() => signIn('linkedin', {callbackUrl: '/'})}
-						className={"btn-linkedin-login-button"}
-						type="button"
+							onClick={() => signIn('linkedin', { callbackUrl: '/' })}
+							className={"btn-linkedin-login-button"}
+							type="button"
 						>
-							<FaLinkedin className="text-[#2873B3] w-7 h-7"/>
+							<FaLinkedin className="text-[#2873B3] w-7 h-7" />
 							Sign in with LinkedIn
 						</Button>
 					</div>
 					<div className={styles["login-modal-email-login"]}>
-					<Divider>
-					<p className="mx-auto">or Sign in with Email</p>
-					</Divider>	
+						<Divider>
+							<p className="mx-auto">or Sign in with Email</p>
+						</Divider>
 					</div>
 					<div className={styles["login-modal-form"]}>
 						<Input
@@ -134,7 +134,9 @@ const Login = () => {
 									label='Remember me'
 								/>
 							</div>
-							<p className={styles["login-modal-form-forgot-password"]}>Forgot your password?</p>
+							<a href="/forgot-password" className={styles["login-modal-form-forgot-password"]}>
+								Forgot your password?
+							</a>
 						</div>
 						<Button style={{ width: "100%" }} className={"btn-primary"}>
 							{errorMessage ? (

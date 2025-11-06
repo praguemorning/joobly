@@ -2,39 +2,39 @@ import { Job } from "@/models/Job";
 import mongoose from "mongoose";
 import xlsx from "xlsx";
 
-import {authOptions} from "@/lib/authOptions";
-import {getServerSession} from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 import { User } from "@/models/User";
 import { SALARY_RANGES } from "@/lib/constant/constants";
 
 
 export async function POST(req: Request) {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI as string);
+  try {
+    await mongoose.connect(process.env.MONGODB_URI as string);
 
-        const session = await getServerSession(authOptions);
-        if (!session) throw 'you need to be logged in';
-        const email = session.user?.email;
-        const profileInfoDoc = await User.findOne({ email });
+    const session = await getServerSession(authOptions);
+    if (!session) throw 'you need to be logged in';
+    const email = session.user?.email;
+    const profileInfoDoc = await User.findOne({ email });
 
-        if (profileInfoDoc) {
-            const data = await req.json();
-            const job = await Job.create({
-                ...data,
-                advertisedDate: new Date().toISOString(),
-                jobPostAuthorId: profileInfoDoc._id,
-            });
+    if (profileInfoDoc) {
+      const data = await req.json();
+      const job = await Job.create({
+        ...data,
+        advertisedDate: new Date().toISOString(),
+        jobPostAuthorId: profileInfoDoc._id,
+      });
 
-            profileInfoDoc.jobPostPoints -= 1; 
-            await profileInfoDoc.save();
+      profileInfoDoc.jobPostPoints -= 1;
+      await profileInfoDoc.save();
 
-            return Response.json(job);
-        } else {
-            throw 'you need to be logged in';
-        }
-    } catch (error) {
-        return Response.json({ error });
+      return Response.json(job);
+    } else {
+      throw 'you need to be logged in';
     }
+  } catch (error) {
+    return Response.json({ error });
+  }
 }
 
 
@@ -53,7 +53,7 @@ export async function GET(req: Request) {
   }
 
   const query = Object.fromEntries(url.searchParams.entries());
-  const filter: Record<string, any> = {}; 
+  const filter: Record<string, any> = {};
 
   for (const key in query) {
     if (query[key]) {
@@ -61,7 +61,7 @@ export async function GET(req: Request) {
     }
   }
 
-  const jobs = await Job.find(filter);
+  const jobs = await Job.find({ closeDate: { $gte: new Date() } });
   return Response.json({ length: jobs.length, jobs });
 }
 

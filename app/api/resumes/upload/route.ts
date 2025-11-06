@@ -50,6 +50,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, resume: savedResume });
   } catch (error: any) {
     console.error('Error uploading resume:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message, stack: error.stack }, { status: 500 });
   }
 }

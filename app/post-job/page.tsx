@@ -18,7 +18,6 @@ import {
 	EXPERIENCE_LEVEL,
 } from "@/lib/constant/constants";
 import dynamic from "next/dynamic";
-import { Button } from "@mui/base";
 import { StyledSwitch } from "@/lib/components/switch/switch";
 import { useAppDispatch, useAppSelector } from "../../lib/hooks";
 import { addNewJob, setJobDetails } from "../../lib/features/jobSlice/jobSlice";
@@ -27,6 +26,7 @@ import { selectJobDetails } from "../../lib/selectors/selectors";
 import { batch } from "react-redux";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { setSalaryLine } from "@/lib/constant/helpers";
+import Button from "@/lib/components/button/button";
 
 interface Inputs {
 	jobTitle: string;
@@ -42,12 +42,12 @@ interface Inputs {
 	jobTime: string;
 	workType: string;
 	jobCategory: string;
-	education: string;	
+	education: string;
 	founded: string;
 	ceoCompany: string;
 	companySize: string;
 	companyWebsite: string;
-	
+
 }
 const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), {
 	ssr: false,
@@ -57,13 +57,14 @@ const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"
 });
 const PostJob = () => {
 	const [showCompanyDetails, setShowCompanyDetails] = useState<boolean>(false);
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
 	const jobDetails = useAppSelector(selectJobDetails);
 
 	//profile for points check
 	const user = useProfile();
-	
+
 
 	const {
 		handleSubmit,
@@ -114,17 +115,24 @@ const PostJob = () => {
 		push("/post-job/preview");
 	};
 	const onSubmitFinal: SubmitHandler<Inputs> = async (values: Inputs) => {
-		const data = createDataForJob(values);
-		console.log(data);
-		if (user?.data?.jobPostPoints && user.data.jobPostPoints > 0) {
-			batch(() => {
-				dispatch(setJobDetails(null));
-				{/*  @ts-ignore */}
-				dispatch(addNewJob(data));
-				push("/job-creation-success");
-			});
-		} else {
-			push("/packages");
+		try {
+			setIsSubmitting(true);
+			const data = createDataForJob(values);
+			console.log(data);
+			if (user?.data?.jobPostPoints && user.data.jobPostPoints > 0) {
+				batch(() => {
+					dispatch(setJobDetails(null));
+					{/*  @ts-ignore */ }
+					dispatch(addNewJob(data));
+					push("/job-creation-success");
+				});
+			} else {
+				push("/packages");
+			}
+		} catch (error) {
+			console.error("Error submitting job:", error);
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
@@ -163,7 +171,7 @@ const PostJob = () => {
 							label={"Job category"}
 							defaultValue={jobDetails?.jobCategory || "Other"}
 							options={JOB_CATEGORIES}
-							/>
+						/>
 					</div>
 					<div className={styles["post-job-page-input-wrapper"]}>
 						<FormSelect
@@ -206,7 +214,7 @@ const PostJob = () => {
 							options={COUNTRIES}
 						/>
 						*/}
-						
+
 					</div>
 					<div className={styles["post-job-page-input-wrapper"]}>
 						<FormSelect
@@ -327,6 +335,7 @@ const PostJob = () => {
 								style={{ minWidth: "100px" }}
 								onClick={handleSubmit(onSubmitFinal)}
 								className={"btn-primary"}
+								disabled={isSubmitting}
 							>
 								Submit
 							</Button>

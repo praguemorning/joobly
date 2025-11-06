@@ -11,7 +11,7 @@ import {
 } from "@/lib/constant/constants";
 //import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import FormSelect from "@/lib/components/select/select";
-import { Button } from "@mui/base";
+import Button from "@/lib/components/button/button";
 
 interface Inputs {
 	firstName: string;
