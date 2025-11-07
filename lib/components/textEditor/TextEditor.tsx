@@ -3,6 +3,7 @@ import React from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import {Control, Controller} from 'react-hook-form';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import styles from "./textEditor.module.scss";
 
 
@@ -25,15 +26,12 @@ const TextEditor = ({ control, name,label }: TextEditorProps) => (
       defaultValue=""
       render={({field,fieldState}) => (
         <>
-        <CKEditor
-          editor={ClassicEditor}
-          config={{
-            toolbar: ['bold', 'italic', 'link', 'alignment', 'bulletedList', 'numberedList'],
-            link: {
-              addTargetToExternalLinks: true,
-            },
-            removePlugins: ['ListProperties'],
-          }}
+          <CKEditor
+            editor={DecoupledEditor as any}
+            config={{
+              toolbar: ['bold', 'italic', 'alignment', 'bulletedList', 'numberedList'],
+              removePlugins: ['ListProperties'],
+            }}
           data={field.value}
           onChange={(event, editor) => {
             const data = editor.getData();
@@ -42,7 +40,7 @@ const TextEditor = ({ control, name,label }: TextEditorProps) => (
           onReady={(editor) => {
             editor.ui
               ?.getEditableElement()?.parentElement?.insertBefore(
-              editor.ui.view.toolbar.element!,
+              editor.ui.view.toolbar!.element!,
               editor.ui.getEditableElement()!
             );
           }}
