@@ -63,6 +63,7 @@ export async function GET(req: Request) {
 
   const jobs = await Job.find();
   // const jobs = await Job.find({ closeDate: { $gte: new Date() } });
+  
 
   return Response.json({ length: jobs.length, jobs });
 }
