@@ -2,17 +2,18 @@
 import React from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-import {Control, Controller} from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import styles from "./textEditor.module.scss";
 
 
 interface TextEditorProps {
   control: Control<any>;
   name: string;
-  label:string
+  label: string
 }
 
-const TextEditor = ({ control, name,label }: TextEditorProps) => (
+const TextEditor = ({ control, name, label }: TextEditorProps) => (
   <section className={styles["text-editor-component"]}>
     <div className={styles["text-editor-labels"]}>
       <label className={styles["text-editor-label"]}>{label} <span>*</span></label>
@@ -23,31 +24,28 @@ const TextEditor = ({ control, name,label }: TextEditorProps) => (
       control={control}
       rules={{ required: 'This field is required' }}
       defaultValue=""
-      render={({field,fieldState}) => (
+      render={({ field, fieldState }) => (
         <>
-        <CKEditor
-          editor={ClassicEditor}
-          config={{
-            toolbar: ['bold', 'italic', 'link', 'alignment', 'bulletedList', 'numberedList'],
-            link: {
-              addTargetToExternalLinks: true,
-            },
-            removePlugins: ['ListProperties'],
-          }}
-          data={field.value}
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            field.onChange(data);
-          }}
-          onReady={(editor) => {
-            editor.ui
-              ?.getEditableElement()?.parentElement?.insertBefore(
-              editor.ui.view.toolbar.element!,
-              editor.ui.getEditableElement()!
-            );
-          }}
-        />
-      {fieldState.error && <p className={"error-message"}>{fieldState.error.message}</p>}
+          <CKEditor
+            editor={DecoupledEditor as any}
+            config={{
+              toolbar: ['bold', 'italic', 'alignment', 'bulletedList', 'numberedList'],
+              removePlugins: ['ListProperties'],
+            }}
+            data={field.value}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              field.onChange(data);
+            }}
+            onReady={(editor) => {
+              editor.ui
+                ?.getEditableElement()?.parentElement?.insertBefore(
+                  editor.ui.view.toolbar!.element!,
+                  editor.ui.getEditableElement()!
+                );
+            }}
+          />
+          {fieldState.error && <p className={"error-message"}>{fieldState.error.message}</p>}
         </>
       )}
     />
