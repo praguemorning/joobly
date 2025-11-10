@@ -61,36 +61,9 @@ export async function GET(req: Request) {
     }
   }
 
-  const jobs = await Job.find();
-
-  // const jobs = await Job.find({ closeDate: { $gte: new Date() } });
+  // Obtener los jobs ordenados por fecha de creación descendente (más nuevo primero)
+  const jobs = await Job.find().sort({ createdAt: -1 });
 
   return Response.json({ length: jobs.length, jobs });
 }
-
-
-{/*
-
-export async function DELETE(req) {
-  await connectToDB();
-  const url = new URL(req.url);
-  const id = url.searchParams.get("id");
-
-  if (!id) {
-    return Response.json({ message: "ID is required" }, { status: 400 });
-  }
-
-  if (await isAdmin()) {
-    const result = await Jobs.findByIdAndDelete(id);
-    if (result) {
-      return Response.json({ message: "Job is deleted" });
-    } else {
-      return Response.json({ message: "Job not found" }, { status: 404 });
-    }
-  } else {
-    return Response.json({ message: "Unauthorized" }, { status: 403 });
-  }
-}
-  
-  */}
 
