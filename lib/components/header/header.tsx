@@ -5,20 +5,13 @@ import Button from "../button/button";
 import Link from "next/link";
 import Image from "next/image";
 import LoginBtn from "../loginBtn/loginBtn";
-
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-
-
 import { signOut, useSession } from 'next-auth/react';
-
 import { FaUser } from "react-icons/fa";
 import { RiDoorOpenFill } from "react-icons/ri";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { UserProfileTypes } from "@/models/User";
-
-
-
 
 
 const TopHeader = () => {
@@ -50,7 +43,7 @@ const TopHeader = () => {
 				});
 			}
 		}
-	}, [gmailCredentials]);
+	}, [gmailCredentials, profileEmail, userData]);
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
