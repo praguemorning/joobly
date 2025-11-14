@@ -38,8 +38,8 @@ export const metadata: Metadata = {
 }
 
 export default function JobLayout({
-                                    children,
-                                  }: {
+children,
+}: {
   children: React.ReactNode
 }) {
   return (
