@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
-import { Source_Sans_3 } from 'next/font/google'
+import type {Metadata} from 'next'
+import {Source_Sans_3} from 'next/font/google'
 import '@/lib/styles/globals.scss'
 import Header from "@/app/header";
 import Footer from "@/app/footer";
 
 
-const mainFont = Source_Sans_3({ subsets: ['latin'] })
+const mainFont = Source_Sans_3({subsets: ['latin']})
 
 export const metadata: Metadata = {
-  title: {
+   title: {
     default: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
     template: '%s | Joobly.cz',
   },
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
 }
 
 export default function JobLayout({
-  children,
-}: {
+                                    children,
+                                  }: {
   children: React.ReactNode
 }) {
   return (
     <>
-      <Header topHeaderTitle="" bottomHeaderTitle="Post a job" />
+      <Header topHeaderTitle="" bottomHeaderTitle="Post a job"/>
       {children}
     </>
   )
