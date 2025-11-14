@@ -118,14 +118,25 @@ const PostJob = () => {
 		try {
 			setIsSubmitting(true);
 			const data = createDataForJob(values);
-			console.log(data);
+
 			if (user?.data?.jobPostPoints && user.data.jobPostPoints > 0) {
-				batch(() => {
-					dispatch(setJobDetails(null));
-					{/*  @ts-ignore */ }
-					dispatch(addNewJob(data));
-					push("/job-creation-success");
+				const response = await fetch("/api/jobs", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(data),
 				});
+				const result = await response.json();
+
+				if (response.ok) {
+					batch(() => {
+						dispatch(setJobDetails(null));
+						dispatch(addNewJob(result));
+						push("/job-creation-success");
+					});
+				} else {
+					// Manejar error
+					console.error(result.error || "Error al crear el trabajo");
+				}
 			} else {
 				push("/packages");
 			}
