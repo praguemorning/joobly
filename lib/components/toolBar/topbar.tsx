@@ -1,202 +1,92 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
-import Dropdown from "@/lib/components/dropdown/dropdown";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { optionItems } from "@/lib/types/componentTypes";
 
-import { CiSearch } from "react-icons/ci";
-
-import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
-import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface TopbarProps {
-	style?: React.CSSProperties;
-	locations: optionItems[];
-	languages: optionItems[];
-	educations: optionItems[];
-	experienceLevel: optionItems[];
-	workType: optionItems[];
-	jobCategories: optionItems[];
-	jobTime: optionItems[];
-	salary: optionItems[];
-	defaultJobTitle?: string;
-	defaultLocation?: string;
-	defaultLanguage?: string;
-	defaultEducation?: string;
-	defaultExperienceLevel: string | undefined;
-	defaultWorkType?: string;
-	defaultJobCategory?: string;
-	defaultJobTime?: string;
-	defaultSalary?: string;
-	defaultJobSearchValue?: string | number;
+	filterOptions: {
+		locations: any[];
+		languages: any[];
+		workTypes: any[];
+		jobCategories: any[];
+		jobTimes: any[];
+		educations: any[];
+		salaryLabels: any[];
+		experienceLevels: any[];
+	};
+	initialFilters?: Record<string, string>;
 }
 
-const Topbar: React.FC<TopbarProps> = ({
-	style,
-	locations,
-	languages,
-	educations,
-	workType,
-	jobCategories,
-	experienceLevel,
-	jobTime,
-	salary,
-	defaultLocation,
-	defaultLanguage,
-	defaultWorkType,
-	defaultJobCategory,
-	defaultEducation,
-	defaultJobTime,
-	defaultSalary,
-	defaultJobSearchValue,
-	defaultExperienceLevel,
-}) => {
-	//const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
-	const [isFilterActive, setIsFilterActive] = useState<boolean>(true);
-	const searchParams = useSearchParams();
+const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 	const router = useRouter();
-	const pathname = usePathname();
+	const [filters, setFilters] = useState({
+		jobTitle: initialFilters?.jobTitle || "",
+		location: initialFilters?.location || "",
+		language: initialFilters?.language || "",
+		workType: initialFilters?.workType || "",
+		jobCategory: initialFilters?.jobCategory || "",
+		education: initialFilters?.education || "",
+		jobTime: initialFilters?.jobTime || "",
+		salaryLabel: initialFilters?.salaryLabel || "",
+		experienceLevel: initialFilters?.experienceLevel || "",
+	});
 
-{/*
-	useEffect(() => {
-        setWindowWidth(window?.innerWidth);
-    }, []);
-*/}
-	
+	const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+		setFilters({ ...filters, [e.target.name]: e.target.value });
+	};
 
+	const handleSearch = () => {
+		const params = new URLSearchParams(filters as any).toString();
+		router.push(`/jobs?${params}`);
+	};
 
+	const ArrowIcon = () => (
+		<svg className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" /></svg>
+	);
 
-	const createQueryString = useCallback(
-		(name: string, value: string) => {
-			const params = new URLSearchParams(searchParams.toString());
-			params.set(name, value);
-
-			return params.toString();
-		},
-		[searchParams],
+	const renderSelect = (props: { name: string; value: string; onChange: any; options: any[]; label: string; }) => (
+		<div className="relative min-w-[150px] w-full">
+			<select
+				name={props.name}
+				value={props.value}
+				onChange={props.onChange}
+				className="border rounded px-3 py-2 w-full appearance-none"
+			>
+				<option value="">{props.label}</option>
+				{props.options.map((opt) => (
+					<option key={opt.id} value={opt.label}>{opt.label}</option>
+				))}
+			</select>
+			<ArrowIcon />
+		</div>
 	);
 
 	return (
-		<div>
-			<button 
-			onClick={() => setIsFilterActive(!isFilterActive)}
-			className="bg-light rounded-md shadow-[0_4px_120px_rgba(151,159,183,0.15)] py-1 px-4 mb-2 text-gray-500 lg:hidden flex items-center">
-				Filter
-			{!isFilterActive ? <TiArrowSortedDown className="h-5 w-5"/> : <TiArrowSortedUp className="h-5 w-5"/>}
-			</button>
-					<div
-					style={style}
-					className={`bg-light rounded-lg ${!isFilterActive ? "hidden" : ""} shadow-[0_4px_120px_rgba(151,159,183,0.15)] py-4 px-6 min-w-[300px]`}
-					>
-					<div className="flex items-center justify-between mb-8">
-						<div className="flex items-center justify-between">
-							<CiSearch className="w-5 h-5 text-gray-500"/>
-							<input
-								defaultValue={defaultJobSearchValue || ""}
-								onChange={(e) =>
-									router.push(pathname + "?" + createQueryString("jobTitle", e.target.value))
-								}
-								type="text"
-								className="w-[188px] h-[32px] placeholder-gray-500 placeholder-opacity-60 placeholder-font-semibold placeholder-line-[21px] text-lg"
-								placeholder="Search job name"
-							/>
-						</div>
-						<Link 
-						className="bg-light rounded-md border border-gray-200 py-1 px-4 mb-2 text-gray-500"
-						href={'/jobs'}>
-							Clear 
-						</Link>
-					</div>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="work-type-dropdown"
-						defaultSelected={defaultJobCategory}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("jobCategory", label))
-						}
-						items={jobCategories}
-						headerTitle={"Category"}
-						icon="/images/icons/findJob.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="work-type-dropdown"
-						defaultSelected={defaultWorkType}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("workType", label))
-						}
-						items={workType}
-						headerTitle={"Contract Type"}
-						icon="/images/icons/findJob.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="job-time-dropdown"
-						defaultSelected={defaultJobTime}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("jobTime", label))
-						}
-						items={jobTime}
-						headerTitle={"Working hours"}
-						icon="/images/icons/findJob.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="location-dropdown"
-						defaultSelected={defaultLocation}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("location", label))
-						}
-						items={locations}
-						headerTitle={"Location"}
-						icon="/images/icons/location.svg"
-					/>
-						{/*  @ts-ignore */}
-						<Dropdown
-						key="location-dropdown"
-						defaultSelected={defaultLanguage}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("language", label))
-						}
-						items={languages}
-						headerTitle={"Language"}
-						icon="/images/icons/location.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="salary-dropdown"
-						defaultSelected={defaultSalary}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("salaryLabel", label))
-						}
-						items={salary}
-						headerTitle={"Salary"}
-						icon="/images/icons/dollar-circle.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="education-dropdown"
-						defaultSelected={defaultEducation}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("education", label))
-						}
-						items={educations}
-						headerTitle={"Education"}
-						icon="/images/icons/case.svg"
-					/>
-					{/*  @ts-ignore */}
-					<Dropdown
-						key="experience-dropdown"
-						defaultSelected={defaultExperienceLevel}
-						queryPushing={(label: string) =>
-							router.push(pathname + "?" + createQueryString("experienceLevel", label))
-						}
-						items={experienceLevel}
-						headerTitle={"Experience Level"}
-						icon="/images/icons/case.svg"
-					/>
+		<div className="bg-white rounded-xl shadow p-4 mb-6 max-h-[550px]">
+			<div className="gap-4 items-center flex flex-wrap w-full md:w-[300px]">
+				{/* <input
+					type="text"
+					name="jobTitle"
+					value={filters.jobTitle}
+					onChange={handleChange}
+					placeholder="Search by job title..."
+					className="border rounded px-3 py-2 min-w-[150px] w-full"
+				/> */}
+				{renderSelect({ name: "location", value: filters.location, onChange: handleChange, options: filterOptions.locations, label: "Location" })}
+				{renderSelect({ name: "language", value: filters.language, onChange: handleChange, options: filterOptions.languages, label: "Language" })}
+				{renderSelect({ name: "workType", value: filters.workType, onChange: handleChange, options: filterOptions.workTypes, label: "Work Type" })}
+				{renderSelect({ name: "jobCategory", value: filters.jobCategory, onChange: handleChange, options: filterOptions.jobCategories, label: "Category" })}
+				{renderSelect({ name: "education", value: filters.education, onChange: handleChange, options: filterOptions.educations, label: "Education" })}
+				{renderSelect({ name: "jobTime", value: filters.jobTime, onChange: handleChange, options: filterOptions.jobTimes, label: "Job Time" })}
+				{renderSelect({ name: "salaryLabel", value: filters.salaryLabel, onChange: handleChange, options: filterOptions.salaryLabels, label: "Salary" })}
+				{renderSelect({ name: "experienceLevel", value: filters.experienceLevel, onChange: handleChange, options: filterOptions.experienceLevels, label: "Experience" })}
 			</div>
+			<button
+				onClick={handleSearch}
+				className="bg-[#006c53] text-white px-6 py-2 rounded-xl hover:bg-[#004d3c] transition font-bold mt-4 w-full"
+			>
+				Search
+			</button>
 		</div>
 	);
 };

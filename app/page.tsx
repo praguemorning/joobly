@@ -42,7 +42,7 @@ const Home = () => {
       <div className="flex flex-col lg:flex-row w-full h-full">
         {/* Job Seekers Section */}
         <div className="flex-1 bg-gradient-to-tr from-blue-400/20 via-indigo-500/20 to-purple-600/20 py-12 flex justify-center items-center">
-          <div className="max-w-[449px] w-full flex flex-col items-center text-center">
+          <div className="max-w-[449px] w-full flex flex-col items-center text-center px-4">
             <p className="text-lg font-bold mb-2">FOR JOB SEEKERS</p>
             <p className="text-2xl md:text-3xl font-semibold mb-2">
               Get work and get paid in Czech Republic
@@ -71,7 +71,7 @@ const Home = () => {
 
         {/* Job Posters Section */}
         <div className="flex-1 bg-gradient-to-r from-lime-200 to-green-300 py-12 flex justify-center items-center">
-          <div className="max-w-[449px] w-full flex flex-col items-center text-center">
+          <div className="max-w-[449px] w-full flex flex-col items-center text-center px-4">
             <p className="text-lg font-bold mb-2">FOR COMPANIES</p>
             <p className="text-2xl md:text-3xl font-semibold mb-2">
               Hire reliable and trusted workers now

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Source_Sans_3 } from "next/font/google";
 import "@/lib/styles/globals.scss";
-import TopHeader from "@/lib/components/header/header";
 
 
 const mainFont = Source_Sans_3({ subsets: ["latin"] });
@@ -33,7 +32,6 @@ export const metadata: Metadata = {
 export default function JobLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopHeader />
       <div className='header-background-line hidden lg:block'></div>
       {children}
     </>

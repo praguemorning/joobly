@@ -7,7 +7,7 @@ import Footer from "@/app/footer";
 const mainFont = Source_Sans_3({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	 title: {
+  title: {
     default: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
     template: '%s | Joobly.cz',
   },
@@ -37,15 +37,14 @@ export const metadata: Metadata = {
 };
 
 export default function JobLayout({ children }: { children: React.ReactNode }) {
-	return (
-		<>
-			<Header
-				extraBottomHeader='Add your resume and get easier noticed by
-local recruiters!'
-				topHeaderTitle=''
-				bottomHeaderTitle='Post your resume'
-			/>
-			{children}
-		</>
-	);
+  return (
+    <>
+      <Header
+        extraBottomHeader='Add your resume and get easier noticed by local recruiters!'
+        topHeaderTitle=''
+        bottomHeaderTitle='Post your resume'
+      />
+      {children}
+    </>
+  );
 }

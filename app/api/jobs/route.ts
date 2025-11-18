@@ -56,13 +56,14 @@ export async function GET(req: Request) {
   const filter: Record<string, any> = {};
 
   for (const key in query) {
-    if (query[key]) {
-      filter[key] = { $regex: new RegExp(`.*${query[key]}.*`, "i") };
+    const value = query[key];
+    if (value && value !== "Any") {
+      filter[key] = value;
     }
   }
 
-  // Obtener los jobs ordenados por fecha de creación descendente (más nuevo primero)
-  const jobs = await Job.find().sort({ createdAt: -1 });
+  // Aplica el filtro correctamente
+  const jobs = await Job.find(filter).sort({ createdAt: -1 });
 
   return Response.json({ length: jobs.length, jobs });
 }

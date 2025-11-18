@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import TopHeader from '@/lib/components/header/header';
 import HeaderBackground from '@/lib/components/headerBackground/headerBackground';
 import { SessionProvider } from "next-auth/react";
 
@@ -19,7 +18,6 @@ const Header: React.FC<HeaderProps> = ({ topHeaderTitle, bottomHeaderTitle, need
         pathname !== '/main' ?
             <>
                 <SessionProvider>
-                    <TopHeader />
                     {needBackgroundHeader && pathname !== '/dashboard/admin' && (
                         <HeaderBackground
                             extraBottomHeader={extraBottomHeader}

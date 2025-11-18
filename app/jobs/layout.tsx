@@ -4,8 +4,6 @@ import "@/lib/styles/globals.scss";
 import Header from "@/app/header";
 import { Toaster } from "react-hot-toast";
 
-const mainFont = Source_Sans_3({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
 	title: "Joobly | Jobs",
 	 description:
