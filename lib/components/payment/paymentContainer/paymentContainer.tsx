@@ -18,7 +18,6 @@ const PaymentContainer = ({props}: any) => {
     const currency = "CZK";
     const style = { layout: "vertical" };
 
-	//Stripe logic
 	async function handleSubmit() {
 		try {
 			const response = await fetch("/api/checkout", {
@@ -30,6 +29,8 @@ const PaymentContainer = ({props}: any) => {
 					points: props?.points ? props?.points : selectedPackage?.points
 				}),
 			});
+
+			console.log("Checkout response:", response);	
 
 			const { url } = await response.json();
 				if (url) {

@@ -112,7 +112,7 @@ const DashboardPage = () => {
       <div className="px-0 md:px-2 mdl:px-6 flex-grow">
         <div className="flex flex-col md:flex-row items-center justify-between mb-6 py-2 mt-4 lg:mt-0 gap-8">
           <p className=" text-gray-600 text-xl">
-            {jobPostPoints > 0 ? jobPostPoints : "No"} available job postings because you don&apos;t have enough points.
+            {jobPostPoints} job post {jobPostPoints === 1 ? "point" : "points"} remaining
           </p>
           <Button
             onClick={() => HandleCheckJobPostPoints()}

@@ -11,7 +11,7 @@ const initialState: PackageState = {
     points: 5,
     percent: "30% Rebate",
     value: "1500.00 CZK",
-    price: 1500,
+    price: 2700,
     active: true,
   },
 };

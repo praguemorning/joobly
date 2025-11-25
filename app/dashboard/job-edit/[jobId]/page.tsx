@@ -13,7 +13,7 @@ export const metadata = {
 
 export default async function EditJobPage({ params }: EditJobPageProps) {
     const jobId = params.jobId;
-    const initialJob = jobId ? await getItem(jobId) : null;
+    const initialJob = jobId ? await getItem(jobId) : null; 
 
     return (
         <PostJob initialJob={initialJob} jobId={jobId} />

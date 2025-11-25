@@ -63,7 +63,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 
 	return (
 		<div className="bg-white rounded-xl shadow p-4 mb-6 max-h-[550px]">
-			<div className="gap-4 items-center flex flex-wrap w-full md:w-[300px]">
+			<div className="gap-4 items-center flex flex-wrap w-full lg:max-w-[300px]">
 				{/* <input
 					type="text"
 					name="jobTitle"
