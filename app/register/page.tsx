@@ -10,7 +10,7 @@ import Person from "@mui/icons-material/Person";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Checkbox,  Divider,  FormControlLabel } from "@mui/material";
+import { Checkbox, Divider, FormControlLabel } from "@mui/material";
 import { emailValidationRegexp } from "@/lib/constant/constants";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -29,15 +29,15 @@ interface Inputs {
 }
 
 const Register = () => {
-	const [errorMessage, setErrorMessage] = useState<string>();
 	const {
 		handleSubmit,
 		control,
 		resetField,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const router = useRouter();
 
+	const [errorMessage, setErrorMessage] = useState<string>();
+	const router = useRouter();
 	const dispatch: AppDispatch = useDispatch();
 	const loading = useAppSelector((state) => state.user.loading);
 
@@ -54,7 +54,7 @@ const Register = () => {
 		} else {
 			router.push("/not-found")
 		}
-		
+
 	};
 	return (
 		<section className={styles["login-page"]}>
@@ -65,26 +65,26 @@ const Register = () => {
 						<p>Find your dream job in Joobly! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
 					</div>
 					<div className="flex flex-col gap-2">
-						<Button 
-						onClick={() => signIn('google', {callbackUrl: '/'})}
-						className={"btn-google-login-button"}
-						type="button"
+						<Button
+							onClick={() => signIn('google', { callbackUrl: '/' })}
+							className={"btn-google-login-button"}
+							type="button"
 						>
 							<Image src={google} alt='' width={25} height={25} />
 							Sign in with Google
 						</Button>
-						<Button 
-						onClick={() => signIn('linkedin', {callbackUrl: '/'})}
-						className={"btn-linkedin-login-button"}
-						type="button"
+						<Button
+							onClick={() => signIn('linkedin', { callbackUrl: '/' })}
+							className={"btn-linkedin-login-button"}
+							type="button"
 						>
-							<FaLinkedin className="text-[#2873B3] w-7 h-7"/>
+							<FaLinkedin className="text-[#2873B3] w-7 h-7" />
 							Sign in with LinkedIn
 						</Button>
 					</div>
 					<div className={styles["login-modal-email-login"]}>
 						<Divider>
-						<p>or Register in with Email</p>
+							<p>or Register in with Email</p>
 						</Divider>
 					</div>
 					<div className={styles["login-modal-form"]}>

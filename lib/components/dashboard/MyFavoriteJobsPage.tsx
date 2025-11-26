@@ -1,28 +1,24 @@
 "use client"
-import { Suspense, useState } from "react";
-import { useSession } from "next-auth/react";
+import { FaUser } from "react-icons/fa";
 import { redirect } from "next/navigation";
-import Image from "next/image";
+import { Suspense, useState } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { UserProfileTypes } from "@/models/User";
-
-import { FaUser } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import JobItem from "../jobItem/jobItem";
 import Link from "next/link";
-import FavoriteJobPostItem from "./FavoriteJobPostItem";
 
 const MyFavoriteJobsPage = () => {
   const session = useSession();
-
-
   const { status } = session;
   const profile = useProfile();
   const jobs = profile.data.favoriteJobs;
-
+  const jobsFavsIds = jobs?.map((job: any) => job._id) ?? [];
   const { email, image, name } = (profile.data as UserProfileTypes);
   const isAdmin = profile?.data?.admin;
-
-
   const [showAll, setShowAll] = useState(false);
+  const visibleJobs = showAll ? jobs : jobs?.slice(0, 5);
 
   if (profile.loading) {
     return (
@@ -36,38 +32,40 @@ const MyFavoriteJobsPage = () => {
     return redirect('/');
   }
 
-  const visibleJobs = showAll ? jobs : jobs?.slice(0, 5);
-
   return (
     <div className="container mx-auto flex flex-col lg:flex-row">
-      <div className="bg-light rounded-lg shadow-[0_4px_120px_rgba(151,159,183,0.15)] py-4 px-6 min-w-[300px] h-[520px]">
-        <div>
-          {image ? (
-            <Image src={image} width={100} height={100} alt="user image" className="rounded-xl" />
-          ) : (
-            <div className="w-24 h-24 border-2 border-[#006c53] rounded-xl flex items-center justify-center">
-              <FaUser className="text-[#006c53] w-16 h-16" />
-            </div>
+      <div className="bg-light rounded-lg shadow-[0_4px_120px_rgba(151,159,183,0.15)] py-6 px-8 min-w-[320px] h-[520px] flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-3">
+          <div className="relative">
+            {image ? (
+              <Image src={image} width={110} height={110} alt="user image" className="rounded-full border-4 border-[#83cfbe] shadow-lg" />
+            ) : (
+              <div className="w-28 h-28 border-4 border-[#83cfbe] rounded-full flex items-center justify-center bg-gray-100 shadow-lg">
+                <FaUser className="text-[#006c53] w-16 h-16" />
+              </div>
+            )}
+          </div>
+          <div className="mt-2 text-center">
+            <div className="font-bold text-lg text-[#006c53]">{name}</div>
+            <div className="text-gray-500 text-sm">{email}</div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 w-full mt-4">
+          <Link
+            className="font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
+            href={'/dashboard'}
+          >
+            <span className="mr-2">📄</span> Job postings
+          </Link>
+          {isAdmin && (
+            <Link
+              className="font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
+              href={'/dashboard/admin'}
+            >
+              <span className="mr-2">🛠️</span> Admin Area
+            </Link>
           )}
         </div>
-        <div className="flex flex-col text-gray-500">
-          <div>name: <span>{name}</span></div>
-          <div>email: <span>{email}</span></div>
-        </div>
-        <Link
-          className="mt-4 font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black text px-4 py-2 rounded-2xl flex items-center duration-200"
-          href={'/dashboard'}
-        >
-          Job postings
-        </Link>
-        {isAdmin && (
-          <Link
-            className="mt-4 font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black text px-4 py-2 rounded-2xl flex items-center duration-200"
-            href={'/dashboard/admin'}
-          >
-            Admin Area
-          </Link>
-        )}
       </div>
       <div className="px-0 md:px-2 mdl:px-6 flex-grow">
         <div className="flex flex-col md:flex-row items-center justify-between mb-6 py-2 h-14 mt-4 lg:mt-0">
@@ -79,7 +77,7 @@ const MyFavoriteJobsPage = () => {
         <div className="space-y-4">
           <Suspense fallback={<div>Loading...</div>}>
             {visibleJobs?.map((result: any) => (
-              <FavoriteJobPostItem data={result} key={result._id} />
+              <JobItem data={result} favoriteJobIds={jobsFavsIds} key={result._id} />
             ))}
           </Suspense>
 

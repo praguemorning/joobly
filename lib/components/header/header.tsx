@@ -1,49 +1,21 @@
 "use client"
-import { useEffect, useState } from "react";
 import "./header.scss";
-import Button from "../button/button";
-import Link from "next/link";
-import Image from "next/image";
-import LoginBtn from "../loginBtn/loginBtn";
-import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
-import { signOut, useSession } from 'next-auth/react';
 import { FaUser } from "react-icons/fa";
+import { MdContactMail, MdHome, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
+import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
-import { useProfile } from "@/lib/hooks/useProfile";
-import { UserProfileTypes } from "@/models/User";
-
+import { signOut, useSession } from 'next-auth/react';
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Button from "../button/button";
+import Image from "next/image";
+import Link from "next/link";
+import LoginBtn from "../loginBtn/loginBtn";
 
 const TopHeader = () => {
+	const { data: session, status, update } = useSession();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-	const session = useSession();
-	const status = session.status;
-
 	const pathname = usePathname();
-
-	const profile = useProfile();
-	const profileEmail = (profile.data as UserProfileTypes)?.email;
-
-	const userData = session.data?.user as UserTypes;
-	const gmailCredentials = userData?.email.indexOf("gmail");
-
-
-	useEffect(() => {
-		if (gmailCredentials) {
-			if (!profileEmail) {
-				fetch('/api/profile', {
-					method: 'POST',
-					headers: { 'Content-type': 'application/json' },
-					body: JSON.stringify({
-						email: userData.email,
-						name: userData.name,
-						image: userData.image,
-					}),
-				});
-			}
-		}
-	}, [gmailCredentials, profileEmail, userData]);
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -88,66 +60,44 @@ const TopHeader = () => {
 						{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					</div>
 					{/*hеader nav links*/}
-					<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
-						<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
-							<Image
-								className='w-5 h-5 package-image'
-								src={"/images/icons/home.svg"}
-								width={26}
-								height={26}
-								alt='packages'
-							/>
-							<span className="text-nowrap">Home</span>
-						</Link>
-						<Link href='/jobs' className={`flex items-center gap-1 ${pathname === '/jobs' && 'text-black'}`}>
-							<Image
-								className='w-5 h-5 package-image'
-								src={"images/icons/findJob.svg"}
-								width={26}
-								height={26}
-								alt='packages'
-							/>
-							<span className="text-nowrap">Find a job</span>
-						</Link>
-						<Link href='/post-job-info' className={`flex items-center gap-1 ${pathname === '/post-job-info' && 'text-black'}`}>
-							<Image
-								className='w-5 h-5 package-image'
-								src={"/images/icons/listing.svg"}
-								width={26}
-								height={26}
-								alt='packages'
-							/>
-							<span className="text-nowrap">Post a job</span>
-						</Link>
-						<Link href='/packages' className={`flex items-center gap-1 ${pathname === '/packages' && 'text-black'}`}>
-							<Image
-								className='w-5 h-5 package-image'
-								src={"/images/icons/package-icon.svg"}
-								width={26}
-								height={26}
-								alt='packages'
-							/>
-							<span className="text-nowrap">Packages</span>
-						</Link>
-					</div>
+					{!isMenuOpen && (
+						<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
+							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
+								<MdHome className='w-5 h-5 package-image' />
+								<span className="text-nowrap">Home</span>
+							</Link>
+							<Link href='/jobs' className={`flex items-center gap-1 ${pathname === '/jobs' && 'text-black'}`}>
+								<MdWork className='w-5 h-5 package-image' />
+								<span className="text-nowrap">Find a job</span>
+							</Link>
+							<Link href='/post-job-info' className={`flex items-center gap-1 ${pathname === '/post-job-info' && 'text-black'}`}>
+								<MdList className='w-5 h-5 package-image' />
+								<span className="text-nowrap">Post a job</span>
+							</Link>
+							<Link href='/packages' className={`flex items-center gap-1 ${pathname === '/packages' && 'text-black'}`}>
+								<MdCardGiftcard className='w-5 h-5 package-image' />
+								<span className="text-nowrap">Packages</span>
+							</Link>
+						</div>
+					)}
 				</div>
 				<div className='post-btn-group'>
 					<Link href={"/contact"}>
 						<Button
-							icon={"images/icons/contact.svg"}
 							style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
 							className={`btn-green-outlined`}
 						>
+							<MdContactMail className="w-6 h-6 mr-2" />
 							Contact us
 						</Button>
 					</Link>
 
 					<Link href={"/post-resume"}>
 						<Button
-							icon={"images/icons/add.svg"}
-							style={{ maxWidth: "185px", gap: "10px" }}
-							className='btn header-post-resume'
+							style={{ width: "200px", height: "62px", borderRadius: "18px", gap: "10px" }}
+							className={`btn-green-outlined`}
 						>
+							<MdAdd className="w-6 h-6" />
 							Post your resume
 						</Button>
 					</Link>
@@ -200,85 +150,49 @@ const TopHeader = () => {
 					<Link
 						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 md:hidden ${pathname === '/' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/home.svg"}
-							width={26}
-							height={26}
-							alt='packages'
-						/>
+						<MdHome className='w-5 h-5 package-image' />
 						<span>Home</span>
 					</Link>
 					<Link
 						href='/jobs'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 md:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/findJob.svg"}
-							width={26}
-							height={26}
-							alt='packages'
-						/>
+						<MdWork className='w-5 h-5 package-image' />
 						<span>Find a job</span>
 					</Link>
 					<Link
 						href='/post-job-info'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 md:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/listing.svg"}
-							width={26}
-							height={26}
-							alt='packages'
-						/>
+						<MdList className='w-5 h-5 package-image' />
 						<span>Post a job</span>
 					</Link>
 					<Link
 						href='/packages'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 md:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/package-icon.svg"}
-							width={26}
-							height={26}
-							alt='packages'
-						/>
+						<MdCardGiftcard className='w-5 h-5 package-image' />
 						<span>Packages</span>
 					</Link>
 					<Link
 						href='/contact'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/contact.svg"}
-							width={26}
-							height={26}
-							alt='contact us'
-						/>
+						<MdContactMail className='w-5 h-5 package-image' />
 						<span>Contact us</span>
 					</Link>
 					<Link
 						href='/post-resume'
 						onClick={toggleMenu}
-						className={`flex items-center gap-1 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-resume' && 'text-[#006c53]'}`}
 					>
-						<Image
-							className='w-5 h-5 package-image'
-							src={"/images/icons/add.svg"}
-							width={26}
-							height={26}
-							alt='post resume'
-						/>
+						<MdAdd className='w-5 h-5 package-image' />
 						<span>Post resume</span>
 					</Link>
 				</nav>

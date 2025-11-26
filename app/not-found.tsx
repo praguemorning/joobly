@@ -1,4 +1,3 @@
-import TopHeader from "@/lib/components/header/header";
 import React from "react";
 import Image from "next/image";
 import Button from "@/lib/components/button/button";
@@ -9,7 +8,6 @@ type Props = {};
 const NotFound = (props: Props) => {
 	return (
 		<div className='flex flex-col justify-between'>
-			<TopHeader />
 			<div className='flex flex-col justify-center items-center p-12'>
 				<Image priority src='/images/404banner.png' alt='404 Not Found' width={1200} height={500} />
 				<h1 className=' text-xl font-bold text-center'>Page Not Found</h1>
