@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useAppSelector } from "@/lib/hooks";
+import { Toaster } from 'react-hot-toast';
 
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from 'next/navigation'
@@ -27,34 +28,39 @@ interface Inputs {
 }
 
 const Login = () => {
-	const [errorMessage, setErrorMessage] = useState<string>();
-	const session = useSession();
 	const {
 		handleSubmit,
 		control,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const { push } = useRouter();
 
+	const [errorMessage, setErrorMessage] = useState<string>();
+	const { data: session, status, update } = useSession();
+	const { push } = useRouter();
 	const dispatch: AppDispatch = useDispatch();
 	const loading = useAppSelector((state) => state.user.loading);
 
 	const onSubmit: SubmitHandler<Inputs> = async (values: Inputs) => {
-		const login = await signIn('credentials', { redirect: false, email: values.email, password: values.password, callbackUrl: '/' });
-		if (login) {
+		const login = await signIn('credentials', { redirect: true, email: values.email, password: values.password, callbackUrl: '/' });
+		if (login?.ok) {
 			push('/');
-		} else {
-			push('/error');
+		} else if (login?.error) {
+			setErrorMessage("Invalid email or password");
+			// Mostrar toast de error
+			import('react-hot-toast').then(({ toast }) => {
+				toast.error("Invalid email or password");
+			});
 		}
 	};
 
 
-	if (session.status === "authenticated") {
+	if (status === "authenticated") {
 		return redirect('/');
 	}
 
 	return (
 		<section className={styles["login-page"]}>
+			<Toaster />
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="mx-auto"

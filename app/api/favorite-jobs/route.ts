@@ -19,19 +19,27 @@ export async function POST(req: Request) {
       return new Response(JSON.stringify({ error: "User not found" }), { status: 404 });
     }
 
-    const { data } = await req.json();
-    if (!data) {
-    return new Response(JSON.stringify({ error: "No job data provided" }), { status: 400 });
+    const body = await req.json();
+    const jobId = body.jobId;
+    if (!jobId) {
+      return new Response(JSON.stringify({ error: "No jobId provided" }), { status: 400 });
     }
 
-    // Check if there is tihs job in favoriteJobs arr
-    const jobExists = user.favoriteJobs.some((job: any) => job._id.toString() === data._id.toString());
+    // Verificar si el job ya está en favoritos
+    const jobExists = user.favoriteJobs.some((job: any) => job._id.toString() === jobId.toString());
     if (jobExists) {
       return new Response(JSON.stringify({ message: "Job already in favorites" }), { status: 400 });
     }
 
-    // Put job in to favoriteJobs arr
-    user.favoriteJobs.push(data);
+    // Buscar el job completo en la base de datos
+    const { Job } = require("@/models/Job");
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return new Response(JSON.stringify({ error: "Job not found" }), { status: 404 });
+    }
+
+    // Añadir el job completo a favoritos
+    user.favoriteJobs.push(job);
     await user.save();
 
     return new Response(JSON.stringify({ message: "Job added to favorites" }), { status: 200 });

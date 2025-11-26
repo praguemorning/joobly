@@ -17,11 +17,9 @@ import { POST_JOB_ACTIONS_SECTION_1, POST_JOB_ACTIONS_SECTION_2 } from '@/lib/co
 import { useProfile } from '@/lib/hooks/useProfile';
 import toast from 'react-hot-toast';
 
-
 const PostJobInfo = () => {
   const profile = useProfile();
   const jobPostPoints = profile?.data?.jobPostPoints as number;
-  console.log(profile);
 
   const {push} = useRouter();
 

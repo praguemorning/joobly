@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import Paper from "@/lib/components/paper/Paper";
 import styles from "./deatilsContainer.module.scss";
-import addArchive from "@/public/images/icons/archive-add.svg";
+import saveIcon from "@/public/images/icons/archive.svg";
 import shareButton from "@/public/images/icons/shareButton.svg";
-import Image from "next/image";
 import Button from "@/lib/components/button/button";
 import Divider from "@/lib/components/devider/divider";
 import KeyValueComponent from "@/lib/components/keyValueComponent/keyValueComponent";
@@ -13,33 +12,50 @@ import { useClient } from "@/lib/hooks/useClient";
 import DateConverter from "../dateConverter/DateConverter";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { useProfile } from "@/lib/hooks/useProfile";
+import Image from "next/image";
 
 const DetailsContainer = ({ data }: any) => {
 	const session = useSession();
+	const profile = useProfile();
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 	const currentUrl = typeof window !== "undefined" ? encodeURIComponent(window.location.href) : "";
-	console.log(data);
 	const userData = session.data?.user as UserTypes;
+	const { back } = useRouter();
+	const isClient = useClient();
 
+	const isJobFavorite = React.useMemo(() => {
+		if (!profile?.data?.favoriteJobs) return false;
+		return profile.data.favoriteJobs.some(
+			(fav: any) => fav._id === data._id
+		);
+	}, [profile?.data?.favoriteJobs, data?._id]);
+
+	const [isFavorite, setIsFavorite] = useState(isJobFavorite);
+
+	// Sincronizar el estado si cambian los favoritos o el job
+	React.useEffect(() => {
+		setIsFavorite(isJobFavorite);
+	}, [isJobFavorite]);
 
 	const socialPlatforms = [
 		{
-		  name: 'share in Facebook',
-		  url: `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
+			name: 'share in Facebook',
+			url: `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
 		},
 		{
-		  name: 'share in Twitter',
-		  url: `https://twitter.com/intent/tweet?url=${currentUrl}`,
+			name: 'share in Twitter',
+			url: `https://twitter.com/intent/tweet?url=${currentUrl}`,
 		},
 		{
-		  name: 'share in LinkedIn',
-		  url: `https://www.linkedin.com/shareArticle?url=${currentUrl}`,
+			name: 'share in LinkedIn',
+			url: `https://www.linkedin.com/shareArticle?url=${currentUrl}`,
 		},
 		{
-		  name: 'share in WhatsApp',
-		  url: `https://api.whatsapp.com/send?text=${currentUrl}`,
+			name: 'share in WhatsApp',
+			url: `https://api.whatsapp.com/send?text=${currentUrl}`,
 		},
-	  ];
+	];
 
 
 	const jobDetails = [
@@ -90,75 +106,60 @@ const DetailsContainer = ({ data }: any) => {
 
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
-	  };
+	};
 
+	async function handleDeleteClick() {
 
-	  async function addJobToFavorite() {
-		if (!userData.email) {
-		  toast((t) => (
-			<div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
-			  <span className="font-medium">
-				To add the job to favorite, you need to be logged in
-			  </span>
-			</div>
-		  ));
-		  return;
+		setIsFavorite(false);
+
+		const res = await fetch('/api/favorite-jobs?_id=' + data._id, {
+			method: 'DELETE',
+		});
+		if (res.ok) {
+			toast.success('Job removed from favorites!');
+			setIsFavorite(false);
+		} else {
+			toast.error("Failed to remove job from favorites");
 		}
-	  
+	}
+
+	async function addJobToFavorite() {
+		setIsFavorite(true);
+
+		if (!userData.email) {
+			toast((t) => (
+				<div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
+					<span className="font-medium">
+						To add the job to favorite, you need to be logged in
+					</span>
+				</div>
+			));
+			return;
+		}
+
 		try {
 			const response = await fetch("/api/favorite-jobs", {
-			  method: "POST",
-			  headers: { "Content-Type": "application/json" },
-			  body: JSON.stringify({ data }),
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ jobId: data._id }),
 			});
-		  
-			const result = await response.json();
-		  
-			if (response.ok) {
-			  toast((t) => (
-				<div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
-				  <span className="font-medium">Job added to favorites!</span>
-				  <button
-					className="bg-[#006c53] text-white px-4 py-2 rounded"
-					onClick={() => toast.dismiss(t.id)}
-				  >
-					Dismiss
-				  </button>
-				</div>
-			  ));
-			} else {
-			  toast((t) => (
-				<div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
-				  <span className="font-medium">
-					{result.error || result.message || "Failed to add job"}
-				  </span>
-				  <button
-					className="bg-[#006c53] text-white px-4 py-2 rounded"
-					onClick={() => toast.dismiss(t.id)}
-				  >
-					Close
-				  </button>
-				</div>
-			  ));
-			}
-		  } catch (error) {
-			toast((t) => (
-			  <div className="flex flex-col gap-4 text-red-500 text-center items-center mb-2">
-				<span className="font-medium">An unexpected error occurred</span>
-				<button
-				  className="bg-red-500 text-white px-4 py-2 rounded"
-				  onClick={() => toast.dismiss(t.id)}
-				>
-				  Dismiss
-				</button>
-			  </div>
-			));
-			console.error(error);
-		  }
-	  } 
 
-	const { back } = useRouter();
-	const isClient = useClient();
+			const result = await response.json();
+
+			if (response.ok) {
+				setIsFavorite(true);
+				toast.success('Job added to favorites!');
+			} else {
+				setIsFavorite(false);
+				toast.error(result.error || result.message || "Failed to add job");
+			}
+		} catch (error) {
+			setIsFavorite(false);
+			toast.error("An unexpected error occurred");
+			console.error(error);
+		}
+	}
+
 	return (
 		<>
 			{isClient && (
@@ -168,46 +169,51 @@ const DetailsContainer = ({ data }: any) => {
 							<section className={styles["job-details-page-info"]}>
 								<div className={styles["job-details-page-actions"]}>
 									{/* share popup start */}
-								{isDropdownOpen && (
-									<div 
-									onClick={toggleDropdown}
-									className="absolute top-0 left-0 w-screen h-screen">
-										<div 
-										onClick={toggleDropdown}
-										className="absolute mt-2 bg-white top-[22%] 
+									{isDropdownOpen && (
+										<div
+											onClick={toggleDropdown}
+											className="absolute top-0 left-0 w-screen h-screen">
+											<div
+												onClick={toggleDropdown}
+												className="absolute mt-2 bg-white top-[22%] 
 										left-[39%] sml:left-[58%] sml:left-[73%] lg:left-[58%] 
 										border border-gray-300 rounded shadow-lg z-10">
-										<ul className="p-2 space-y-2">
-											{socialPlatforms?.map((platform) => (
-											<li key={platform.name}>
-												<a
-												href={platform.url}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="block text-gray-500 hover:text-[#006c53] duration-200"
-												>
-												{platform.name}
-												</a>
-											</li>
-											))}
-										</ul>
+												<ul className="p-2 space-y-2">
+													{socialPlatforms?.map((platform) => (
+														<li key={platform.name}>
+															<a
+																href={platform.url}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="block text-gray-500 hover:text-[#006c53] duration-200"
+															>
+																{platform.name}
+															</a>
+														</li>
+													))}
+												</ul>
+											</div>
 										</div>
+									)}
+
+									<div className="flex justify-end gap-4 items-center">
+										<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
+											<Image
+												src={saveIcon}
+												alt="save"
+												className="cursor-pointer"
+												style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
+											/>
+										</span>
+										{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
 									</div>
-      								)}
-									{/* share popup end */}
 									<Image
-									onClick={addJobToFavorite}
-									className="cursor-pointer"
-									alt='add archive' 
-									src={addArchive} width={44} height={44} 
-									/>
-									<Image 
-									onClick={toggleDropdown}
-									className="cursor-pointer"
-									alt='share button' 
-									src={shareButton} 
-									width={44} 
-									height={44} 
+										onClick={toggleDropdown}
+										className="cursor-pointer"
+										alt='share button'
+										src={shareButton}
+										width={44}
+										height={44}
 									/>
 								</div>
 								<div className={styles["job-general-details"]}>
@@ -222,7 +228,7 @@ const DetailsContainer = ({ data }: any) => {
 											{data?.jobUrl}
 										</a>
 										*/}
-										
+
 									</div>
 									<div className={styles["job-general-buttons"]}>
 										{/*
@@ -245,10 +251,10 @@ const DetailsContainer = ({ data }: any) => {
 								<KeyValueComponent data={jobDetails || []} />
 								{data?.advertisedDate && (
 									<div className={'mb-6 flex justify-between text-sm text-gray-500'}>
-										<p className="flex gap-2">Advertised since: {DateConverter({  mongoDate: data?.advertisedDate })}</p>
+										<p className="flex gap-2">Advertised since: {DateConverter({ mongoDate: data?.advertisedDate })}</p>
 										{data?.closeDate && (
-											<p>Closed on: {DateConverter({  mongoDate: data?.closeDate })}</p>
-											)}
+											<p>Closed on: {DateConverter({ mongoDate: data?.closeDate })}</p>
+										)}
 									</div>
 								)}
 								<div className={styles["job-description"]}>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
   return (
     <section className="mt-16 mb-20 px-4 min-h-[60%]">
         <AdminUsersJobs/>

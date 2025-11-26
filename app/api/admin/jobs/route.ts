@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     await mongoose.connect(process.env.MONGODB_URI as string);
-    const jobs = await Job.find({});
+    const jobs = await Job.find({}).sort({ createdAt: -1 });
     return NextResponse.json({ jobs });
 }
 

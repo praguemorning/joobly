@@ -146,16 +146,22 @@ const AdminUsersJobs = () => {
                                             >
                                                 Details
                                             </Button>
+                                            <Button
+                                                onClick={() => router.push(`/dashboard/job-edit/${job._id}`)}
+                                                className="bg-yellow-100 text-yellow-700 font-bold text-sm border-2 hover:bg-white hover:border-yellow-500 hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
+                                            >
+                                                Edit
+                                            </Button>
                                             <button
                                                 onClick={() => openDeleteModal('job', job._id)}
-                                                className={`w-8 h-8 text-gray-500 cursor-pointer hover:text-[#006c53] duration-300 flex items-center justify-center ${deletingJobId === job._id ? 'opacity-60 cursor-not-allowed' : ''}`}
+                                                className={`text-gray-500 cursor-pointer hover:text-[#006c53] duration-300 flex items-center justify-center ${deletingJobId === job._id ? 'opacity-60 cursor-not-allowed' : ''}`}
                                                 disabled={deletingJobId === job._id}
                                                 style={{ background: 'none', border: 'none', padding: 0 }}
                                             >
                                                 {deletingJobId === job._id ? (
-                                                    <MdDelete className="w-8 h-8 animate-spin" />
+                                                    <MdDelete className=" w-6 h-6 animate-spin" />
                                                 ) : (
-                                                    <MdDelete className="w-8 h-8" />
+                                                        <MdDelete className="w-6 h-6 " />
                                                 )}
                                             </button>
                                         </div>

@@ -19,6 +19,7 @@ export async function POST(req: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
     }
+    
 
     if (event.type === 'checkout.session.completed') {
         console.log(event);
