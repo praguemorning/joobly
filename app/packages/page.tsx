@@ -24,8 +24,6 @@ const PackagesPage = () => {
     const dispatch = useDispatch();
     const user = useSession();
     const router = useRouter();
-    console.log(PACKAGES);
-    console.log(POST_PACKAGES_ACTIONS);
     const selectedPackage = useSelector((state: RootState) => state.packages.selectedPackage);
 
     const changePackage = (packageInfo: PackageType) => {
