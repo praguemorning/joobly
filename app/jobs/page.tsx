@@ -1,7 +1,6 @@
-import { getUserFavsJobs } from "@/lib/user/getUserFavsJobs";
+import { getUserFavsJobs, getUserInfo } from "@/lib/user/getUserFavsJobs";
 import { JobsPagePropsTypes } from "@/lib/types/componentTypes";
 import { processOptions, getData, getOptions } from "@/lib/jobs/jobsUtils";
-import { useSession } from "next-auth/react";
 import HeaderBackground from "@/lib/components/headerBackground/headerBackground";
 import JobItem from "../../lib/components/jobItem/jobItem";
 import React, { Suspense } from "react";
@@ -22,6 +21,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	};
 
 	const favoriteJobIds = await getUserFavsJobs();
+	const user = await getUserInfo();
 	const params = new URLSearchParams(normalizedFilters);
 	const [jobs, options] = await Promise.all([getData(params), getOptions()]);
 	const { locations, languages, workTypes, jobTimes, educations, salaryLabels, experienceLevels, jobCategories } = await processOptions(options);
@@ -54,7 +54,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 						<div className="space-y-4">
 							<Suspense fallback={<div>Loading...</div>}>
 								{jobs.jobs?.map((result: any) => (
-									<JobItem data={result} favoriteJobIds={favoriteJobIds} key={result._id} />
+									<JobItem data={result} favoriteJobIds={favoriteJobIds} key={result._id} userLoggedIn={!!user} />
 								))}
 							</Suspense>
 						</div>

@@ -17,15 +17,23 @@ import toast from "react-hot-toast";
 interface JobItem {
 	data: JobData;
 	favoriteJobIds?: string[];
+	userLoggedIn?: boolean;
 }
-const JobItem = ({ data, favoriteJobIds }: JobItem) => {
+const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 	const { push } = useRouter();
 	const isClient = useClient();
 	const [isFavorite, setIsFavorite] = React.useState(favoriteJobIds?.includes(data._id!) ?? false);
 
 	const handleAddFavorite = async (e: React.MouseEvent) => {
+		if (!userLoggedIn) {
+			push('/login');
+			return;
+		}
+
 		e.stopPropagation();
 		setIsFavorite(true);
+		toast.success("Job added to favorites");
+
 		try {
 			await fetch("/api/favorite-jobs", {
 				method: "POST",
@@ -34,7 +42,7 @@ const JobItem = ({ data, favoriteJobIds }: JobItem) => {
 				},
 				body: JSON.stringify({ jobId: data._id }),
 			});
-			toast.success("Job added to favorites");
+
 		} catch (error) {
 			setIsFavorite(false);
 			console.log("Error adding favorite job:", error);
@@ -44,11 +52,11 @@ const JobItem = ({ data, favoriteJobIds }: JobItem) => {
 	const handleRemoveFavorite = async (e: React.MouseEvent) => {
 		e.stopPropagation();
 		setIsFavorite(false);
+		toast.success("Job removed from favorites");
 		try {
 			await fetch(`/api/favorite-jobs?_id=${data._id}`, {
 				method: "DELETE",
 			});
-			toast.success("Job removed from favorites");
 		} catch (error) {
 			setIsFavorite(true);
 			console.log("Error removing favorite job:", error);
