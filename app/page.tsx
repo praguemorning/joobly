@@ -39,7 +39,7 @@ export const metadata: Metadata = {
 const Home = () => {
   return (
     <section className="flex flex-col justify-between">
-      <div className="flex flex-col lg:flex-row w-full h-full">
+      <div className="flex flex-col lg:flex-row w-full min-h-dvh">
         {/* Job Seekers Section */}
         <div className="flex-1 bg-gradient-to-tr from-blue-400/20 via-indigo-500/20 to-purple-600/20 py-12 flex justify-center items-center">
           <div className="max-w-[449px] w-full flex flex-col items-center text-center px-4">
