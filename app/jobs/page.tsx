@@ -6,7 +6,6 @@ import JobItem from "../../lib/components/jobItem/jobItem";
 import React, { Suspense } from "react";
 import Topbar from "../../lib/components/toolBar/topbar";
 
-
 const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const normalizedFilters: Record<string, string> = {
 		jobTitle: searchParams?.jobTitle ?? "",
