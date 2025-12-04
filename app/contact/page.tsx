@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./contactPage.module.scss";
 import Input from "@/lib/components/input/input";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import {
 //import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import FormSelect from "@/lib/components/select/select";
 import Button from "@/lib/components/button/button";
+import toast from "react-hot-toast";
 
 interface Inputs {
 	firstName: string;
@@ -24,6 +25,8 @@ interface Inputs {
 }
 
 const ContactPage = () => {
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	const {
 		handleSubmit,
 		reset,
@@ -31,8 +34,30 @@ const ContactPage = () => {
 		formState: { errors },
 	} = useForm<Inputs>();
 
-	const onSubmit = (values: Inputs) => {
-		console.log(values);
+	const onSubmit = async (values: Inputs) => {
+		setIsSubmitting(true);
+
+		try {
+			const response = await fetch('/api/contact', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(values),
+			});
+
+			if (response.ok) {
+				toast.success('Message sent successfully. We will contact you soon.');
+				reset(); // Limpiar el formulario
+			} else {
+				throw new Error('Error sending message');
+			}
+		} catch (error) {
+			console.error('Error:', error);
+			toast.error('There was an error sending the message. Please try again.');
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 	return (
 		<section className={styles["contact-page"]}>
@@ -105,8 +130,13 @@ const ContactPage = () => {
 						className='textArea'
 						placeholder='Hi, i just wanted to let you know...'
 					/>
-					<Button type='submit' style={{ width: "100%" }} className={"btn-primary"}>
-						Submit
+					<Button
+						type='submit'
+						style={{ width: "100%" }}
+						className={"btn-primary"}
+						disabled={isSubmitting}
+					>
+						{isSubmitting ? 'Sending...' : 'Submit'}
 					</Button>
 				</form>
 			</div>
