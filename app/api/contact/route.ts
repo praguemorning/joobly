@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
         const mailOptions = {
             from: '"Joobly Contact Form" <info@praguemorning.cz>',
-            to: email,
+            to: process.env.EMAIL_TO,
             subject: `New contact message from ${firstName} ${lastName}`,
             html: `
         <h2>New Contact Message - Joobly</h2>
