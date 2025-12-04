@@ -46,6 +46,7 @@ const ContactPage = () => {
 			});
 
 			if (response.ok) {
+				console.log('Message sent successfully');
 				toast.success('Message sent successfully. We will contact you soon.');
 				reset(); // Limpiar el formulario
 			} else {

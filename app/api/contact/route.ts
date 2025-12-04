@@ -8,20 +8,22 @@ export async function POST(request: NextRequest) {
 
         const transporter = nodemailer.createTransport({
             host: 'mail.webhouse.sk',
-            port: 25,
+            port: 587,
             secure: false,
             auth: {
-                user: 'info@praguemorning.cz',
-                pass: 'Rudefans8686.',
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
             },
             tls: {
                 rejectUnauthorized: false,
             },
+            requireTLS: true,
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
         });
 
-        // Configure the email
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: '"Joobly Contact Form" <info@praguemorning.cz>',
             to: process.env.EMAIL_TO,
             subject: `New contact message from ${firstName} ${lastName}`,
             html: `
@@ -41,14 +43,18 @@ export async function POST(request: NextRequest) {
             replyTo: email,
         };
 
-        // Send the email
-        await transporter.sendMail(mailOptions);
+        console.log('Enviando email...');
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✓ Email enviado:', info.messageId);
 
         return NextResponse.json({ message: 'Email sent successfully' });
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error detallado:', error);
         return NextResponse.json(
-            { error: 'Error sending email' },
+            {
+                error: 'Error sending email',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
             { status: 500 }
         );
     }
