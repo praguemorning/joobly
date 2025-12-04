@@ -9,7 +9,6 @@ import {
 	INTERESTED_IN,
 	//WORK_TYPES,
 } from "@/lib/constant/constants";
-//import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import FormSelect from "@/lib/components/select/select";
 import Button from "@/lib/components/button/button";
 import toast from "react-hot-toast";
@@ -47,6 +46,7 @@ const ContactPage = () => {
 			});
 
 			if (response.ok) {
+				console.log('Message sent successfully');
 				toast.success('Message sent successfully. We will contact you soon.');
 				reset(); // Limpiar el formulario
 			} else {
