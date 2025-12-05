@@ -10,16 +10,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
     <SessionProvider>
       <Provider store={store}>
         {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-          }}
-        />
+        <Toaster />
       </Provider>
     </SessionProvider>
   );
