@@ -79,14 +79,16 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 								)}
 							</div>
 						</div>
-						<div className="flex items-center gap-5">
-							<p className="flex items-center gap-2 text-gray-600 text-base">
-								<span className="inline-block">
-									<Image src={locationIcon} alt="location" />
-								</span>
-								{data?.location}
-							</p>
-						</div>
+						{data.location && (
+							<div className="flex items-center gap-5">
+								<p className="flex items-center gap-2 text-gray-600 text-base">
+									<span className="inline-block">
+										<Image src={locationIcon} alt="location" />
+									</span>
+									{data?.location}
+								</p>
+							</div>
+						)}
 					</div>
 					<div className="flex flex-col justify-between">
 						<div className="flex justify-end gap-4 items-center">
@@ -102,7 +104,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 						</div>
 						<div className="flex flex-col mt-4">
 							<span className="self-end text-sm text-gray-500">{DateConverter({ mongoDate: data?.advertisedDate })}</span>
-							<div className="flex gap-2 mt-4">
+							<div className="flex gap-2 mt-4 justify-end">
 								<Button
 									className="bg-[#c5f06d] text-gray-800  font-bold text-lg hover:bg-[#006c53] hover:text-white px-6 py-2 rounded-2xl flex gap-1 items-center duration-200"
 									hoverIcon="/images/icons/list-white.svg"
