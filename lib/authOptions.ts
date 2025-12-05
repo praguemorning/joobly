@@ -17,10 +17,10 @@ export const authOptions = {
       clientId: process.env.LINKEDIN_CLIENT_ID as string,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
       checks: ["state"],
-      issuer: undefined, // Убедитесь, что проверки настроены корректно
+      issuer: undefined, 
       authorization: {
         params: {
-          scope: "openid profile email", // Используем OpenID scope
+          scope: "openid profile email", 
         },
       },
     }),
