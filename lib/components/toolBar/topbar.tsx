@@ -18,6 +18,7 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
+	console.log('Initial Filters in Topbar:', initialFilters);
 	const router = useRouter();
 	const [filters, setFilters] = useState({
 		jobTitle: initialFilters?.jobTitle || "",

@@ -510,18 +510,20 @@ export const CITIES = [
 
   export const LANGUAGES = [
 	"Czech",
-	"English",
-	"German",
-	"French",
-	"Italian",
-	"Spanish",
 	"Dutch",
-	"Swedish",
+	"English",
 	"Finnish",
-	"Russian",
-	"Portuguese",
-	"Japanese",
+	"French",
+	"German",
+	"Hungarian",
 	"Indian",
+	"Italian",
+	"Japanese",
+	"Polish",
+	"Portuguese",
+	"Russian",
+	"Spanish",
+	"Swedish",
   ];
 
   export const EXPERIENCE_LEVEL = [

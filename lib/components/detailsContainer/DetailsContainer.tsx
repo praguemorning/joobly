@@ -16,6 +16,7 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 
 const DetailsContainer = ({ data }: any) => {
+	console.log("DetailsContainer data:", data);
 	const session = useSession();
 	const profile = useProfile();
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -91,7 +92,7 @@ const DetailsContainer = ({ data }: any) => {
 
 	const companyInfo = [
 		{
-			key: "CEO Company",
+			key: "Company",
 			value: data?.companyDetails?.ceoCompany || "N/A",
 		},
 		{
@@ -195,18 +196,19 @@ const DetailsContainer = ({ data }: any) => {
 											</div>
 										</div>
 									)}
-
-									<div className="flex justify-end gap-4 items-center">
-										<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
-											<Image
-												src={saveIcon}
-												alt="save"
-												className="cursor-pointer"
-												style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
-											/>
-										</span>
-										{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
-									</div>
+									{userData &&
+										<div className="flex justify-end gap-4 items-center">
+											<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
+												<Image
+													src={saveIcon}
+													alt="save"
+													className="cursor-pointer"
+													style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
+												/>
+											</span>
+											{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
+										</div>
+									}
 									<Image
 										onClick={toggleDropdown}
 										className="cursor-pointer"
@@ -249,14 +251,14 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 								<Divider />
 								<KeyValueComponent data={jobDetails || []} />
-								{data?.advertisedDate && (
+								{/* {data?.advertisedDate && (
 									<div className={'mb-6 flex justify-between text-sm text-gray-500'}>
 										<p className="flex gap-2">Advertised since: {DateConverter({ mongoDate: data?.advertisedDate })}</p>
 										{data?.closeDate && (
 											<p>Closed on: {DateConverter({ mongoDate: data?.closeDate })}</p>
 										)}
 									</div>
-								)}
+								)} */}
 								<div className={styles["job-description"]}>
 									<p className={styles["job-description-title"]}>Job Description</p>
 									<p
