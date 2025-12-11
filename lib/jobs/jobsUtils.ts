@@ -59,8 +59,8 @@ export async function getData(params: any) {
     const res = await fetch(`${BACKEND_URL}/jobs?${params}`, {
         next: { revalidate: 60 },
     });
-    if (!res) {
-        throw new Error("Failed to fetch data");
+    if (!res.ok) {
+        throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
     }
     return res.json();
 }
