@@ -1,6 +1,6 @@
+import { BACKEND_URL } from "@/lib/constant/constants";
 import { JobData, optionItems } from "@/lib/types/componentTypes";
 import { uniqueArray } from "@/lib/utils/uniqueArray/uniqueArray";
-import { BACKEND_URL } from "@/lib/constant/constants";
 
 export async function processOptions(options: JobData[]) {
     const processedOptions = options.reduce(
