@@ -50,6 +50,7 @@ interface Inputs {
     ceoCompany: string;
     companySize: string;
     companyWebsite: string;
+    imageUrl?: string;
 
 }
 const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), {
@@ -89,6 +90,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             founded: initialJob?.companyDetails?.founded || "",
             ceoCompany: initialJob?.companyDetails?.ceoCompany || "",
             companyWebsite: initialJob?.companyDetails?.companyWebsite || "",
+            imageUrl: initialJob?.imageUrl || "",
         } : {
             jobTitle: "",
             jobUrl: "",
@@ -107,6 +109,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             founded: "",
             ceoCompany: "",
             companyWebsite: "",
+            imageUrl: "",
         },
     });
 
@@ -131,6 +134,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             jobCategory: values.jobCategory,
             jobTime: values.jobTime,
             education: values?.education,
+            imageUrl: values.imageUrl,
             companyDetails: {
                 ceoCompany: values.ceoCompany,
                 founded: values.founded,
@@ -289,6 +293,15 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
                         <TextEditor control={control} label={"Job Description"} name='description' />
+                    </div>
+                    <div className={styles["post-job-page-input-wrapper"]}>
+                        <Input
+                            control={control}
+                            errors={errors}
+                            name={"imageUrl"}
+                            label='Job Image URL (optional)'
+                            placeholder='e.g. https://example.com/job-image.jpg'
+                        />
                     </div>
                     <section className={styles["post-job-page-company-section"]}>
                         <div className={styles["post-job-page-company-section-title"]}>

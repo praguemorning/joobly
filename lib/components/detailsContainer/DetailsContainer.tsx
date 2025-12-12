@@ -14,9 +14,9 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
+import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
 
 const DetailsContainer = ({ data }: any) => {
-	console.log("DetailsContainer data:", data);
 	const session = useSession();
 	const profile = useProfile();
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -219,34 +219,26 @@ const DetailsContainer = ({ data }: any) => {
 									/>
 								</div>
 								<div className={styles["job-general-details"]}>
-									<div>
-										<p className={styles["job-general-job-title"]}>{data?.jobTitle}</p>
-										{/*
-										<a
-											target='_blank'
-											href={data?.jobUrl}
-											className={styles["job-general-job-url"]}
-										>
-											{data?.jobUrl}
-										</a>
-										*/}
-
-									</div>
-									<div className={styles["job-general-buttons"]}>
-										{/*
-											<Button style={{ width: "145px" }} className={`btn-grey-outlined`}>
-												Report Job
-											</Button>
-										*/}
-										<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
-											<Button
-												style={{ width: "145px" }}
-												className={`btn-secondary-search`}
-												hoverIcon='/images/icons/list-white.svg'
-											>
-												Apply Now
-											</Button>
-										</a>
+									<div className="flex flex-col items-center justify-center w-full gap-4 py-4">
+										<Image
+											src={data?.imageUrl || defaultJobLogo}
+											alt={data.jobTitle || "Job image"}
+											width={400}
+											height={300}
+											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
+										/>
+										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
+										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
+											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
+												<Button
+													style={{ width: "145px" }}
+													className={`btn-secondary-search`}
+													hoverIcon='/images/icons/list-white.svg'
+												>
+													Apply Now
+												</Button>
+											</a>
+										</div>
 									</div>
 								</div>
 								<Divider />

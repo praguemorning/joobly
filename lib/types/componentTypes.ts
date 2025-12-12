@@ -32,31 +32,32 @@ export type JobData = {
 	id?: number;
 	_id?: string;
 	jobTitle: string;
-    description: string;
-    jobUrl: string;
-    location: string;
-    language: string;
-    workType: string;
+	description: string;
+	jobUrl: string;
+	location: string;
+	language: string;
+	workType: string;
 	jobCategory: string;
-    jobTime: string;
-    salary: number;
+	jobTime: string;
+	salary: number;
 	salaryLabel: string;
-    currency: string;
-    salaryDetail: string;
-    advertisedDate: string;
+	currency: string;
+	salaryDetail: string;
+	advertisedDate: string;
 	experienceLevel: string;
-    postedDate: string;
-    closeDate: string
-    education: string;
-    companyDetails: {
-        ceoCompany: string;
-        founded: string;
-        companySize: string;
-        companyWebsite: string;
+	postedDate: string;
+	closeDate: string
+	education: string;
+	imageUrl?: string;
+	companyDetails: {
+		ceoCompany: string;
+		founded: string;
+		companySize: string;
+		companyWebsite: string;
 	},
 	views: number;
-    jobPostAuthorId: string;
-    createdAt?: Date;
+	jobPostAuthorId: string;
+	createdAt?: Date;
 };
 
 export type KayValueDataType = {

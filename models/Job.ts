@@ -19,6 +19,7 @@ export type JobTypes = {
   postedDate: string;
   closeDate: string
   education: string;
+  imageUrl?: string;
   companyDetails: {
     ceoCompany: string;
     founded: string;
@@ -50,6 +51,7 @@ export const JobSchema = new Schema({
     default: () => new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
   },
   education: { type: String },//1
+  imageUrl: { type: String },
   companyDetails: {
     ceoCompany: { type: String },
     founded: { type: String },
