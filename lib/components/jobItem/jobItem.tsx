@@ -68,13 +68,13 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 		<>
 			{isClient ? (
 				<div key={data?._id} className="flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
-					<div className="flex-shrink-0 w-[10%]">
-						<Image
-							src={data?.imageUrl || defaultJobLogo}
+					<div className="flex-shrink-0">
+						<img
+							src={data?.imageUrl || defaultJobLogo.src}
 							alt={data.jobTitle || "Job image"}
 							width={160}
 							height={160}
-							className="rounded-lg object-contain w-full h-40 flex object-center"
+							className="rounded-full object-contain w-24 h-24 md:w-40 md:h-40 mx-auto border border-gray-200 shadow"
 						/>
 					</div>
 					<div onClick={() => push(`/jobs/${data?._id}`)} className="flex flex-col gap-6 justify-center">
