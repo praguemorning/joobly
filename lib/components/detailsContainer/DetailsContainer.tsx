@@ -243,7 +243,6 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 								<Divider />
 								<KeyValueComponent data={jobDetails || []} />
-
 								<div className={styles["job-description"]}>
 									<p className={styles["job-description-title"]}>Job Description</p>
 									<p
