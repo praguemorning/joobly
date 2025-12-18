@@ -243,14 +243,7 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 								<Divider />
 								<KeyValueComponent data={jobDetails || []} />
-								{/* {data?.advertisedDate && (
-									<div className={'mb-6 flex justify-between text-sm text-gray-500'}>
-										<p className="flex gap-2">Advertised since: {DateConverter({ mongoDate: data?.advertisedDate })}</p>
-										{data?.closeDate && (
-											<p>Closed on: {DateConverter({ mongoDate: data?.closeDate })}</p>
-										)}
-									</div>
-								)} */}
+
 								<div className={styles["job-description"]}>
 									<p className={styles["job-description-title"]}>Job Description</p>
 									<p
