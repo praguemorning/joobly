@@ -1,6 +1,7 @@
+import { BACKEND_URL } from "@/lib/constant/constants";
 import { JobData, optionItems } from "@/lib/types/componentTypes";
 import { uniqueArray } from "@/lib/utils/uniqueArray/uniqueArray";
-import { BACKEND_URL } from "@/lib/constant/constants";
+import { cookies } from "next/headers";
 
 export async function processOptions(options: JobData[]) {
     const processedOptions = options.reduce(
@@ -56,17 +57,29 @@ export async function processOptions(options: JobData[]) {
 }
 
 export async function getData(params: any) {
+    const cookieStore = cookies();
+    const cookie = cookieStore.toString();
+
     const res = await fetch(`${BACKEND_URL}/jobs?${params}`, {
+        headers: {
+            cookie,
+        },
         next: { revalidate: 60 },
     });
-    if (!res) {
-        throw new Error("Failed to fetch data");
+    if (!res.ok) {
+        throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
     }
     return res.json();
 }
 
 export async function getOptions() {
+    const cookieStore = cookies();
+    const cookie = cookieStore.toString();
+
     const res = await fetch(`${BACKEND_URL}/job-options`, {
+        headers: {
+            cookie,
+        },
         next: { revalidate: 60 },
     });
     if (!res.ok) {

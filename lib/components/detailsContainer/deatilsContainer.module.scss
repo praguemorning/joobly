@@ -1,210 +1,223 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
-
+@import "@/lib/styles/mixins.scss";
+@import "@/lib/styles/variables.scss";
 
 .job-details-page {
-  @include flex-col-center;
+    @include flex-col-center;
 
-  .job-details-wrapper {
-    max-width: 1180px;
-    width: 100%;
-    display: flex;
-    gap: 27px;
-
-    .job-banner {
-      position: relative;
-
-
-      .job-details-bg {
-        border-radius: 8px 8px;
-        width: 100%;
-        margin: 0 10px;
-      }
-
-      .job-details-logo {
-        position: absolute;
-        top: 82%;
-      }
-    }
-
-    .job-details-page-info {
-      padding: 24px;
-
-      .job-details-page-actions {
-        display: flex;
-        margin-top: 25px;
-        gap: 14px;
-        justify-content: flex-end;
-      }
-
-      .job-general-details {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 32px 0;
-
-        .job-general-job-title {
-          font-size: 28px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 150%;
-          margin-bottom: 16px;
-          max-width: 350px;
-        }
-
-        .job-general-job-url {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 150%;
-          color: #3276FA;
-          width: 300px;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        .job-general-buttons {
-          display: flex;
-          gap: 16px;
-        }
-      }
-
-      .job-date-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 24px;
-
-        p {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 150%;
-          letter-spacing: -0.36px;
-          color: $grey-medium;
-        }
-      }
-
-      .job-description {
-        margin-bottom: 32px;
-        .job-description-title {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 150%;
-          margin-bottom: 24px;
-        }
-
-        .job-description-content {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 150%; /* 27px */
-          letter-spacing: -0.36px;
-          color: $grey-medium;
-        }
-      }
-
-      .job-requirements {
-        margin-top: 24px;
-        margin-bottom: 32px;
-
-        .job-requirements-title {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 150%;
-          margin-bottom: 24px;
-        }
-      }
-
-      .job-company-benefits {
-        margin: 32px 0;
-
-        .job-company-benefits-title {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 150%;
-          margin-bottom: 24px;
-        }
-
-        .job-company-benefits-chips {
-          display: flex;
-          gap: 12px;
-        }
-
-      }
-
-      .job-check-details {
-        margin-top: 32px;
-        margin-bottom: 85px;
-
-        p {
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 150%;
-        }
-
-        span {
-          color: $required;
-        }
-      }
-    }
-
-.job-company-details{
-  padding: 24px;
-  margin-top: 54px;
-  margin-bottom: 45px;
-}
-
-  }
-  .job-details-bottom-buttons {
-    display: flex;
-    margin-bottom: 85px;
-    gap:16px;
-    justify-content: flex-start;
-    max-width: 1180px;
-    width: 100%;
-  }
-
-}
-@media screen and (max-width: 1200px) {
-  .job-details-page {
     .job-details-wrapper {
-      padding: 0 24px;
+        max-width: 1180px;
+        width: 100%;
+        display: flex;
+        gap: 27px;
+
+        .job-banner {
+            position: relative;
+
+            .job-details-bg {
+                border-radius: 8px 8px;
+                width: 100%;
+                margin: 0 10px;
+            }
+
+            .job-details-logo {
+                position: absolute;
+                top: 82%;
+            }
+        }
+
+        .job-details-page-info {
+            padding: 24px;
+
+            .job-details-page-actions {
+                display: flex;
+                margin-top: 25px;
+                gap: 14px;
+                justify-content: flex-end;
+            }
+
+            .job-general-details {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 32px 0;
+
+                .job-general-job-title {
+                    font-size: 28px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%;
+                    margin-bottom: 16px;
+                    max-width: 350px;
+                }
+
+                .job-general-job-url {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 150%;
+                    color: #3276fa;
+                    width: 300px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+
+                .job-general-buttons {
+                    display: flex;
+                    gap: 16px;
+                }
+            }
+
+            .job-date-info {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 24px;
+
+                p {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 150%;
+                    letter-spacing: -0.36px;
+                    color: $grey-medium;
+                }
+            }
+
+            .job-description {
+                margin-bottom: 32px;
+                .job-description-title {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%;
+                    margin-bottom: 24px;
+                }
+
+                .job-description-content {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 150%; /* 27px */
+                    letter-spacing: -0.36px;
+                    color: $grey-medium;
+
+                    h2 {
+                        font-style: normal;
+                        font-weight: 400;
+                        margin-top: 24px;
+                        margin-bottom: 16px;
+                    }
+
+                    ul {
+                        list-style: disc;
+                        margin-left: 1rem;
+                        padding-left: 1em;
+                    }
+                    ol {
+                        list-style: decimal;
+                        margin-left: 1rem;
+                        padding-left: 1em;
+                    }
+                    li {
+                        margin-bottom: 0.5em;
+                    }
+                }
+            }
+
+            .job-requirements {
+                margin-top: 24px;
+                margin-bottom: 32px;
+
+                .job-requirements-title {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%;
+                    margin-bottom: 24px;
+                }
+            }
+
+            .job-company-benefits {
+                margin: 32px 0;
+
+                .job-company-benefits-title {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%;
+                    margin-bottom: 24px;
+                }
+
+                .job-company-benefits-chips {
+                    display: flex;
+                    gap: 12px;
+                }
+            }
+
+            .job-check-details {
+                margin-top: 32px;
+                margin-bottom: 85px;
+
+                p {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 150%;
+                }
+
+                span {
+                    color: $required;
+                }
+            }
+        }
+
+        .job-company-details {
+            padding: 24px;
+            margin-top: 54px;
+            margin-bottom: 45px;
+        }
     }
     .job-details-bottom-buttons {
-      margin-top: 16px;
-      justify-content: center;
+        display: flex;
+        margin-bottom: 85px;
+        gap: 16px;
+        justify-content: flex-start;
+        max-width: 1180px;
+        width: 100%;
     }
-  }
-
+}
+@media screen and (max-width: 1200px) {
+    .job-details-page {
+        .job-details-wrapper {
+            padding: 0 24px;
+        }
+        .job-details-bottom-buttons {
+            margin-top: 16px;
+            justify-content: center;
+        }
+    }
 }
 @media screen and (max-width: 900px) {
-  .job-details-page {
-    .job-details-wrapper {
-      padding: 0 16px;
-     flex-direction: column;
-      .job-general-details {
-        flex-direction: column;
-        align-items: start !important;
-        gap: 16px;
-      }
-
+    .job-details-page {
+        .job-details-wrapper {
+            padding: 0 16px;
+            flex-direction: column;
+            .job-general-details {
+                flex-direction: column;
+                align-items: start !important;
+                gap: 16px;
+            }
+        }
     }
-
-  }
 }
 
 @media screen and (max-width: 600px) {
-  .job-general-buttons{
-    flex-direction: column;
-    width: 100%;
-    button{
-      width: 100% !important;
+    .job-general-buttons {
+        flex-direction: column;
+        width: 100%;
+        button {
+            width: 100% !important;
+        }
     }
-  }
 }

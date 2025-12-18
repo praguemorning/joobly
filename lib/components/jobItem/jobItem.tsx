@@ -5,6 +5,7 @@ import Button from "@/lib/components/button/button";
 import { JobData } from "@/lib/types/componentTypes";
 import locationIcon from "@/public/images/icons/location-grey.svg";
 import saveIcon from "@/public/images/icons/archive.svg";
+import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
 import { useRouter } from "next/navigation";
 import { useClient } from "@/lib/hooks/useClient";
 import Skeleton from "@mui/material/Skeleton";
@@ -67,7 +68,17 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 		<>
 			{isClient ? (
 				<div key={data?._id} className="flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
-					<div onClick={() => push(`/jobs/${data?._id}`)} className="flex flex-col gap-6">
+					<div className="flex-shrink-0">
+						<img
+							src={data?.imageUrl || defaultJobLogo.src}
+							alt={data.jobTitle || "Job image"}
+							width={160}
+							height={160}
+							className="rounded-full object-contain w-24 h-24 md:w-40 md:h-40 mx-auto border border-gray-200 shadow"
+						/>
+					</div>
+					<div onClick={() => push(`/jobs/${data?._id}`)} className="flex flex-col gap-6 justify-center">
+
 						<div className="flex flex-col gap-6">
 							<h4 className="font-bold text-lg text-dark">{data?.jobTitle}</h4>
 							<div className="max-w-[700px]">

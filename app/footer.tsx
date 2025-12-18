@@ -48,9 +48,9 @@ const Footer = () => {
             <Link href={'https://www.instagram.com/joobly.cz/'} target='_blank'>
               <FaInstagramSquare className='w-5 h-5'/>
             </Link>
-            <Link href={'/'} target='_blank'>
+            {/* <Link href={'/'} target='_blank'>
               <FaLinkedin  className='w-5 h-5'/>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

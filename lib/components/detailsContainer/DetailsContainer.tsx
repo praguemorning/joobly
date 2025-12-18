@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
+import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
 
 const DetailsContainer = ({ data }: any) => {
 	const session = useSession();
@@ -91,7 +92,7 @@ const DetailsContainer = ({ data }: any) => {
 
 	const companyInfo = [
 		{
-			key: "CEO Company",
+			key: "Company",
 			value: data?.companyDetails?.ceoCompany || "N/A",
 		},
 		{
@@ -195,18 +196,19 @@ const DetailsContainer = ({ data }: any) => {
 											</div>
 										</div>
 									)}
-
-									<div className="flex justify-end gap-4 items-center">
-										<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
-											<Image
-												src={saveIcon}
-												alt="save"
-												className="cursor-pointer"
-												style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
-											/>
-										</span>
-										{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
-									</div>
+									{userData &&
+										<div className="flex justify-end gap-4 items-center">
+											<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
+												<Image
+													src={saveIcon}
+													alt="save"
+													className="cursor-pointer"
+													style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
+												/>
+											</span>
+											{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
+										</div>
+									}
 									<Image
 										onClick={toggleDropdown}
 										className="cursor-pointer"
@@ -217,46 +219,38 @@ const DetailsContainer = ({ data }: any) => {
 									/>
 								</div>
 								<div className={styles["job-general-details"]}>
-									<div>
-										<p className={styles["job-general-job-title"]}>{data?.jobTitle}</p>
-										{/*
-										<a
-											target='_blank'
-											href={data?.jobUrl}
-											className={styles["job-general-job-url"]}
-										>
-											{data?.jobUrl}
-										</a>
-										*/}
-
-									</div>
-									<div className={styles["job-general-buttons"]}>
-										{/*
-											<Button style={{ width: "145px" }} className={`btn-grey-outlined`}>
-												Report Job
-											</Button>
-										*/}
-										<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
-											<Button
-												style={{ width: "145px" }}
-												className={`btn-secondary-search`}
-												hoverIcon='/images/icons/list-white.svg'
-											>
-												Apply Now
-											</Button>
-										</a>
+									<div className="flex flex-col items-center justify-center w-full gap-4 py-4">
+										<Image
+											src={data?.imageUrl || defaultJobLogo}
+											alt={data.jobTitle || "Job image"}
+											width={400}
+											height={300}
+											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
+										/>
+										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
+										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
+											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
+												<Button
+													style={{ width: "145px" }}
+													className={`btn-secondary-search`}
+													hoverIcon='/images/icons/list-white.svg'
+												>
+													Apply Now
+												</Button>
+											</a>
+										</div>
 									</div>
 								</div>
 								<Divider />
 								<KeyValueComponent data={jobDetails || []} />
-								{data?.advertisedDate && (
+								{/* {data?.advertisedDate && (
 									<div className={'mb-6 flex justify-between text-sm text-gray-500'}>
 										<p className="flex gap-2">Advertised since: {DateConverter({ mongoDate: data?.advertisedDate })}</p>
 										{data?.closeDate && (
 											<p>Closed on: {DateConverter({ mongoDate: data?.closeDate })}</p>
 										)}
 									</div>
-								)}
+								)} */}
 								<div className={styles["job-description"]}>
 									<p className={styles["job-description-title"]}>Job Description</p>
 									<p
