@@ -220,11 +220,9 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 								<div className={styles["job-general-details"]}>
 									<div className="flex flex-col items-center justify-center w-full gap-4 py-4">
-										<Image
+										<img
 											src={data?.imageUrl || defaultJobLogo}
 											alt={data.jobTitle || "Job image"}
-											width={400}
-											height={300}
 											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
 										/>
 										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
