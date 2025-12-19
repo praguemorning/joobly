@@ -15,7 +15,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 		jobCategory: searchParams?.jobCategory ?? "",
 		education: searchParams?.education ?? "",
 		jobTime: searchParams?.jobTime ?? "",
-		salaryLabel: searchParams?.salaryLabel ?? "",
+		salary: searchParams?.salary ?? "",
 		experienceLevel: searchParams?.experienceLevel ?? "",
 	};
 
@@ -23,7 +23,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const user = await getUserInfo();
 	const params = new URLSearchParams(normalizedFilters);
 	const [jobs, options] = await Promise.all([getData(params), getOptions()]);
-	const { locations, languages, workTypes, jobTimes, educations, salaryLabels, experienceLevels, jobCategories } = await processOptions(options);
+	const { locations, languages, workTypes, jobTimes, educations, salary, experienceLevels, jobCategories } = await processOptions(options);
 
 	return (
 		<>
@@ -38,7 +38,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 							jobCategories,
 							jobTimes,
 							educations,
-							salaryLabels,
+							salary,
 							experienceLevels,
 						}}
 						initialFilters={normalizedFilters}

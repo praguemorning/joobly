@@ -27,8 +27,11 @@ export async function processOptions(options: JobData[]) {
             if (item.experienceLevel) {
                 acc.experienceLevels.push({ id: item._id!, label: item.experienceLevel });
             }
-            if (item.salaryLabel) {
-                acc.salaryLabels.push({ id: item._id!, label: item.salaryLabel });
+            if (item.salary) {
+                acc.salary.push({ id: item._id!, label: item.salary });
+            }
+            if (item.currency) {
+                acc.currency.push({ id: item._id!, label: item.currency });
             }
             return acc;
         },
@@ -39,7 +42,8 @@ export async function processOptions(options: JobData[]) {
             workTypes: [] as optionItems[],
             jobCategories: [] as optionItems[],
             jobTimes: [] as optionItems[],
-            salaryLabels: [] as optionItems[],
+            salary: [] as optionItems[],
+            currency: [] as optionItems[],
             experienceLevels: [] as optionItems[],
         },
     );
@@ -51,7 +55,8 @@ export async function processOptions(options: JobData[]) {
         workTypes: uniqueArray(processedOptions.workTypes),
         jobCategories: uniqueArray(processedOptions.jobCategories),
         jobTimes: uniqueArray(processedOptions.jobTimes),
-        salaryLabels: uniqueArray(processedOptions.salaryLabels),
+        salary: uniqueArray(processedOptions.salary),
+        currency: uniqueArray(processedOptions.currency),
         experienceLevels: uniqueArray(processedOptions.experienceLevels),
     };
 }

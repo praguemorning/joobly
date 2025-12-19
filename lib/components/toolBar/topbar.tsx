@@ -11,7 +11,7 @@ interface TopbarProps {
 		jobCategories: any[];
 		jobTimes: any[];
 		educations: any[];
-		salaryLabels: any[];
+		salary: any[];
 		experienceLevels: any[];
 	};
 	initialFilters?: Record<string, string>;
@@ -27,7 +27,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 		jobCategory: initialFilters?.jobCategory || "",
 		education: initialFilters?.education || "",
 		jobTime: initialFilters?.jobTime || "",
-		salaryLabel: initialFilters?.salaryLabel || "",
+		salary: initialFilters?.salary || "",
 		experienceLevel: initialFilters?.experienceLevel || "",
 	});
 
@@ -78,7 +78,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 				{renderSelect({ name: "jobCategory", value: filters.jobCategory, onChange: handleChange, options: filterOptions.jobCategories, label: "Category" })}
 				{renderSelect({ name: "education", value: filters.education, onChange: handleChange, options: filterOptions.educations, label: "Education" })}
 				{renderSelect({ name: "jobTime", value: filters.jobTime, onChange: handleChange, options: filterOptions.jobTimes, label: "Job Time" })}
-				{renderSelect({ name: "salaryLabel", value: filters.salaryLabel, onChange: handleChange, options: filterOptions.salaryLabels, label: "Salary" })}
+				{renderSelect({ name: "salary", value: filters.salary, onChange: handleChange, options: filterOptions.salary, label: "Salary" })}
 				{renderSelect({ name: "experienceLevel", value: filters.experienceLevel, onChange: handleChange, options: filterOptions.experienceLevels, label: "Experience" })}
 			</div>
 			<button
