@@ -39,7 +39,7 @@ export type JobData = {
 	workType: string;
 	jobCategory: string;
 	jobTime: string;
-	salary: number;
+	salary: string;
 	salaryLabel: string;
 	currency: string;
 	salaryDetail: string;

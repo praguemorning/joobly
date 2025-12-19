@@ -70,7 +70,7 @@ const DetailsContainer = ({ data }: any) => {
 		},
 		{
 			key: "Salary",
-			value: data?.salary ? `${data?.salary} ${data?.currency} (${data?.salaryDetail})` : "N/A",
+			value: data?.salary ? `${data?.salary} ${data?.currency}` : "N/A",
 		},
 		{
 			key: "Experience Level",
@@ -206,7 +206,6 @@ const DetailsContainer = ({ data }: any) => {
 													style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
 												/>
 											</span>
-											{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
 										</div>
 									}
 									<Image
