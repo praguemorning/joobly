@@ -101,7 +101,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							</div>
 						)}
 					</div>
-					<div className="flex flex-col justify-between">
+					<div className="flex flex-col justify-between min-w-[150px]">
 						<div className="flex justify-end gap-4 items-center">
 							<span onClick={isFavorite ? handleRemoveFavorite : handleAddFavorite}>
 								<Image
