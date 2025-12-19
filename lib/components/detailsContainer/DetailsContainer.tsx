@@ -70,7 +70,7 @@ const DetailsContainer = ({ data }: any) => {
 		},
 		{
 			key: "Salary",
-			value: data?.salary ? `${data?.salary} ${data?.currency} (${data?.salaryDetail})` : "N/A",
+			value: data?.salary ? `${data?.salary} ${data?.currency}` : "N/A",
 		},
 		{
 			key: "Experience Level",

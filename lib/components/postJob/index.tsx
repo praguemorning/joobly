@@ -168,7 +168,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                     if (jobId) {
                         toast.success("Job updated successfully!");
                         setTimeout(() => {
-                            router.push("/dashboard/admin");
+                            router.refresh();
                         }, 1000);
                     } else {
                         router.push("/job-creation-success");
