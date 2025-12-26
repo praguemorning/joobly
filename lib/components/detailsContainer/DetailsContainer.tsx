@@ -168,7 +168,7 @@ const DetailsContainer = ({ data }: any) => {
 					<div className={styles["job-details-wrapper"]}>
 						<Paper className='details-component-paper'>
 							<section className={styles["job-details-page-info"]}>
-								<div className={styles["job-details-page-actions"]}>
+								<div className={styles["job-details-page-actions"]}  style={{marginTop:0}}>
 									{/* share popup start */}
 									{isDropdownOpen && (
 										<div
@@ -217,13 +217,13 @@ const DetailsContainer = ({ data }: any) => {
 										height={44}
 									/>
 								</div>
-								<div className={styles["job-general-details"]}>
-									<div className="flex flex-col items-center justify-center w-full gap-4 py-4">
-										<img
+								<div className={styles["job-general-details"]} style={{marginTop:0}}>
+									<div className="flex flex-col items-center justify-center w-full gap-4 pb-4">
+										{/* <img
 											src={data?.imageUrl || defaultJobLogo}
 											alt={data.jobTitle || "Job image"}
 											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
-										/>
+										/> */}
 										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
 										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
 											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
