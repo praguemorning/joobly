@@ -62,9 +62,9 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
     <Paper className='details-component-paper' style={{position:"sticky",top:"100px"}}>
       <section className={styles["job-company-details"]} style={{marginTop:0}}>
           <div className="sticky min-w-[200px]">
-                    <h2 className="text-lg font-semibold text-slate-800 mb-5 flex items-center gap-2">
+                    <h2 className="text-md font-semibold text-slate-800 mb-5 flex items-center gap-2">
                       <WorkIcon className="text-blue-600" />
-                      Related Jobs
+                      This company is also hiring
                     </h2>
 
                     <div className="space-y-4">
@@ -104,10 +104,10 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
                             </div>
 
                             <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                              <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                              {/* <div className="flex items-center gap-1.5 text-xs text-slate-500">
                                 <ScheduleIcon className="text-sm" />
                                 <span>{getTimeAgo(job.createdAt)}</span>
-                              </div>
+                              </div> */}
 
                               <a
                                 href={job.jobUrl}
@@ -115,8 +115,9 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
                                 className="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 group-hover:gap-2 transition-all"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                              
-                                <OpenInNewIcon className="text-sm" />
+                                 <span className="text-xs text-slate-500">Apply here</span>
+
+                                {/* <OpenInNewIcon className="text-sm" /> */}
                               </a>
                             </div>
                           </div>
