@@ -40,6 +40,7 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
       }
       fetchRelatedJobs();
     }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [companyName]);
   const getTimeAgo = (date: string) => {
     const now = new Date();
@@ -67,11 +68,11 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
                     </h2>
 
                     <div className="space-y-4">
-                      {relatedJobs.map((job, index) => {
+                      {relatedJobs.map((job) => {
                         const slug = slugify(job.jobTitle);
-                        return  <Link href={`/jobs/${slug}-${job._id}`}>
+                        return  <Link href={`/jobs/${slug}-${job._id}`}  key={job._id}>
                           <div
-                            key={index}
+                           
                             className="group cursor-pointer hover:bg-slate-50 rounded-xl p-4 transition-all duration-200 border border-slate-100 hover:border-blue-200 hover:shadow-md"
                           >
                             <h3 className="font-semibold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
