@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
+import RelatedJobs from "./RelatedJobs";
 
 const DetailsContainer = ({ data }: any) => {
 	const session = useSession();
@@ -165,7 +166,7 @@ const DetailsContainer = ({ data }: any) => {
 		<>
 			{isClient && (
 				<div className={styles["job-details-page"]}>
-					<div className={styles["job-details-wrapper"]}>
+					<div className={styles["job-details-wrapper"]} >
 						<Paper className='details-component-paper'>
 							<section className={styles["job-details-page-info"]}>
 								<div className={styles["job-details-page-actions"]}  style={{marginTop:0}}>
@@ -255,13 +256,17 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 							</section>
 						</Paper>
-						{data?.companyDetails?.ceoCompany && (
+						{/* {data?.companyDetails?.ceoCompany && (
 							<Paper className='details-component-paper'>
 								<section className={styles["job-company-details"]}>
 									<KeyValueComponent minWidth={"235px"} data={companyInfo || []} />
 								</section>
 							</Paper>
-						)}
+						)} */}
+						 {data?.companyDetails?.ceoCompany && (
+							<RelatedJobs companyName={data?.companyDetails?.ceoCompany} currentJobId={data._id} />
+						)} 
+						
 					</div>
 					<div className={styles["job-details-bottom-buttons"]}>
 						<Button

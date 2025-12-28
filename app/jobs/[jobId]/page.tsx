@@ -11,6 +11,7 @@ interface JobDetailsPropsTypes {
 const JobDetails = async ({ params }: JobDetailsPropsTypes) => {
   const id = extractId(params.jobId);
   const jobDetails = await getItem(id);
+
   return <DetailsContainer data={jobDetails} />;
 };
 
