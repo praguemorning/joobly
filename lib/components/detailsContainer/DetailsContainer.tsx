@@ -268,7 +268,7 @@ const DetailsContainer = ({ data }: any) => {
 						):<Paper className='details-component-paper'>
 								<section className={styles["job-company-details"]}>
 								     <h2 className="text-md font-semibold text-slate-800 mb-5 flex items-center gap-2">
-										<WorkIcon className="text-blue-600" /> No Related Jobs Found
+										 No Related Jobs Found
 									 </h2>
 								</section>
 							</Paper>} 
