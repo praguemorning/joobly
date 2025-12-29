@@ -263,9 +263,15 @@ const DetailsContainer = ({ data }: any) => {
 								</section>
 							</Paper>
 						)} */}
-						 {data?.companyDetails?.ceoCompany && (
+						 {data?.companyDetails?.ceoCompany ? (
 							<RelatedJobs companyName={data?.companyDetails?.ceoCompany} currentJobId={data._id} />
-						)} 
+					    	):<Paper className='details-component-paper' >
+								<section className={styles["job-company-details"]}>
+								     <h2 className="text-md text-center font-semibold text-slate-800 mb-5 flex items-center gap-2">
+										 No Related Jobs Found
+									 </h2>
+								</section>
+							</Paper>} 
 						
 					</div>
 					<div className={styles["job-details-bottom-buttons"]}>
