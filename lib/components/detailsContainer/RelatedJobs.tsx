@@ -56,7 +56,13 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
   };
 
   if(relatedJobs.length === 0) {
-    return null;
+    return <Paper className='details-component-paper' style={{ minWidth:"200px"}}>
+                    <section className={styles["job-company-details"]}>
+                         <h2 className="text-md text-center font-semibold text-slate-800 mb-5 flex items-center gap-2">
+                         No Related Jobs Found
+                       </h2>
+                    </section>
+                  </Paper>
   }
   return (
     <Paper className='details-component-paper' style={{position:"sticky",top:"100px"}}>
