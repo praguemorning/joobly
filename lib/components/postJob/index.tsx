@@ -336,7 +336,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                                         placeholder='e.g. https://www.mycompany.com'
                                     />
                                 </div>
-                                <div className={styles["post-job-page-input-wrapper"]}>
+                                {/* <div className={styles["post-job-page-input-wrapper"]}>
                                     <FormSelect
                                         control={control}
                                         defaultValue={initialJob?.companyDetails?.companySize || ""}
@@ -352,7 +352,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                                         label='Founded'
                                         placeholder='e.g. 1990'
                                     />
-                                </div>
+                                </div> */}
                             </>
                         )}
                     </section>
