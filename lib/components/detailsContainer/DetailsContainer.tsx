@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+
 import Paper from "@/lib/components/paper/Paper";
 import styles from "./deatilsContainer.module.scss";
 import saveIcon from "@/public/images/icons/archive.svg";
@@ -256,13 +258,35 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 							</section>
 						</Paper>
-						{/* {data?.companyDetails?.ceoCompany && (
-							<Paper className='details-component-paper'>
-								<section className={styles["job-company-details"]}>
-									<KeyValueComponent minWidth={"235px"} data={companyInfo || []} />
+						<div className='details-component-paper'>
+						{data?.companyDetails?.ceoCompany && (
+							<Paper className='details-component-paper' style={{marginBottom:"10px"}}>
+								<section className={styles["job-company-details"]} style={{marginTop:0,marginBottom:0}}>
+									
+									 <div className={styles["key-value-wrapper"]} style={{  }}>
+											  <p className={styles["key"]} style={{fontWeight:"600"}}>
+												Company :
+											  </p>
+											  <p className={styles["value"]}>
+												{data?.companyDetails?.ceoCompany || "N/A"}
+											  </p>
+									</div>
+
+									{data.companyDetails.companyWebsite && 
+										<div className={styles["key-value-wrapper"]} style={{marginTop:"20px"  }}>
+												<a href={data.companyDetails.companyWebsite}
+											    	target="_blank" 
+												    className={styles["key"]} style={{display:"flex",alignItems:"center",gap:"5px"}}
+												>
+													<OpenInNewIcon/>
+													Website
+												</a>
+												
+										</div>
+									}
 								</section>
 							</Paper>
-						)} */}
+						)}
 						 {data?.companyDetails?.ceoCompany ? (
 							<RelatedJobs companyName={data?.companyDetails?.ceoCompany} currentJobId={data._id} />
 					    	):<Paper className='details-component-paper' >
@@ -272,7 +296,7 @@ const DetailsContainer = ({ data }: any) => {
 									 </h2>
 								</section>
 							</Paper>} 
-						
+						</div>
 					</div>
 					<div className={styles["job-details-bottom-buttons"]}>
 						<Button

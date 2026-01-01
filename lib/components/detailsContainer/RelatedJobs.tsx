@@ -7,7 +7,6 @@ import BusinessIcon from '@mui/icons-material/Business';
 import {AccessTime as AccessTimeIcon} from '@mui/icons-material';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
 
@@ -56,8 +55,8 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
   };
 
   if(relatedJobs.length === 0) {
-    return <Paper className='details-component-paper' style={{ minWidth:"200px"}}>
-                    <section className={styles["job-company-details"]}>
+    return <Paper className='details-component-paper' style={{marginTop:0, minWidth:"200px"}}>
+                    <section className={styles["job-company-details"]} >
                          <h2 className="text-md text-center font-semibold text-slate-800 mb-5 flex items-center gap-2">
                          No Related Jobs Found
                        </h2>
