@@ -270,14 +270,6 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                         />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        {/* <Input
-                            control={control}
-
-                            errors={errors}
-                            name={"salary"}
-                            label='Salary'
-                            placeholder='Amount'
-                        /> */}
                         <CustomDropdown
                             control={control}
                             name={"salary"}
