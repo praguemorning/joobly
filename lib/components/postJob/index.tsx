@@ -24,7 +24,9 @@ import {
     WORK_TYPES,
     JOB_CATEGORIES,
     EXPERIENCE_LEVEL,
+    SALARY_RANGES_DROPDOWN,
 } from "@/lib/constant/constants";
+import CustomDropdown from "../customDropdown/customDropdown";
 
 interface PostJobProps {
     initialJob?: any;
@@ -236,13 +238,13 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                             defaultValue={initialJob?.language || "English"}
                             options={LANGUAGES}
                         />
-                        <FormSelect
+                        {/* <FormSelect
                             control={control}
                             name={"experienceLevel"}
                             label={"Experience Level"}
                             defaultValue={initialJob?.experienceLevel || "Entry-level"}
                             options={EXPERIENCE_LEVEL}
-                        />
+                        /> */}
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
                         <FormSelect
@@ -268,13 +270,21 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                         />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        <Input
+                        {/* <Input
                             control={control}
 
                             errors={errors}
                             name={"salary"}
                             label='Salary'
                             placeholder='Amount'
+                        /> */}
+                        <CustomDropdown
+                            control={control}
+                            name={"salary"}
+                            label={"Salary"}
+                            options={SALARY_RANGES_DROPDOWN}
+                            placeholder="Salary"
+                            defaultValue={SALARY_RANGES_DROPDOWN[0].value || 0}
                         />
                         <FormSelect
                             control={control}
