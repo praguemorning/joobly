@@ -78,7 +78,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 				{renderSelect({ name: "jobCategory", value: filters.jobCategory, onChange: handleChange, options: filterOptions.jobCategories, label: "Category" })}
 				{renderSelect({ name: "education", value: filters.education, onChange: handleChange, options: filterOptions.educations, label: "Education" })}
 				{renderSelect({ name: "jobTime", value: filters.jobTime, onChange: handleChange, options: filterOptions.jobTimes, label: "Job Time" })}
-				{renderSelect({ name: "salary", value: filters.salary, onChange: handleChange, options: filterOptions.salary, label: "Salary" })}
+				{renderSelect({ name: "salary", value: filters.salary, onChange: handleChange, options: filterOptions.salary, label: "Salary Range" })}
 				{renderSelect({ name: "experienceLevel", value: filters.experienceLevel, onChange: handleChange, options: filterOptions.experienceLevels, label: "Experience" })}
 			</div>
 			<button
