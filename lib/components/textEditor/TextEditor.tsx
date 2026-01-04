@@ -1,3 +1,4 @@
+""
 'use client'
 import React from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -38,9 +39,10 @@ const TextEditor = ({ control, name, label }: TextEditorProps) => (
               field.onChange(data);
             }}
             onReady={(editor) => {
+              const ui = editor.ui as any; 
               editor.ui
                 ?.getEditableElement()?.parentElement?.insertBefore(
-                  editor.ui.view.toolbar!.element!,
+                  ui.view.toolbar!.element!,
                   editor.ui.getEditableElement()!
                 );
             }}
