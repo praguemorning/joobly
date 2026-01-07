@@ -251,21 +251,21 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                             control={control}
                             name={"workType"}
                             label={"Contract type"}
-                            defaultValue={initialJob?.contractType || "Any"}
+                            defaultValue={initialJob?.contractType || WORK_TYPES[0]}
                             options={WORK_TYPES}
                         />
                         <FormSelect
                             control={control}
                             name={"jobTime"}
                             label={"Working hours"}
-                            defaultValue={initialJob?.workingHours || "Any"}
+                            defaultValue={initialJob?.workingHours || WORK_TIMES[0]}
                             options={WORK_TIMES}
                         />
                         <FormSelect
                             control={control}
                             name={"education"}
                             label={"Education"}
-                            defaultValue={initialJob?.education || "Any"}
+                            defaultValue={initialJob?.education || EDUCATION[0]}
                             options={EDUCATION}
                         />
                     </div>
