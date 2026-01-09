@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+
 import Paper from "@/lib/components/paper/Paper";
 import styles from "./deatilsContainer.module.scss";
 import saveIcon from "@/public/images/icons/archive.svg";
@@ -15,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
+import RelatedJobs from "./RelatedJobs";
 
 const DetailsContainer = ({ data }: any) => {
 	const session = useSession();
@@ -165,10 +168,10 @@ const DetailsContainer = ({ data }: any) => {
 		<>
 			{isClient && (
 				<div className={styles["job-details-page"]}>
-					<div className={styles["job-details-wrapper"]}>
+					<div className={styles["job-details-wrapper"]} >
 						<Paper className='details-component-paper'>
 							<section className={styles["job-details-page-info"]}>
-								<div className={styles["job-details-page-actions"]}>
+								<div className={styles["job-details-page-actions"]}  style={{marginTop:0}}>
 									{/* share popup start */}
 									{isDropdownOpen && (
 										<div
@@ -217,13 +220,13 @@ const DetailsContainer = ({ data }: any) => {
 										height={44}
 									/>
 								</div>
-								<div className={styles["job-general-details"]}>
-									<div className="flex flex-col items-center justify-center w-full gap-4 py-4">
-										<img
+								<div className={styles["job-general-details"]} style={{marginTop:0}}>
+									<div className="flex flex-col items-center justify-center w-full gap-4 pb-4">
+										{/* <img
 											src={data?.imageUrl || defaultJobLogo}
 											alt={data.jobTitle || "Job image"}
 											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
-										/>
+										/> */}
 										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
 										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
 											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
@@ -255,13 +258,45 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 							</section>
 						</Paper>
+						<div className='details-component-paper'>
 						{data?.companyDetails?.ceoCompany && (
-							<Paper className='details-component-paper'>
-								<section className={styles["job-company-details"]}>
-									<KeyValueComponent minWidth={"235px"} data={companyInfo || []} />
+							<Paper className='details-component-paper' style={{marginBottom:"10px"}}>
+								<section className={styles["job-company-details"]} style={{marginTop:0,marginBottom:0}}>
+									
+									 <div className={styles["key-value-wrapper"]} style={{  }}>
+											  <p className={styles["key"]} style={{fontWeight:"600"}}>
+												Company :
+											  </p>
+											  <p className={styles["value"]}>
+												{data?.companyDetails?.ceoCompany || "N/A"}
+											  </p>
+									</div>
+
+									{data.companyDetails.companyWebsite && 
+										<div className={styles["key-value-wrapper"]} style={{marginTop:"20px"  }}>
+												<a href={data.companyDetails.companyWebsite}
+											    	target="_blank" 
+												    className={styles["key"]} style={{display:"flex",alignItems:"center",gap:"5px"}}
+												>
+													<OpenInNewIcon/>
+													Website
+												</a>
+												
+										</div>
+									}
 								</section>
 							</Paper>
 						)}
+						 {data?.companyDetails?.ceoCompany ? (
+							<RelatedJobs companyName={data?.companyDetails?.ceoCompany} currentJobId={data._id} />
+					    	):<Paper className='details-component-paper' >
+								<section className={styles["job-company-details"]}>
+								     <h2 className="text-md text-center font-semibold text-slate-800 mb-5 flex items-center gap-2">
+										 No Related Jobs Found
+									 </h2>
+								</section>
+							</Paper>} 
+						</div>
 					</div>
 					<div className={styles["job-details-bottom-buttons"]}>
 						<Button

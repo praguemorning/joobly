@@ -5,6 +5,7 @@ import HeaderBackground from "@/lib/components/headerBackground/headerBackground
 import JobItem from "../../lib/components/jobItem/jobItem";
 import React, { Suspense } from "react";
 import Topbar from "../../lib/components/toolBar/topbar";
+import { SALARY_RANGES_DROPDOWN } from "@/lib/constant/constants";
 
 const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const normalizedFilters: Record<string, string> = {
@@ -23,9 +24,9 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const user = await getUserInfo();
 	const params = new URLSearchParams(normalizedFilters);
 	const [jobs, options] = await Promise.all([getData(params), getOptions()]);
-	const { locations, languages, workTypes, jobTimes, educations, salary, experienceLevels, jobCategories } = await processOptions(options);
-	console.log({ salary });
-
+	const { locations, languages, workTypes, jobTimes, educations, experienceLevels, jobCategories } = await processOptions(options);
+	
+	const salary = SALARY_RANGES_DROPDOWN.map((item,indexNo) => ({id: indexNo, label: item.label, value: item.value}));
 	return (
 		<>
 			<HeaderBackground />

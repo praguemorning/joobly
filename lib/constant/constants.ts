@@ -469,10 +469,10 @@ export const COUNTRIES: CountryType[] = [
 	{ code: "ZW", label: "Zimbabwe", phone: "263" },
 ];
 
-export const WORK_TYPES = ["Any", "Permanent", "Freelance", "Temporary", "Internship"];
+export const WORK_TYPES = ["Not Specified", "Permanent", "Freelance", "Temporary", "Internship"];
 export const INTERESTED_IN = ["Other", "Find Job", "Post job"];
 export const HEAR_ABOUT = ["Other", "Facebook", "Google"];
-export const WORK_TIMES = ["Any", "Full-time", "Part-time", "Shift work"];
+export const WORK_TIMES = ["Not Specified", "Full-time", "Part-time", "Shift work", ];
 export const CURRENCY: string[] = [
 	"CZK", // Czech Koruna
 	"USD", // US Dollar
@@ -524,6 +524,7 @@ export const CITIES = [
 	"Russian",
 	"Spanish",
 	"Swedish",
+	"Turkish"
   ];
 
   export const EXPERIENCE_LEVEL = [
@@ -534,6 +535,7 @@ export const CITIES = [
   ];
 
   export const JOB_CATEGORIES = [
+	"Hospitality & Food",
 	"Sales & Business Development",
 	"Marketing & Advertising",
 	"IT & Software Development",
@@ -552,7 +554,7 @@ export const CITIES = [
   ];
 
 export const SALARY_DETAILS = ["Year", "Month", "Week"];
-export const EDUCATION = ["Any", "High School", "Master", "PhD", "Bachelor", "College", "Coursework"];
+export const EDUCATION = ["Not Specified", "High School", "Master", "PhD", "Bachelor", "College", "Coursework"];
 export const COMPANY_SIZE = [
 	"10,000+ Employees",
 	"5,000+ Employees",
@@ -762,3 +764,12 @@ export const SALARY_RANGES = [
 	{ id: "200,000-500,000", label: "200,000 - 500,000+" },
   ];
 
+export const SALARY_RANGES_DROPDOWN = [
+	{ label: "0 - 25,000", value: "0-25,000", },
+	{ label: "25,000 - 40,000", value: "25,000-40.000" },
+	{ label: "40,000 - 80,000", value: "40,000-80,000" },
+	{ label: "80,000 - 120,000", value: "80,000-120000" },
+	{ label: "120,000 - 200,000", value: "120,000-200,000" },
+	{ label: "200,000 - 500,000+", value: "200,000-500,000" },
+	{ label: "Not Specified", value: "not-specified" },
+  ];

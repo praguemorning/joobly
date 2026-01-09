@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import DOMPurify from "dompurify";
 import { truncateText } from "@/lib/constant/helpers";
+import { slugify } from '@/lib/utils/slugify';
 
 
 const MyJobPostItem = ({ data }: any) => {
@@ -25,7 +26,10 @@ const MyJobPostItem = ({ data }: any) => {
 
   return (
     <div className="w-full flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
-      <div className="flex flex-col gap-6 cursor-pointer" onClick={() => router.push(`/jobs/${data._id}`)}>
+      <div className="flex flex-col gap-6 cursor-pointer" onClick={() => {
+            const slug = slugify(data.jobTitle);
+            router.push(`/jobs/${slug}-${data._id}`);
+        }}>
         <h3 className="text-lg font-bold text-gray-800">{data?.jobTitle}</h3>
         <p className="max-w-[800px]"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncateText(data.description, 200)) }}

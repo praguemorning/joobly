@@ -24,7 +24,9 @@ import {
     WORK_TYPES,
     JOB_CATEGORIES,
     EXPERIENCE_LEVEL,
+    SALARY_RANGES_DROPDOWN,
 } from "@/lib/constant/constants";
+import CustomDropdown from "../customDropdown/customDropdown";
 
 interface PostJobProps {
     initialJob?: any;
@@ -236,45 +238,45 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                             defaultValue={initialJob?.language || "English"}
                             options={LANGUAGES}
                         />
-                        <FormSelect
+                        {/* <FormSelect
                             control={control}
                             name={"experienceLevel"}
                             label={"Experience Level"}
                             defaultValue={initialJob?.experienceLevel || "Entry-level"}
                             options={EXPERIENCE_LEVEL}
-                        />
+                        /> */}
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
                         <FormSelect
                             control={control}
                             name={"workType"}
                             label={"Contract type"}
-                            defaultValue={initialJob?.contractType || "Any"}
+                            defaultValue={initialJob?.contractType || WORK_TYPES[0]}
                             options={WORK_TYPES}
                         />
                         <FormSelect
                             control={control}
                             name={"jobTime"}
                             label={"Working hours"}
-                            defaultValue={initialJob?.workingHours || "Any"}
+                            defaultValue={initialJob?.workingHours || WORK_TIMES[0]}
                             options={WORK_TIMES}
                         />
                         <FormSelect
                             control={control}
                             name={"education"}
                             label={"Education"}
-                            defaultValue={initialJob?.education || "Any"}
+                            defaultValue={initialJob?.education || EDUCATION[0]}
                             options={EDUCATION}
                         />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        <Input
+                        <CustomDropdown
                             control={control}
-
-                            errors={errors}
                             name={"salary"}
-                            label='Salary'
-                            placeholder='Amount'
+                            label={"Salary"}
+                            options={SALARY_RANGES_DROPDOWN}
+                            placeholder="Salary"
+                            defaultValue={SALARY_RANGES_DROPDOWN[0].value || 0}
                         />
                         <FormSelect
                             control={control}
@@ -336,7 +338,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                                         placeholder='e.g. https://www.mycompany.com'
                                     />
                                 </div>
-                                <div className={styles["post-job-page-input-wrapper"]}>
+                                {/* <div className={styles["post-job-page-input-wrapper"]}>
                                     <FormSelect
                                         control={control}
                                         defaultValue={initialJob?.companyDetails?.companySize || ""}
@@ -352,7 +354,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                                         label='Founded'
                                         placeholder='e.g. 1990'
                                     />
-                                </div>
+                                </div> */}
                             </>
                         )}
                     </section>

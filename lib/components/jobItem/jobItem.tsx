@@ -14,6 +14,7 @@ import DateConverter from "../dateConverter/DateConverter";
 import DOMPurify from "dompurify";
 import { truncateText } from "@/lib/constant/helpers";
 import toast from "react-hot-toast";
+import { slugify } from "@/lib/utils/slugify";
 
 interface JobItem {
 	data: JobData;
@@ -77,7 +78,10 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							className="rounded-full object-contain w-24 h-24 md:w-40 md:h-40 mx-auto border border-gray-200 shadow"
 						/>
 					</div>
-					<div onClick={() => push(`/jobs/${data?._id}`)} className="flex flex-col gap-6 justify-center">
+					<div onClick={() => {
+						 const slug = slugify(data.jobTitle);
+						 push(`/jobs/${slug}-${data._id}`);
+					}} className="flex flex-col gap-6 justify-center">
 
 						<div className="flex flex-col gap-6">
 							<h4 className="font-bold text-lg text-dark">{data?.jobTitle}</h4>
@@ -114,7 +118,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							{/* <Image src={moreIcon} alt="more" className="cursor-pointer" /> */}
 						</div>
 						<div className="flex flex-col mt-4">
-							<span className="self-end text-sm text-gray-500">{DateConverter({ mongoDate: data?.advertisedDate })}</span>
+							<span className="self-end text-sm text-gray-500">{DateConverter({ mongoDate: data?.advertisedDate,format:"MM/DD/YYYY" })}</span>
 							<div className="flex gap-2 mt-4 justify-end">
 								<Button
 									className="bg-[#c5f06d] text-gray-800  font-bold text-lg hover:bg-[#006c53] hover:text-white px-6 py-2 rounded-2xl flex gap-1 items-center duration-200"
