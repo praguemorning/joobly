@@ -535,6 +535,7 @@ export const CITIES = [
   ];
 
   export const JOB_CATEGORIES = [
+	"Hospitality & Food",
 	"Sales & Business Development",
 	"Marketing & Advertising",
 	"IT & Software Development",
