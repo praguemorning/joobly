@@ -77,8 +77,16 @@ body {
 .header-top {
   color: #222;
 
+  // Not `inherit`: the nav container carries text-baseBlack50 (#b8b9b9), which
+  // against the white bar is roughly a 2:1 contrast ratio — well under the
+  // 4.5:1 minimum, and in practice the links read as an empty bar. Set an
+  // explicit readable colour instead of inheriting that.
   a {
-    color: inherit;
+    color: #222;
+
+    &:hover {
+      color: #006c53; // the app's existing accent
+    }
   }
 }
 
