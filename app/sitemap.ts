@@ -7,7 +7,11 @@ import { isExpired, jobUrl, SITE_URL, type JobLike } from "@/lib/seo/jobPosting"
 // sitemap must be referenced from praguemorning.cz/robots.txt and submitted in
 // Search Console. A robots.ts here would be served at /jobs/robots.txt and
 // silently ignored.
-export const revalidate = 3600;
+// Short-ish, because the job list is fetched via BACKEND_URL and that fetch can
+// fail during a build — the deployment is not serving yet while it builds, so
+// anything routed back through this deployment is unavailable. A failed fetch
+// yields a static-only sitemap, and this bounds how long that persists.
+export const revalidate = 900;
 
 async function fetchJobs(): Promise<JobLike[]> {
 	try {
