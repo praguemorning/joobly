@@ -27,6 +27,8 @@ export interface SiteChrome {
 	footer: string | null;
 	/** Ad and consent tags, in the order the live site declares them. */
 	adTags: string;
+	/** Search overlay the header buttons open; required by the theme JS. */
+	searchOverlay: string | null;
 }
 
 /**
@@ -56,6 +58,31 @@ function extractElement(html: string, tag: "header" | "footer"): string | null {
 	return html.slice(open, close + tag.length + 3);
 }
 
+/**
+ * The search overlay the header's search buttons open. It lives near </body>,
+ * outside <header>, so it is not picked up with the rest of the chrome.
+ *
+ * It is not optional. The theme's openSearch() binds to its close button with
+ * no null check and runs before the mobile nav is wired up, so omitting this
+ * markup throws and leaves the burger menu dead.
+ */
+function extractSearchOverlay(html: string): string | null {
+	const marker = html.indexOf('class="search-main"');
+	if (marker === -1) return null;
+
+	const start = html.lastIndexOf("<", marker);
+	const pattern = /<div\b|<\/div>/g;
+	pattern.lastIndex = start;
+
+	let depth = 0;
+	let match: RegExpExecArray | null;
+	while ((match = pattern.exec(html))) {
+		depth += match[0] === "</div>" ? -1 : 1;
+		if (depth === 0) return html.slice(start, match.index + match[0].length);
+	}
+	return null;
+}
+
 /** Pulls the ad/consent <script> tags, plus Clever Core's placeholder div. */
 function extractAdTags(html: string): string {
 	const head = html.slice(0, html.indexOf("</head>"));
@@ -83,10 +110,11 @@ export async function getSiteChrome(): Promise<SiteChrome> {
 			header: extractElement(html, "header"),
 			footer: extractElement(html, "footer"),
 			adTags: extractAdTags(html),
+			searchOverlay: extractSearchOverlay(html),
 		};
 	} catch (error) {
 		// Never take the jobs section down because the main site is unreachable.
 		console.error("site chrome: could not load praguemorning.cz", error);
-		return { header: null, footer: null, adTags: "" };
+		return { header: null, footer: null, adTags: "", searchOverlay: null };
 	}
 }

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const { header, footer, adTags } = await getSiteChrome();
+    const { header, footer, adTags, searchOverlay } = await getSiteChrome();
 
     return (
         <html lang="en">
@@ -74,7 +74,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     />
                 )}
 
-                {/* Theme behaviour: burger menu, mobile nav close, footer field. */}
+                {/* Sits near </body> on the live site, outside <header>. Must be
+                    present before main.js runs: openSearch() binds to its close
+                    button with no null check, and it runs before the mobile nav
+                    is wired, so omitting it throws and kills the burger menu. */}
+                {searchOverlay && (
+                    <div
+                        style={{ display: 'contents' }}
+                        dangerouslySetInnerHTML={{ __html: searchOverlay }}
+                    />
+                )}
+
+                {/* Theme behaviour: burger menu, mobile nav close, search. */}
                 <script src={PM_ASSETS.script} defer />
             </body>
         </html>
