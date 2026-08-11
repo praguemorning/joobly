@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import '@/lib/styles/globals.scss';
 import ClientProviders from './providers';
@@ -6,8 +5,16 @@ import TopHeader from '@/lib/components/header/header';
 import { SITE_URL } from '@/lib/seo/jobPosting';
 import { getSiteChrome, PM_ASSETS } from '@/lib/chrome/praguemorning';
 
-// Prague Morning's own typeface, replacing the app's Source Sans.
-const mainFont = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
+/**
+ * Prague Morning renders in Poppins, not Inter — the Inter link in their <head>
+ * is not what actually applies. Loaded under its real family name rather than
+ * via next/font, because the theme stylesheet contains literal
+ * `font-family: "Poppins"` declarations that a hashed next/font family would
+ * not match. On praguemorning.cz the font arrives via Elementor's kit CSS,
+ * which this section does not load.
+ */
+const POPPINS_HREF =
+    'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
 
 // The app is mounted at praguemorning.cz/jobs, so relative metadata URLs must
 // resolve against that prefix, not the bare origin. See SITE_URL in
@@ -35,10 +42,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     specificity. Generic class names shared with the theme
                     (`.header`, `.container`) therefore need explicit overrides
                     in globals.scss — see the `.header-top` rule there. */}
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+                <link rel="stylesheet" href={POPPINS_HREF} />
                 <link rel="stylesheet" href={PM_ASSETS.reset} />
                 <link rel="stylesheet" href={PM_ASSETS.style} />
             </head>
-            <body className={mainFont.className}>
+            <body>
                 {/* Consent platform and ad tags, in the live site's own order,
                     so these pages behave like every other page. Server-rendered
                     rather than injected client-side, which is what lets the
