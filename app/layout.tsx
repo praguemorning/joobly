@@ -59,13 +59,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     />
                 )}
 
-                {/* ClientProviders already supplies SessionProvider. */}
-                <ClientProviders>
-                    {/* The jobs section's own nav, kept as a secondary bar so
-                        Post a job / Packages / Login stay reachable. */}
-                    <TopHeader />
-                    {children}
-                </ClientProviders>
+                {/* Namespaces this app's markup so the theme stylesheet, which
+                    is global, can be neutralised where its class names collide
+                    with Tailwind's. See the .jobs-app rules in globals.scss. */}
+                <div className="jobs-app">
+                    {/* ClientProviders already supplies SessionProvider. */}
+                    <ClientProviders>
+                        {/* The jobs section's own nav, kept as a secondary bar
+                            so Post a job / Packages / Login stay reachable. */}
+                        <TopHeader />
+                        {children}
+                    </ClientProviders>
+                </div>
 
                 {footer && (
                     <div

@@ -66,6 +66,26 @@ body {
   color: #222;
 }
 
+// Prague Morning's theme stylesheet is global, and two of its class names mean
+// something different in Tailwind. Neutralised for this app's markup only, so
+// the theme's own header, footer and search overlay keep their behaviour.
+.jobs-app {
+  // Theme: `.hidden { opacity: 0 }`. Tailwind's `.hidden` only sets
+  // `display: none`, so the common `hidden md:flex` pattern stayed laid out but
+  // fully transparent — this is what made the jobs nav render as an empty bar.
+  // Elements Tailwind really is hiding are still display:none, so this is safe.
+  .hidden {
+    opacity: 1;
+    z-index: auto;
+  }
+
+  // Theme: `.container { min-width: 932px }`. The listing uses
+  // `container mx-auto`, so that floor forces horizontal overflow on phones.
+  .container {
+    min-width: 0;
+  }
+}
+
 // Prague Morning's theme stylesheet is loaded globally and styles `.header`.
 // The jobs bar wrapper uses that same class name, so it inherited the theme's
 // white text and became invisible against a white background. Re-assert the
