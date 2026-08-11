@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/lib/styles/globals.scss";
+import { SITE_URL } from "@/lib/seo/jobPosting";
 
 export const metadata: Metadata = {
 	title: "Joobly | Success",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 		title: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
 		description:
 		'Explore full-time and part-time multilingual job opportunities in Prague and across Czechia. Connect with top international employers.',
-		url: 'https://joobly.cz',
+		url: `${SITE_URL}/success`,
 		siteName: 'Joobly.cz',
 		images: [
 		{
