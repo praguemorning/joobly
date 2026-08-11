@@ -1,12 +1,13 @@
-import { Source_Sans_3 } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import '@/lib/styles/globals.scss';
 import ClientProviders from './providers';
-import Footer from '@/app/footer';
 import TopHeader from '@/lib/components/header/header';
 import { SITE_URL } from '@/lib/seo/jobPosting';
+import { getSiteChrome, PM_ASSETS } from '@/lib/chrome/praguemorning';
 
-const mainFont = Source_Sans_3({ subsets: ['latin'] });
+// Prague Morning's own typeface, replacing the app's Source Sans.
+const mainFont = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 // The app is mounted at praguemorning.cz/jobs, so relative metadata URLs must
 // resolve against that prefix, not the bare origin. See SITE_URL in
@@ -23,16 +24,47 @@ export const metadata: Metadata = {
     robots: { index: true, follow: true },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const { header, footer } = await getSiteChrome();
+
     return (
         <html lang="en">
+            <head>
+                {/* Next hoists its own imported CSS above these tags, so the
+                    theme stylesheet ends up last and wins ties on equal
+                    specificity. Generic class names shared with the theme
+                    (`.header`, `.container`) therefore need explicit overrides
+                    in globals.scss — see the `.header-top` rule there. */}
+                <link rel="stylesheet" href={PM_ASSETS.reset} />
+                <link rel="stylesheet" href={PM_ASSETS.style} />
+            </head>
             <body className={mainFont.className}>
+                {/* display:contents so the wrapper generates no box — the theme
+                    CSS expects <header>/<footer> as top-level page elements. */}
+                {header && (
+                    <div
+                        style={{ display: 'contents' }}
+                        dangerouslySetInnerHTML={{ __html: header }}
+                    />
+                )}
+
                 {/* ClientProviders already supplies SessionProvider. */}
                 <ClientProviders>
+                    {/* The jobs section's own nav, kept as a secondary bar so
+                        Post a job / Packages / Login stay reachable. */}
                     <TopHeader />
                     {children}
-                    <Footer />
                 </ClientProviders>
+
+                {footer && (
+                    <div
+                        style={{ display: 'contents' }}
+                        dangerouslySetInnerHTML={{ __html: footer }}
+                    />
+                )}
+
+                {/* Theme behaviour: burger menu, mobile nav close, footer field. */}
+                <script src={PM_ASSETS.script} defer />
             </body>
         </html>
     );

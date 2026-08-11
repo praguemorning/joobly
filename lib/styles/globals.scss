@@ -59,6 +59,27 @@ body {
   -webkit-font-smoothing: antialiased;
   height:100%;
   padding: 0;
+  // Neither html nor body declared a background, so browsers set to a dark
+  // colour scheme painted their own dark canvas behind the page — light text
+  // and white cards on near-black. Explicit and matching Prague Morning.
+  background-color: #fff;
+  color: #222;
+}
+
+// Prague Morning's theme stylesheet is loaded globally and styles `.header`.
+// The jobs bar wrapper uses that same class name, so it inherited the theme's
+// white text and became invisible against a white background. Re-assert the
+// app's own colour inside the jobs bar only.
+//
+// This is a class-name collision, not a one-off: any generic name shared with
+// the theme (`.container`, `.footer`, ...) can collide the same way. The
+// durable fix is to namespace this app's class names.
+.header-top {
+  color: #222;
+
+  a {
+    color: inherit;
+  }
 }
 
 img, picture, video, canvas, svg {
@@ -163,7 +184,7 @@ p {
 
 
 .header-background-line {
-  background: url('/images/header-bg.svg') $secondary-color no-repeat;
+  background: url('/jobs/images/header-bg.svg') $secondary-color no-repeat;
   height: 55px;
   max-height: 55px;
   width: 100%;

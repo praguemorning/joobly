@@ -9,6 +9,9 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Button from "../button/button";
 import Image from "next/image";
+// Imported rather than a string path: next/image passes SVG srcs through
+// unoptimized, so a string would skip the basePath prefix and 404.
+import jooblyLogo from "@/public/images/logos/logo-joobly.svg";
 import Link from "next/link";
 import LoginBtn from "../loginBtn/loginBtn";
 
@@ -50,7 +53,7 @@ const TopHeader = () => {
 					<div className='search-group'>
 						<Link href={"/"}>
 							<Image
-								src={"/images/logos/logo-joobly.svg"}
+								src={jooblyLogo}
 								alt='search'
 								className='header-logo'
 								width={200}
