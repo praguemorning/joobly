@@ -1,8 +1,16 @@
 import { slugify } from "@/lib/utils/slugify";
 
-/** Public origin including the /jobs base path. */
+/**
+ * Public URL of the jobs section, including the /jobs base path. Used for
+ * canonicals, OpenGraph and the sitemap.
+ *
+ * Deliberately NOT NEXT_PUBLIC_BASE_URL: that one is shared with the
+ * password-reset flow and is currently set to a *.vercel.app host, which would
+ * publish vercel.app canonicals. Defaulting here means the correct public URL
+ * ships without depending on a dashboard change.
+ */
 export const SITE_URL = (
-	process.env.NEXT_PUBLIC_BASE_URL ?? "https://praguemorning.cz/jobs"
+	process.env.NEXT_PUBLIC_SITE_URL ?? "https://praguemorning.cz/jobs"
 ).replace(/\/$/, "");
 
 export interface JobLike {

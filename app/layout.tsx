@@ -4,15 +4,15 @@ import '@/lib/styles/globals.scss';
 import ClientProviders from './providers';
 import Footer from '@/app/footer';
 import TopHeader from '@/lib/components/header/header';
+import { SITE_URL } from '@/lib/seo/jobPosting';
 
 const mainFont = Source_Sans_3({ subsets: ['latin'] });
 
 // The app is mounted at praguemorning.cz/jobs, so relative metadata URLs must
-// resolve against that prefix, not the bare origin.
+// resolve against that prefix, not the bare origin. See SITE_URL in
+// lib/seo/jobPosting for why this is not NEXT_PUBLIC_BASE_URL.
 export const metadata: Metadata = {
-    metadataBase: new URL(
-        process.env.NEXT_PUBLIC_BASE_URL ?? 'https://praguemorning.cz/jobs'
-    ),
+    metadataBase: new URL(SITE_URL),
     title: {
         default: 'Jobs in Prague and Czechia',
         // TODO(branding): confirm the public-facing name before launch.
