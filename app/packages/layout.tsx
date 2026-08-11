@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Source_Sans_3 } from "next/font/google";
 import "@/lib/styles/globals.scss";
-import Header from "@/app/header";
 import ClientProvider from "@/lib/components/ClientProvider";
 
 
@@ -34,11 +33,6 @@ export const metadata: Metadata = {
 export default function PackagesLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<Header
-				extraBottomHeader='Simple pricing. No surprise fees.'
-				topHeaderTitle=''
-				bottomHeaderTitle='Packages and Subscriptions'
-			/>
 			<ClientProvider>
 					{children}
 			</ClientProvider>

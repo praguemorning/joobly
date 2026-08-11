@@ -1,7 +1,6 @@
 import { getUserFavsJobs, getUserInfo } from "@/lib/user/getUserFavsJobs";
 import { JobsPagePropsTypes } from "@/lib/types/componentTypes";
 import { processOptions, getData, getOptions } from "@/lib/jobs/jobsUtils";
-import HeaderBackground from "@/lib/components/headerBackground/headerBackground";
 import JobItem from "../../lib/components/jobItem/jobItem";
 import React, { Suspense } from "react";
 import Topbar from "../../lib/components/toolBar/topbar";
@@ -29,7 +28,6 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const salary = SALARY_RANGES_DROPDOWN.map((item,indexNo) => ({id: indexNo, label: item.label, value: item.value}));
 	return (
 		<>
-			<HeaderBackground />
 			<section className="mt-16 mb-20 px-4">
 				<div className="container mx-auto flex flex-col lg:flex-row">
 					<Topbar

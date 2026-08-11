@@ -73,6 +73,28 @@ body {
   color: #222;
 }
 
+// Full-bleed footer: the theme centres the dark panel in a 1300px .container,
+// so it reads as a floating box. Let the background span the viewport while the
+// content stays centred and readable.
+//
+// This also clears the theme's `.container { min-width: 932px }`, which would
+// otherwise force horizontal overflow on phones — the .jobs-app override does
+// not reach here, because the footer sits outside that wrapper.
+footer.footer > .container {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+}
+
+footer.footer .footer-inner {
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 // The theme's headerScrollBehavior() adds .unpinned on scroll down, which
 // slides the header out of view via translateY(-100%). That code never runs on
 // praguemorning.cz itself — its main.js is never executed — so the header there
