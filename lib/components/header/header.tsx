@@ -66,7 +66,7 @@ const TopHeader = () => {
 								<MdHome className='w-5 h-5 package-image' />
 								<span className="text-nowrap">Home</span>
 							</Link>
-							<Link href='/jobs' className={`flex items-center gap-1 ${pathname === '/jobs' && 'text-black'}`}>
+							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
 								<MdWork className='w-5 h-5 package-image' />
 								<span className="text-nowrap">Find a job</span>
 							</Link>
@@ -156,9 +156,9 @@ const TopHeader = () => {
 						<span>Home</span>
 					</Link>
 					<Link
-						href='/jobs'
+						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#006c53]'}`}
 					>
 						<MdWork className='w-5 h-5 package-image' />
 						<span>Find a job</span>
