@@ -24,7 +24,7 @@ const Footer = () => {
           <Link href="/" className="text-sm font-normal text-light">
             Home
           </Link>
-          <Link href="/jobs" className="text-sm font-normal text-light">
+          <Link href="/" className="text-sm font-normal text-light">
             Find a job
           </Link>
           <Link href="/post-job-info" className="text-sm font-normal text-light">
