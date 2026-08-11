@@ -80,7 +80,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 					</div>
 					<div onClick={() => {
 						 const slug = slugify(data.jobTitle);
-						 push(`/jobs/${slug}-${data._id}`);
+						 push(`/${slug}-${data._id}`);
 					}} className="flex flex-col gap-6 justify-center">
 
 						<div className="flex flex-col gap-6">

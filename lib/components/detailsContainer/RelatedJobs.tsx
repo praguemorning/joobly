@@ -75,7 +75,7 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
                     <div className="space-y-4">
                       {relatedJobs.map((job) => {
                         const slug = slugify(job.jobTitle);
-                        return  <Link href={`/jobs/${slug}-${job._id}`}  key={job._id}>
+                        return  <Link href={`/${slug}-${job._id}`}  key={job._id}>
                           <div
                            
                             className="group cursor-pointer hover:bg-slate-50 rounded-xl p-4 transition-all duration-200 border border-slate-100 hover:border-blue-200 hover:shadow-md"

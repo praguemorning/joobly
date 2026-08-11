@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	// Mounted behind praguemorning.cz/jobs via a Cloudflare Worker.
+	// basePath also prefixes /_next assets, so no assetPrefix is needed.
+	basePath: "/jobs",
 	images: {
 		remotePatterns: [
 			{

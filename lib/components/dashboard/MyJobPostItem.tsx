@@ -28,7 +28,7 @@ const MyJobPostItem = ({ data }: any) => {
     <div className="w-full flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
       <div className="flex flex-col gap-6 cursor-pointer" onClick={() => {
             const slug = slugify(data.jobTitle);
-            router.push(`/jobs/${slug}-${data._id}`);
+            router.push(`/${slug}-${data._id}`);
         }}>
         <h3 className="text-lg font-bold text-gray-800">{data?.jobTitle}</h3>
         <p className="max-w-[800px]"

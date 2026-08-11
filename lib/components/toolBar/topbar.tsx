@@ -37,7 +37,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 
 	const handleSearch = () => {
 		const params = new URLSearchParams(filters as any).toString();
-		router.push(`/jobs?${params}`);
+		router.push(`/?${params}`);
 	};
 
 	const ArrowIcon = () => (

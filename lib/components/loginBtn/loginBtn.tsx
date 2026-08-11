@@ -21,7 +21,7 @@ const LoginBtn = () => {
 					user={user}
 					items={[
 						{ id: "1", label: "Profile", path: "/profile" },
-						{ id: "2", label: "Jobs", path: "/jobs" },
+						{ id: "2", label: "Jobs", path: "/" },
 						{ id: "3", label: "Log Out", path: "/" },
 					]}
 				/>
