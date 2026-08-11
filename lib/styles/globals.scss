@@ -60,6 +60,10 @@ html {
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  // Matches praguemorning.cz, which renders in Poppins. Set here rather than as
+  // a class on <body>: a class outranks the theme's element selectors and would
+  // override the theme's own typography everywhere.
+  font-family: 'Poppins', sans-serif;
   min-height: 100%;
   padding: 0;
   // Neither html nor body declared a background, so browsers set to a dark
