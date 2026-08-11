@@ -61,7 +61,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 						</div>
 
 						<div className="relative mt-16 h-[361px] bg-cover bg-center rounded-lg flex flex-col items-center justify-center text-center"
-							style={{ backgroundImage: "url('/images/green-bg-search.svg')" }}
+							style={{ backgroundImage: "url('/jobs/images/green-bg-search.svg')" }}
 						>
 							<h5 className="text-4xl font-bold tracking-wider text-light">
 								Join our Job group on Facebook
