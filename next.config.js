@@ -5,12 +5,20 @@ const JOBS_URL = "https://praguemorning.cz/jobs";
 const LEGACY_HOSTS = ["joobly.cz", "www.joobly.cz"];
 
 /**
- * Origin used to keep pre-basePath /api/* URLs working. Points at the Vercel
- * deployment rather than the public domain deliberately: webhooks should not
- * depend on the Cloudflare Worker being healthy.
+ * Origin used to keep pre-basePath /api/* URLs working.
+ *
+ * Defaults to the deployment's own URL: a hardcoded alias can go stale and
+ * silently point at an older build, which breaks BACKEND_URL fetches and takes
+ * the listing page down with a 500. Self-referencing cannot drift.
+ *
+ * Deliberately not the public domain — webhooks must not depend on the
+ * Cloudflare Worker being healthy.
  */
 const LEGACY_API_ORIGIN =
-	process.env.LEGACY_API_ORIGIN ?? "https://joobly-five.vercel.app";
+	process.env.LEGACY_API_ORIGIN ??
+	(process.env.VERCEL_URL
+		? `https://${process.env.VERCEL_URL}`
+		: "http://localhost:3000");
 
 /**
  * 301s from the old domain. These run on the same Vercel deployment, matched by
