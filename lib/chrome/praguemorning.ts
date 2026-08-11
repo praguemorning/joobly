@@ -25,7 +25,27 @@ export const PM_ASSETS = {
 export interface SiteChrome {
 	header: string | null;
 	footer: string | null;
+	/** Ad and consent tags, in the order the live site declares them. */
+	adTags: string;
 }
+
+/**
+ * Ad and consent stack shared with the rest of praguemorning.cz. The consent
+ * platform (Clickio) is included deliberately: the ad tags are gated by it, so
+ * shipping ads without it would fire third-party scripts outside the site's
+ * consent framework.
+ *
+ * Source order is preserved rather than reordered, so these pages behave
+ * exactly like every other page on the site.
+ */
+const AD_TAG_PATTERNS = [
+	/clickio/i, // CMP
+	/consensu\.org/i, // CMP (IAB TCF endpoint)
+	/googletagmanager\.com\/gtag/i,
+	/adsbygoogle/i,
+	/themoneytizer/i,
+	/clever-core|cleverwebserver/i, // the side rails
+];
 
 /** The homepage carries exactly one <header> and one <footer>. */
 function extractElement(html: string, tag: "header" | "footer"): string | null {
@@ -34,6 +54,20 @@ function extractElement(html: string, tag: "header" | "footer"): string | null {
 	const close = html.indexOf(`</${tag}>`, open);
 	if (close === -1) return null;
 	return html.slice(open, close + tag.length + 3);
+}
+
+/** Pulls the ad/consent <script> tags, plus Clever Core's placeholder div. */
+function extractAdTags(html: string): string {
+	const head = html.slice(0, html.indexOf("</head>"));
+	const tags = (head.match(/<script\b[^>]*>[\s\S]*?<\/script>/g) ?? []).filter(
+		(tag) => AD_TAG_PATTERNS.some((pattern) => pattern.test(tag))
+	);
+
+	// Clever Core looks for this marker to place the side rails.
+	if (/clever-core/i.test(tags.join("")) && /clever-core-ads/.test(head)) {
+		tags.push('<div class="clever-core-ads"></div>');
+	}
+	return tags.join("\n");
 }
 
 export async function getSiteChrome(): Promise<SiteChrome> {
@@ -48,10 +82,11 @@ export async function getSiteChrome(): Promise<SiteChrome> {
 		return {
 			header: extractElement(html, "header"),
 			footer: extractElement(html, "footer"),
+			adTags: extractAdTags(html),
 		};
 	} catch (error) {
 		// Never take the jobs section down because the main site is unreachable.
 		console.error("site chrome: could not load praguemorning.cz", error);
-		return { header: null, footer: null };
+		return { header: null, footer: null, adTags: "" };
 	}
 }
