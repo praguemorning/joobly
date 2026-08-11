@@ -8,10 +8,6 @@ import { signOut, useSession } from 'next-auth/react';
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Button from "../button/button";
-import Image from "next/image";
-// Imported rather than a string path: next/image passes SVG srcs through
-// unoptimized, so a string would skip the basePath prefix and 404.
-import jooblyLogo from "@/public/images/logos/logo-joobly.svg";
 import Link from "next/link";
 import LoginBtn from "../loginBtn/loginBtn";
 
@@ -50,18 +46,7 @@ const TopHeader = () => {
 		<div className='header'>
 			<div className='header-top'>
 				<div className='search-post-group flex gap-2 -ml-3 xl:gap-12 items-center'>
-					<div className='search-group'>
-						<Link href={"/"}>
-							<Image
-								src={jooblyLogo}
-								alt='search'
-								className='header-logo'
-								width={200}
-								height={200}
-							/>
-						</Link>
-						{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
-					</div>
+					{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					{/*hеader nav links*/}
 					{!isMenuOpen && (
 						<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
