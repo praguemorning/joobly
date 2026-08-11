@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const { header, footer } = await getSiteChrome();
+    const { header, footer, adTags } = await getSiteChrome();
 
     return (
         <html lang="en">
@@ -39,6 +39,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <link rel="stylesheet" href={PM_ASSETS.style} />
             </head>
             <body className={mainFont.className}>
+                {/* Consent platform and ad tags, in the live site's own order,
+                    so these pages behave like every other page. Server-rendered
+                    rather than injected client-side, which is what lets the
+                    inline loaders execute at parse time. */}
+                {adTags && (
+                    <div
+                        style={{ display: 'contents' }}
+                        dangerouslySetInnerHTML={{ __html: adTags }}
+                    />
+                )}
+
                 {/* display:contents so the wrapper generates no box — the theme
                     CSS expects <header>/<footer> as top-level page elements. */}
                 {header && (
