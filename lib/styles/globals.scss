@@ -51,19 +51,35 @@
 
 html {
   text-size-adjust: none;
-  height: 100%;
+  // min-height, not height: a fixed 100% caps the sticky containing block at
+  // one viewport, so the theme's position:sticky header scrolls away instead of
+  // staying pinned.
+  min-height: 100%;
 }
 
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  height:100%;
+  min-height: 100%;
   padding: 0;
   // Neither html nor body declared a background, so browsers set to a dark
   // colour scheme painted their own dark canvas behind the page — light text
   // and white cards on near-black. Explicit and matching Prague Morning.
   background-color: #fff;
   color: #222;
+}
+
+// The theme's headerScrollBehavior() adds .unpinned on scroll down, which
+// slides the header out of view via translateY(-100%). That code never runs on
+// praguemorning.cz itself — its main.js is never executed — so the header there
+// is permanently pinned. Keep the same behaviour here rather than introducing a
+// hide-on-scroll the rest of the site does not have.
+//
+// `body` prefix for specificity: Next hoists its own CSS above the theme
+// <link>, so the theme wins ties against a bare .header.unpinned.
+body .header.unpinned {
+  -webkit-transform: none;
+  transform: none;
 }
 
 // Prague Morning's theme stylesheet is global, and two of its class names mean
