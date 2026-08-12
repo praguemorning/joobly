@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export default function JobLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className='header-background-line hidden lg:block'></div>
       {children}
     </>
   );
