@@ -14,7 +14,7 @@ const RegisterSuccess = (props: Props) => {
 
 
 	return (
-		<div className='flex flex-col items-center justify-center h-[85%] bg-[#009c77]'>
+		<div className='flex flex-col items-center justify-center h-[85%] bg-[#cc0303]'>
 			<h1 className='text-4xl font-bold text-white'>Register Success!</h1>
 			<p className='text-lg text-white'>Now you can log in.</p>
 		</div>

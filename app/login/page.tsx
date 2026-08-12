@@ -67,8 +67,8 @@ const Login = () => {
 			>
 				<div className={styles["login-modal"]}>
 					<div className={styles["login--modal-header"]}>
-						<h1>Hi, Welcome to Joobly</h1>
-						<p>Find your dream job in Joobly! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
+						<h1>Hi, Welcome to Prague Morning</h1>
+						<p>Find your dream job with Prague Morning! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
 					</div>
 					<div className="flex flex-col gap-2">
 						<Button
@@ -129,9 +129,9 @@ const Login = () => {
 									control={
 										<Checkbox
 											sx={{
-												color: "#009C77",
+												color: "#cc0303",
 												"&.Mui-checked": {
-													color: "#009C77",
+													color: "#cc0303",
 												},
 											}}
 											defaultChecked
@@ -163,7 +163,7 @@ const Login = () => {
 						</div>
 					</div>
 					<div className={styles["login-modal-footer"]}>
-						<p>Joobly. All rights reserved.</p>
+						<p>Prague Morning. All rights reserved.</p>
 					</div>
 				</div>
 			</form>

@@ -23,7 +23,7 @@ const PlanContainer = ({
 			className={`p-6 w-full 
 				${title === "Gold" ? "bg-black" : "bg-inputBg"} rounded-xl border-2 
 				flex flex-col justify-between
-				${isActive ? "border-[#009c77]" : "border-white"}
+				${isActive ? "border-[#cc0303]" : "border-white"}
 			`}
 			>
 				<div>

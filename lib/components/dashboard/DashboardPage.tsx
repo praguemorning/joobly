@@ -43,14 +43,14 @@ const DashboardPage = () => {
   function HandleCheckJobPostPoints() {
     if (jobPostPoints <= 0) {
       toast((t) => (
-        <span className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
+        <span className="flex flex-col gap-4 text-[#a80202] text-center items-center mb-2">
           <span className="font-medium">
             You don&apos;t have enough points to post a job.
           </span>
           <button onClick={() => toast.dismiss(t.id)}>
             <Link
-              className="bg-[#006c53] text-white px-4 py-2 border 
-                hover:bg-white hover:text-[#006c53] border-[#006c53] 
+              className="bg-[#a80202] text-white px-4 py-2 border 
+                hover:bg-white hover:text-[#a80202] border-[#a80202] 
                 rounded-xl duration-300"
               href={'/payment'}
             >
@@ -74,34 +74,34 @@ const DashboardPage = () => {
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
             {image ? (
-              <Image src={image} width={110} height={110} alt="user image" className="rounded-full border-4 border-[#83cfbe] shadow-lg" />
+              <Image src={image} width={110} height={110} alt="user image" className="rounded-full border-4 border-[#e3e4e8] shadow-lg" />
             ) : (
-              <div className="w-28 h-28 border-4 border-[#83cfbe] rounded-full flex items-center justify-center bg-gray-100 shadow-lg">
-                <FaUser className="text-[#006c53] w-16 h-16" />
+              <div className="w-28 h-28 border-4 border-[#e3e4e8] rounded-full flex items-center justify-center bg-gray-100 shadow-lg">
+                <FaUser className="text-[#a80202] w-16 h-16" />
               </div>
             )}
           </div>
           <div className="mt-2 text-center">
-            <div className="font-bold text-lg text-[#006c53]">{name}</div>
+            <div className="font-bold text-lg text-[#a80202]">{name}</div>
             <div className="text-gray-500 text-sm">{email}</div>
           </div>
         </div>
         <div className="flex flex-col gap-2 w-full mt-4">
           <Link
-            className="font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
+            className="font-bold text-lg border-2 text-center bg-white border-[#a80202] hover:border-[#e3e4e8] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
             href={'/dashboard'}
           >
             <span className="mr-2">📄</span> Job postings
           </Link>
           <Link
-            className="font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
+            className="font-bold text-lg border-2 text-center bg-white border-[#a80202] hover:border-[#e3e4e8] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
             href={'/dashboard/favorite-jobs'}
           >
             <span className="mr-2">⭐</span> Favorite Jobs
           </Link>
           {isAdmin && (
             <Link
-              className="font-bold text-lg border-2 text-center bg-white border-[#006c53] hover:border-[#83cfbe] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
+              className="font-bold text-lg border-2 text-center bg-white border-[#a80202] hover:border-[#e3e4e8] text-black px-4 py-2 rounded-2xl flex items-center justify-center duration-200"
               href={'/dashboard/admin'}
             >
               <span className="mr-2">🛠️</span> Admin Area
@@ -116,7 +116,7 @@ const DashboardPage = () => {
           </p>
           <Button
             onClick={() => HandleCheckJobPostPoints()}
-            className="bg-gray-200 text-gray-500 font-bold text-lg border-2  hover:bg-white hover:border-[#006c53] hover:text-black text px-4 py-1 rounded-2xl flex items-center duration-200"
+            className="bg-gray-200 text-gray-500 font-bold text-lg border-2  hover:bg-white hover:border-[#a80202] hover:text-black text px-4 py-1 rounded-2xl flex items-center duration-200"
           >
             Create job post
           </Button>
@@ -133,7 +133,7 @@ const DashboardPage = () => {
             <div className="flex justify-center mt-4">
               <Button
                 onClick={() => setShowAllJobs(true)}
-                className="bg-[#006c53] text-white px-4 py-2 rounded-xl hover:bg-[#004c3b] transition"
+                className="bg-[#a80202] text-white px-4 py-2 rounded-xl hover:bg-[#004c3b] transition"
               >
                 Show more
               </Button>

@@ -9,7 +9,7 @@ interface EditJobPageProps {
 }
 
 export const metadata = {
-    title: "Edit Job - Joobly",
+    title: "Edit Job",
 };
 
 export default async function EditJobPage({ params }: EditJobPageProps) {

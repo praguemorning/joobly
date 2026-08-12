@@ -2,7 +2,7 @@ import AdminUsersJobs from "@/lib/components/dashboard/AdminUsersJobs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Joobly | Profile",
+    title: "Profile",
     description: "My favorite vacancy",
 };
 

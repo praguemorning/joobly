@@ -61,14 +61,14 @@ const PackagesPage = () => {
                 <PaymentContainer />
             ) : (
                 <div className="flex justify-start items-center">
-                    <Button className="bg-[#006c53] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl p-10" onClick={() => router.push('/login')}>
+                    <Button className="bg-[#a80202] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl p-10" onClick={() => router.push('/login')}>
                         Login to proceed to payment
                     </Button>
                 </div>
             )}
             <label className={styles["ending_text_head"]}> Want to post more?</label>
             <p className={styles["ending_text"]}>
-                Please <Link className="text-[#006c53] underline hover:text-[#009c77] duration-200" href="/contact">contact</Link> us and we will find a personalized solution for you.
+                Please <Link className="text-[#a80202] underline hover:text-[#cc0303] duration-200" href="/contact">contact</Link> us and we will find a personalized solution for you.
             </p>
         </section>
     );
