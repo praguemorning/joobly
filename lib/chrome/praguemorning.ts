@@ -49,6 +49,25 @@ const AD_TAG_PATTERNS = [
 	/clever-core|cleverwebserver/i, // the side rails
 ];
 
+/**
+ * Prague Morning's own menu still links "Jobs" to https://joobly.cz/ with
+ * target="_blank", so the section's own nav item opens a new tab and takes a
+ * 301 hop through the retired domain.
+ *
+ * Rewritten here so the chrome behaves correctly regardless. The real fix is in
+ * WordPress (Appearance → Menus); this is defensive, not a substitute.
+ */
+function rewriteLegacyJobLinks(html: string | null): string | null {
+	if (!html) return html;
+	return html.replace(/<a\b[^>]*>/gi, (tag) => {
+		if (!/joobly\.cz/i.test(tag)) return tag;
+		return tag
+			.replace(/href=(["'])https?:\/\/(?:www\.)?joobly\.cz[^"']*\1/i, 'href="/jobs"')
+			.replace(/\starget=(["'])_blank\1/i, "")
+			.replace(/\srel=(["'])noopener\1/i, "");
+	});
+}
+
 /** The homepage carries exactly one <header> and one <footer>. */
 function extractElement(html: string, tag: "header" | "footer"): string | null {
 	const open = html.indexOf(`<${tag}`);
@@ -107,8 +126,8 @@ export async function getSiteChrome(): Promise<SiteChrome> {
 
 		const html = await res.text();
 		return {
-			header: extractElement(html, "header"),
-			footer: extractElement(html, "footer"),
+			header: rewriteLegacyJobLinks(extractElement(html, "header")),
+			footer: rewriteLegacyJobLinks(extractElement(html, "footer")),
 			adTags: extractAdTags(html),
 			searchOverlay: extractSearchOverlay(html),
 		};
