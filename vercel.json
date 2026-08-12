@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "env": {
+    "NEXTAUTH_URL": "https://praguemorning.cz/jobs/api/auth"
+  },
+  "build": {
+    "env": {
+      "NEXTAUTH_URL": "https://praguemorning.cz/jobs/api/auth"
+    }
+  }
+}
