@@ -127,6 +127,14 @@ body .header.unpinned {
     z-index: auto;
   }
 
+  // Theme: `.header { position: sticky; top: 0 }`. The jobs nav bar reuses that
+  // class name, so it pinned itself to the top too — landing on top of Prague
+  // Morning's own header, which is already pinned there at the same z-index.
+  // Only the site header should stick.
+  .header {
+    position: static;
+  }
+
   // Theme: `.container { min-width: 932px }`. The listing uses
   // `container mx-auto`, so that floor forces horizontal overflow on phones.
   .container {
@@ -270,4 +278,24 @@ p {
 .secondary-gradient-hover:hover {
    border-color: linear-gradient(90deg, #cc0303 0%, #a80202 100%);
   
+}
+// Keep the job filters in view while scrolling the results, which run to tens
+// of thousands of pixels.
+//
+// Desktop only: below lg the panel stacks above the list, where pinning it
+// would eat most of the viewport. `align-self: flex-start` is required — as a
+// flex child it would otherwise stretch to the container's full height, and a
+// sticky element that is already as tall as its container never moves.
+//
+// The offset clears Prague Morning's pinned header (~149px) plus a gap, and the
+// max-height keeps the panel scrollable on short viewports instead of having
+// its lower filters cut off.
+@media (min-width: 1024px) {
+  .jobs-filter-panel {
+    position: sticky;
+    top: 165px;
+    align-self: flex-start;
+    max-height: calc(100vh - 185px);
+    overflow-y: auto;
+  }
 }
