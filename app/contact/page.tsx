@@ -64,7 +64,7 @@ const ContactPage = () => {
 			<div className={styles["contact-page__context"]}>
 				<h1>How can we help you?</h1>
 				<p>
-					Thank you for your interest in Joobly. Please use this form to contact us. We will
+					Thank you for your interest in Prague Morning. Please use this form to contact us. We will
 					get back to you as soon as we can.
 				</p>
 			</div>
@@ -92,7 +92,7 @@ const ContactPage = () => {
 						name={"companyName"}
 						label='Company Name'
 						isRequired
-						placeholder='Joobly'
+						placeholder='Your company'
 					/>
 					<Input
 						control={control}

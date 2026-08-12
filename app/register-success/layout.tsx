@@ -3,15 +3,15 @@ import "@/lib/styles/globals.scss";
 import { SITE_URL } from "@/lib/seo/jobPosting";
 
 export const metadata: Metadata = {
-	title: "Joobly | Success",
+	title: "Success",
   description:
     'Find multilingual jobs in Prague and across Czechia. English, German, French, and more. We connect expats with top employers.',
   openGraph: {
-    title: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
+    title: 'Jobs in Prague and Czechia',
     description:
       'Explore full-time and part-time multilingual job opportunities in Prague and across Czechia. Connect with top international employers.',
     url: `${SITE_URL}/register-success`,
-    siteName: 'Joobly.cz',
+    siteName: 'Prague Morning',
     images: [
       {
         url: '/favicon.ico', // Положи в public/og-image.jpg

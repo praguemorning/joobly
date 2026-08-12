@@ -27,18 +27,18 @@ const TopHeader = () => {
 		open: {
 			top: 8,
 			rotate: 45,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		},
 		middleHidden: { opacity: 0 },
 		closeTop: {
 			top: 0,
 			rotate: 0,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		},
 		closeBottom: {
 			top: 16,
 			rotate: 0,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		}
 	};
 
@@ -80,27 +80,18 @@ const TopHeader = () => {
 						</Button>
 					</Link>
 
-					<Link href={"/post-resume"}>
-						<Button
-							style={{ width: "200px", height: "62px", borderRadius: "18px", gap: "10px" }}
-							className={`btn-green-outlined`}
-						>
-							<MdAdd className="w-6 h-6" />
-							Post your resume
-						</Button>
-					</Link>
 					<div className="hidden lgl:flex">
 						{status === 'authenticated' ? (
 							<div className="flex gap-4 items-center">
 								<Link
 									href={'/dashboard'}
-									className="border-2 border-[#006c53] py-[15px] 
-								px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
+									className="border-2 border-[#a80202] py-[15px] 
+								px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<FaUser className="text-black w-7 h-7 cursor-pointer" />
 								</Link>
 								<div
 									onClick={() => signOut()}
-									className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+									className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 								</div>
 							</div>
@@ -138,7 +129,7 @@ const TopHeader = () => {
 					<Link
 						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#a80202]'}`}
 					>
 						<MdHome className='w-5 h-5 package-image' />
 						<span>Home</span>
@@ -146,7 +137,7 @@ const TopHeader = () => {
 					<Link
 						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#a80202]'}`}
 					>
 						<MdWork className='w-5 h-5 package-image' />
 						<span>Find a job</span>
@@ -154,7 +145,7 @@ const TopHeader = () => {
 					<Link
 						href='/post-job-info'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#a80202]'}`}
 					>
 						<MdList className='w-5 h-5 package-image' />
 						<span>Post a job</span>
@@ -162,7 +153,7 @@ const TopHeader = () => {
 					<Link
 						href='/packages'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#a80202]'}`}
 					>
 						<MdCardGiftcard className='w-5 h-5 package-image' />
 						<span>Packages</span>
@@ -170,18 +161,10 @@ const TopHeader = () => {
 					<Link
 						href='/contact'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#a80202]'}`}
 					>
 						<MdContactMail className='w-5 h-5 package-image' />
 						<span>Contact us</span>
-					</Link>
-					<Link
-						href='/post-resume'
-						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-resume' && 'text-[#006c53]'}`}
-					>
-						<MdAdd className='w-5 h-5 package-image' />
-						<span>Post resume</span>
 					</Link>
 				</nav>
 				<div className="mt-6 lgl:inline">
@@ -189,13 +172,13 @@ const TopHeader = () => {
 						<div className="flex gap-4 items-center">
 							<Link
 								href={'/dashboard'}
-								className="border-2 border-[#006c53] py-[15px] 
-							px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
+								className="border-2 border-[#a80202] py-[15px] 
+							px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<FaUser className="text-black w-7 h-7 cursor-pointer" />
 							</Link>
 							<div
 								onClick={() => signOut()}
-								className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+								className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 							</div>
 						</div>

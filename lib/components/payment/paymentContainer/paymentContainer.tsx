@@ -100,11 +100,11 @@ const PaymentContainer = ({props}: any) => {
 				<label className={styles["payment-container__labels__subLabel"]}>
 					<div className="flex items-center gap-1 text-sm sm:text-base">
 						Go to secure payment page powered by
-						<FaStripe  className="w-9 h-9 text-[#009c77]"/>
+						<FaStripe  className="w-9 h-9 text-[#cc0303]"/>
 					</div>
 				</label>
 
-				<Button className="bg-[#006c53] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl" onClick={handleSubmit}>
+				<Button className="bg-[#a80202] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl" onClick={handleSubmit}>
 					Pay with Credit Card
 				</Button>
 

@@ -574,7 +574,7 @@ export const BASIC_PLAN_PERMISSIONS: PermissionsDataType[] = [
 		permission: true,
 	},
 	{
-		name: "30 days visibility on Joobly platform",
+		name: "30 days visibility on Prague Morning platform",
 		permission: true,
 	},
 	{
@@ -604,7 +604,7 @@ export const GOLD_PLAN_PERMISSIONS: PermissionsDataType[] = [
 		permission: true,
 	},
 	{
-		name: "30 days visibility on Joobly platform",
+		name: "30 days visibility on Prague Morning platform",
 		permission: true,
 	},
 	{
@@ -634,7 +634,7 @@ export const MEDIUM_PLAN_PERMISSIONS: PermissionsDataType[] = [
 		permission: true,
 	},
 	{
-		name: "30 days visibility on Joobly platform",
+		name: "30 days visibility on Prague Morning platform",
 		permission: true,
 	},
 	{
@@ -692,7 +692,7 @@ export const POST_JOB_ACTIONS_SECTION_1 = [
 
 export const POST_JOB_ACTIONS_SECTION_2 = [
 	"Provide the file to your existing job post, and we’ll do the rest.",
-	"Any changes made to your posts are automatically reflected on Joobly.",
+	"Any changes made to your posts are automatically reflected on Prague Morning.",
 	"Your jobs appear on our website as soon as they're indexed.",
 	"Focus on hiring while we handle the indexing for you!",
 ];

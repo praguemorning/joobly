@@ -39,7 +39,7 @@ const MyJobPostItem = ({ data }: any) => {
         <div className="flex gap-2 items-center justify-between">
           <Button
             onClick={() => router.push(`/dashboard/job-edit/${data._id}`)}
-            className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#006c53] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
+            className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#a80202] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
 
           >
             <MdEdit />

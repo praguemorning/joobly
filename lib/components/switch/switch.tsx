@@ -6,12 +6,12 @@ export const StyledSwitch = styled(Switch)(({ theme }) => ({
 		backgroundColor: "#7F879E",
 	},
 	"& .MuiSwitch-thumb": {
-		color: "#009c77",
+		color: "#cc0303",
 	},
 	"& .MuiSwitch-switchBase.Mui-checked": {
-		color: "#009C77",
+		color: "#cc0303",
 	},
 	"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-		backgroundColor: "#006c53",
+		backgroundColor: "#a80202",
 	},
 }));

@@ -83,7 +83,7 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 			</div>
 			<button
 				onClick={handleSearch}
-				className="bg-[#006c53] text-white px-6 py-2 rounded-xl hover:bg-[#004d3c] transition font-bold mt-4 w-full"
+				className="bg-[#a80202] text-white px-6 py-2 rounded-xl hover:bg-[#004d3c] transition font-bold mt-4 w-full"
 			>
 				Search
 			</button>

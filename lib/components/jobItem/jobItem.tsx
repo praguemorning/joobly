@@ -5,7 +5,7 @@ import Button from "@/lib/components/button/button";
 import { JobData } from "@/lib/types/componentTypes";
 import locationIcon from "@/public/images/icons/location-grey.svg";
 import saveIcon from "@/public/images/icons/archive.svg";
-import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
+import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import { useRouter } from "next/navigation";
 import { useClient } from "@/lib/hooks/useClient";
 import Skeleton from "@mui/material/Skeleton";
@@ -121,7 +121,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							<span className="self-end text-sm text-gray-500">{DateConverter({ mongoDate: data?.advertisedDate,format:"MM/DD/YYYY" })}</span>
 							<div className="flex gap-2 mt-4 justify-end">
 								<Button
-									className="bg-[#c5f06d] text-gray-800  font-bold text-lg hover:bg-[#006c53] hover:text-white px-6 py-2 rounded-2xl flex gap-1 items-center duration-200"
+									className="bg-[#cc0303] text-white  font-bold text-lg hover:bg-[#a80202] hover:text-white px-6 py-2 rounded-2xl flex gap-1 items-center duration-200"
 									hoverIcon="/images/icons/list-white.svg"
 								>
 									<a target="_blank" href={data?.jobUrl} className="text-inherit">

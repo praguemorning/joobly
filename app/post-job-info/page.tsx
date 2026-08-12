@@ -25,7 +25,7 @@ const PostJobInfo = () => {
 
    function postJobInfoMessage(text: string) {
       toast((t) => (
-        <div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
+        <div className="flex flex-col gap-4 text-[#a80202] text-center items-center mb-2">
           <span className="font-medium">
             {text}
           </span>

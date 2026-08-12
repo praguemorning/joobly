@@ -139,7 +139,7 @@ body .header.unpinned {
 .header-top {
   color: #222;
 
-  // Not `inherit`: the nav container carries text-baseBlack50 (#b8b9b9), which
+  // Not `inherit`: the nav container carries text-baseBlack50 (#54555e), which
   // against the white bar is roughly a 2:1 contrast ratio — well under the
   // 4.5:1 minimum, and in practice the links read as an empty bar. Set an
   // explicit readable colour instead of inheriting that.
@@ -147,7 +147,7 @@ body .header.unpinned {
     color: #222;
 
     &:hover {
-      color: #006c53; // the app's existing accent
+      color: #a80202; // the app's existing accent
     }
   }
 }
@@ -187,7 +187,7 @@ strong {
   font-size: 40px;
   font-weight: 700;
   line-height: 56.96px;
-  color: #1D2124;
+  color: #171821;
 }
 
 p {
@@ -262,6 +262,6 @@ p {
 
 
 .secondary-gradient-hover:hover {
-   border-color: linear-gradient(90deg, #c7ff47 0%, #96e6a1 100%);
+   border-color: linear-gradient(90deg, #cc0303 0%, #a80202 100%);
   
 }

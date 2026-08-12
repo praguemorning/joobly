@@ -31,14 +31,14 @@ const FavoriteJobPostItem = ({data}: any) => {
       <div className="flex gap-2 items-center justify-between">
         <Button
           onClick={() => router.push(`/dashboard/job-post-preview/${data?._id}`)}
-          className="bg-gray-200 text-gray-500 font-bold text-lg border-2  hover:bg-white hover:border-[#006c53] hover:text-black text px-4 py-2 rounded-2xl flex items-center duration-200"
+          className="bg-gray-200 text-gray-500 font-bold text-lg border-2  hover:bg-white hover:border-[#a80202] hover:text-black text px-4 py-2 rounded-2xl flex items-center duration-200"
         >
           Detail Information
         </Button>
         <div>
           <MdDelete 
           onClick={handleDeleteClick}
-          className="w-12 h-12 text-gray-500 cursor-pointer hover:text-[#006c53] duration-300"
+          className="w-12 h-12 text-gray-500 cursor-pointer hover:text-[#a80202] duration-300"
           />
         </div>
       </div>

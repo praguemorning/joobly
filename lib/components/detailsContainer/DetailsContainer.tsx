@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
-import defaultJobLogo from "@/public/images/logos/logo-joobly.svg";
+import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import RelatedJobs from "./RelatedJobs";
 
 const DetailsContainer = ({ data }: any) => {
@@ -132,7 +132,7 @@ const DetailsContainer = ({ data }: any) => {
 
 		if (!userData.email) {
 			toast((t) => (
-				<div className="flex flex-col gap-4 text-[#006c53] text-center items-center mb-2">
+				<div className="flex flex-col gap-4 text-[#a80202] text-center items-center mb-2">
 					<span className="font-medium">
 						To add the job to favorite, you need to be logged in
 					</span>
@@ -189,7 +189,7 @@ const DetailsContainer = ({ data }: any) => {
 																href={platform.url}
 																target="_blank"
 																rel="noopener noreferrer"
-																className="block text-gray-500 hover:text-[#006c53] duration-200"
+																className="block text-gray-500 hover:text-[#a80202] duration-200"
 															>
 																{platform.name}
 															</a>

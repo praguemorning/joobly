@@ -121,7 +121,7 @@ const AdminUsersJobs = () => {
                                 </Button>
                                 <Button
                                     onClick={() => toggleAccordion(user._id)}
-                                    className="bg-gray-100 text-gray-700 font-bold text-sm border-2 hover:bg-white hover:border-[#006c53] hover:text-black px-4 py-2 rounded-2xl flex items-center duration-200"
+                                    className="bg-gray-100 text-gray-700 font-bold text-sm border-2 hover:bg-white hover:border-[#a80202] hover:text-black px-4 py-2 rounded-2xl flex items-center duration-200"
                                 >
                                     {isOpen ? 'Hide Jobs' : `Show Jobs (${userJobs.length})`}
                                 </Button>
@@ -142,7 +142,7 @@ const AdminUsersJobs = () => {
                                         <div className="flex gap-2 items-center">
                                             <Button
                                                 onClick={() => router.push(`/dashboard/job-post-preview/${job._id}`)}
-                                                className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#006c53] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
+                                                className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#a80202] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
                                             >
                                                 Details
                                             </Button>
@@ -154,7 +154,7 @@ const AdminUsersJobs = () => {
                                             </Button>
                                             <button
                                                 onClick={() => openDeleteModal('job', job._id)}
-                                                className={`text-gray-500 cursor-pointer hover:text-[#006c53] duration-300 flex items-center justify-center ${deletingJobId === job._id ? 'opacity-60 cursor-not-allowed' : ''}`}
+                                                className={`text-gray-500 cursor-pointer hover:text-[#a80202] duration-300 flex items-center justify-center ${deletingJobId === job._id ? 'opacity-60 cursor-not-allowed' : ''}`}
                                                 disabled={deletingJobId === job._id}
                                                 style={{ background: 'none', border: 'none', padding: 0 }}
                                             >
