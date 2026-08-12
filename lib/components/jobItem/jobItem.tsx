@@ -7,6 +7,7 @@ import locationIcon from "@/public/images/icons/location-grey.svg";
 import saveIcon from "@/public/images/icons/archive.svg";
 import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useClient } from "@/lib/hooks/useClient";
 import Skeleton from "@mui/material/Skeleton";
 import DateConverter from "../dateConverter/DateConverter";
@@ -84,7 +85,18 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 					}} className="flex flex-col gap-6 justify-center">
 
 						<div className="flex flex-col gap-6">
-							<h4 className="font-bold text-lg text-dark">{data?.jobTitle}</h4>
+							{/* A real anchor, not just the card's onClick: crawlers cannot
+							    follow a click handler, so without this the job pages are
+							    reachable only via the sitemap. */}
+							<h4 className="font-bold text-lg text-dark">
+								<Link
+									href={`/${slugify(data.jobTitle)}-${data._id}`}
+									className="text-inherit hover:underline"
+									onClick={(e) => e.stopPropagation()}
+								>
+									{data?.jobTitle}
+								</Link>
+							</h4>
 							<div className="max-w-[700px]">
 								{data?.description && isClient && (
 									<p
