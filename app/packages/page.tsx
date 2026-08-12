@@ -1,5 +1,5 @@
 "use client";
-import { PACKAGES, POST_PACKAGES_ACTIONS } from "@/lib/constant/constants";
+import { PACKAGES } from "@/lib/constant/constants";
 import { PackageType } from "@/lib/types/componentTypes";
 import { RootState } from "@/lib/store";
 import { setPackage } from "@/lib/features/packageSlice/packageSlice";
@@ -10,13 +10,11 @@ import Image from "next/image";
 import Link from "next/link";
 import packagesBg from "../../public/images/packageBg.svg";
 import PackagesCheckbox from "@/lib/components/packages/packagesCheckbox";
-import packagesImg from "../../public/images/pakagesImg.jpg";
 import packagesImg1 from "../../public/images/pakagesImg1.jpg";
 import packagesImg2 from "../../public/images/pakagesImg2.jpg";
 import packagesImg3 from "../../public/images/pakagesImg3.jpg";
 import packagesImg4 from "../../public/images/pakagesImg4.jpg";
 import PaymentContainer from "@/lib/components/payment/paymentContainer/paymentContainer";
-import PostJobActions from "@/lib/components/postJobActions/postJobActions";
 import styles from "./packagesPage.module.scss";
 import { useRouter } from "next/navigation";
 
@@ -32,15 +30,6 @@ const PackagesPage = () => {
 
     return (
         <section className={styles["packages_page"]}>
-            <div className={styles["about_contex"]}>
-                <div className={styles["about_contex__list"]}>
-                    <h1>Advantages</h1>
-                    <PostJobActions data={POST_PACKAGES_ACTIONS} color="black" />
-                </div>
-                <div className={styles["about_contex__image"]}>
-                    <Image src={packagesImg} width={600} height={400} alt="Package's Background" />
-                </div>
-            </div>
             <div className={styles["packages-page__wrapper"]}>
                 <label className={styles["components_head"]}>Select your package</label>
 
