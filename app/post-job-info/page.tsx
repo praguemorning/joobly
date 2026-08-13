@@ -41,16 +41,16 @@ const PostJobInfo = () => {
           <h4>Publish your vacancies and start receiving applications.</h4>
           <PostJobActions data={POST_JOB_ACTIONS_SECTION_1} image={checkMarkLight} color="white"/>
           {profile && jobPostPoints > 0 ? (
-              <Button onClick={()=>push("/post-job")} style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/images/icons/note.svg" hoverIcon="/images/icons/list-white.svg">
+              <Button onClick={()=>push("/post-job")} style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg" hoverIcon="/jobs/images/icons/list-white.svg">
                 Post a Job
               </Button>
           ) : profile && jobPostPoints === 0 ? (
-            <Button onClick={()=>push("/payment")} style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/images/icons/note.svg" hoverIcon="/images/icons/list-white.svg">
+            <Button onClick={()=>push("/payment")} style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg" hoverIcon="/jobs/images/icons/list-white.svg">
               Post a Job
             </Button>
           ) : (
             <Button onClick={() => postJobInfoMessage('To post a job you need to be logged in')} 
-            style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/images/icons/note.svg" hoverIcon="/images/icons/list-white.svg">
+            style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg" hoverIcon="/jobs/images/icons/list-white.svg">
                 Post a Job
             </Button>
           )}
@@ -65,8 +65,8 @@ const PostJobInfo = () => {
             listed automatically.</h4>
           <PostJobActions data={POST_JOB_ACTIONS_SECTION_2} image={checkMark} color="black"/>
           <Button 
-          style={{marginTop: "35px",maxWidth:"210px",width:"100%"}} className={`btn-secondary-search`} icon="/images/icons/note.svg"
-                  hoverIcon="/images/icons/list-white.svg">
+          style={{marginTop: "35px",maxWidth:"210px",width:"100%"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg"
+                  hoverIcon="/jobs/images/icons/list-white.svg">
             <Link href="/contact">Contact us</Link>
           </Button>
         </div>

@@ -323,3 +323,57 @@ body header.header .news {
     line-height: 1;
   }
 }
+
+// News opens the category row as a horizontal panel rather than a vertical
+// dropdown — there are nine categories, and a stacked list would run most of the
+// way down the viewport.
+//
+// Reuses the theme's own category markup, which is already in the DOM (hidden
+// above), so the categories stay in sync with WordPress.
+//
+// Desktop only. Below lg the categories are already reachable through the
+// theme's burger menu, which carries the same links.
+@media (min-width: 1024px) {
+  body header.header .news {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    padding: 16px 0;
+    background: #fff;
+    border-top: 1px solid #e3e4e8;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 8%);
+  }
+
+  // :has() lets the panel react to a hover deep inside the nav — the category
+  // row is a sibling of the nav, not a child of the News item, so no plain
+  // combinator reaches it. Where :has() is unsupported the panel simply never
+  // opens; the categories remain reachable from the news site itself.
+  body header.header:has(.jobs-news-link:hover) .news,
+  body header.header:has(.jobs-news-link:focus-within) .news,
+  body header.header .news:hover,
+  body header.header .news:focus-within {
+    display: block;
+  }
+
+  body header.header .news .container {
+    min-width: 0;
+    max-width: 1300px;
+  }
+
+  body header.header .news .news-top__lists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // The row's own Jobs link, pointing at the page you are already on.
+  body header.header .news .news-top__list:has(> a[href="/jobs"]) {
+    display: none;
+  }
+}

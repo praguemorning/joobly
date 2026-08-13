@@ -46,7 +46,10 @@
 	background: $secondary-color;
 	height: 46px;
 	width: 185px;
-	color: $dark;
+	// White, not $dark. This button was lime with dark text; recolouring the
+	// background to the Prague Morning accent left near-black on red, about a
+	// 2.5:1 contrast ratio.
+	color: $light;
 	gap: 8px;
 	transition: 200ms ease;
 

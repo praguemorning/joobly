@@ -233,7 +233,7 @@ const DetailsContainer = ({ data }: any) => {
 												<Button
 													style={{ width: "145px" }}
 													className={`btn-secondary-search`}
-													hoverIcon='/images/icons/list-white.svg'
+													hoverIcon='/jobs/images/icons/list-white.svg'
 												>
 													Apply Now
 												</Button>

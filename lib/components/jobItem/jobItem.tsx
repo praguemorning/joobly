@@ -134,7 +134,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							<div className="flex gap-2 mt-4 justify-end">
 								<Button
 									className="bg-[#cc0303] text-white  font-bold text-lg hover:bg-[#a80202] hover:text-white px-6 py-2 rounded-2xl flex gap-1 items-center duration-200"
-									hoverIcon="/images/icons/list-white.svg"
+									hoverIcon="/jobs/images/icons/list-white.svg"
 								>
 									<a target="_blank" href={data?.jobUrl} className="text-inherit">
 										Apply Now
