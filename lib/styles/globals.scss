@@ -293,3 +293,33 @@ p {
     overflow-y: auto;
   }
 }
+
+// The jobs pages keep only the top utility row of Prague Morning's header. The
+// logo row and the category nav are hidden, and the jobs bar carries a
+// "prague morning jobs" wordmark instead.
+//
+// Hidden rather than stripped out of the fetched markup: surgically editing
+// WordPress output is far more brittle than a stylesheet rule, and these are
+// duplicate links to the news site rather than content unique to this page.
+body header.header section.logo,
+body header.header .news {
+  display: none;
+}
+
+// The wordmark: the live Prague Morning asset, with "jobs" set in the accent.
+.jobs-wordmark {
+  text-decoration: none;
+
+  img {
+    height: 26px;
+    width: auto;
+    max-width: none;
+  }
+
+  span {
+    color: #cc0303;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1;
+  }
+}

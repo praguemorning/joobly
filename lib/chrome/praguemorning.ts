@@ -29,6 +29,8 @@ export interface SiteChrome {
 	adTags: string;
 	/** Search overlay the header buttons open; required by the theme JS. */
 	searchOverlay: string | null;
+	/** Prague Morning wordmark, reused in the jobs bar. */
+	logoSrc: string | null;
 }
 
 /**
@@ -66,6 +68,34 @@ function rewriteLegacyJobLinks(html: string | null): string | null {
 			.replace(/\starget=(["'])_blank\1/i, "")
 			.replace(/\srel=(["'])noopener\1/i, "");
 	});
+}
+
+/** The wordmark inside section.logo, so the jobs bar reuses the real asset. */
+function extractLogoSrc(html: string): string | null {
+	const section = html.indexOf('<section class="logo"');
+	if (section === -1) return null;
+	const src = html.slice(section, section + 800).match(/<img[^>]+src="([^"]+)"/i);
+	return src ? src[1] : null;
+}
+
+/**
+ * Adds News to the top utility menu. On praguemorning.cz it lives in the
+ * category row, which this section hides, so without this there would be no
+ * route back to the news site from the jobs pages.
+ */
+function addNewsLink(html: string | null): string | null {
+	if (!html) return html;
+	const marker = '<ul id="menu-menu" class="header-lists">';
+	// Guard on our own marker class, not on the text: the category row that
+	// this section hides already contains its own News link.
+	if (!html.includes(marker) || html.includes("jobs-news-link")) return html;
+	return html.replace(
+		marker,
+		marker +
+			'<li class="menu-item header-list jobs-news-link">' +
+			'<a class="header-link" href="https://praguemorning.cz/category/news/">News</a>' +
+			'</li>'
+	);
 }
 
 /** The homepage carries exactly one <header> and one <footer>. */
@@ -126,14 +156,15 @@ export async function getSiteChrome(): Promise<SiteChrome> {
 
 		const html = await res.text();
 		return {
-			header: rewriteLegacyJobLinks(extractElement(html, "header")),
+			header: addNewsLink(rewriteLegacyJobLinks(extractElement(html, "header"))),
 			footer: rewriteLegacyJobLinks(extractElement(html, "footer")),
 			adTags: extractAdTags(html),
 			searchOverlay: extractSearchOverlay(html),
+			logoSrc: extractLogoSrc(html),
 		};
 	} catch (error) {
 		// Never take the jobs section down because the main site is unreachable.
 		console.error("site chrome: could not load praguemorning.cz", error);
-		return { header: null, footer: null, adTags: "", searchOverlay: null };
+		return { header: null, footer: null, adTags: "", searchOverlay: null, logoSrc: null };
 	}
 }
