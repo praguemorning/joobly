@@ -11,7 +11,7 @@ import Button from "../button/button";
 import Link from "next/link";
 import LoginBtn from "../loginBtn/loginBtn";
 
-const TopHeader = () => {
+const TopHeader = ({ logoSrc }: { logoSrc?: string | null }) => {
 	const { data: session, status, update } = useSession();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const pathname = usePathname();
@@ -46,6 +46,15 @@ const TopHeader = () => {
 		<div className='header'>
 			<div className='header-top'>
 				<div className='search-post-group flex gap-2 -ml-3 xl:gap-12 items-center'>
+					{/* Prague Morning's own wordmark plus "jobs". The site header's logo
+					    row is hidden on these pages, so this is the section's identity —
+					    and the asset is the live one, not a copy that can drift. */}
+					{logoSrc && (
+						<Link href='/' className='jobs-wordmark flex items-baseline gap-1.5 shrink-0'>
+							<img src={logoSrc} alt='Prague Morning' />
+							<span>jobs</span>
+						</Link>
+					)}
 					{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					{/*hеader nav links*/}
 					{!isMenuOpen && (
