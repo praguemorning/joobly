@@ -313,7 +313,8 @@ body header.header .news {
   text-decoration: none;
 
   img {
-    height: 30px;
+    // .header carries zoom: 0.9, so the rendered height is ~0.9x this.
+    height: 40px;
     width: auto;
     max-width: none;
   }
