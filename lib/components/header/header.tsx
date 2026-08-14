@@ -1,7 +1,7 @@
 "use client"
 import "./header.scss";
 import { FaUser } from "react-icons/fa";
-import { MdContactMail, MdHome, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
+import { MdContactMail, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
 import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
 import { signOut, useSession } from 'next-auth/react';
@@ -57,10 +57,6 @@ const TopHeader = () => {
 					{/*hеader nav links*/}
 					{!isMenuOpen && (
 						<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
-							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
-								<MdHome className='w-5 h-5 package-image' />
-								<span className="text-nowrap">Home</span>
-							</Link>
 							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
 								<MdWork className='w-5 h-5 package-image' />
 								<span className="text-nowrap">Find a job</span>
@@ -133,14 +129,6 @@ const TopHeader = () => {
 				transition={{ duration: 0.3 }}
 			>
 				<nav className='mobile-nav-links flex flex-col space-y-6 mx-auto text-lg'>
-					<Link
-						href='/'
-						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#a80202]'}`}
-					>
-						<MdHome className='w-5 h-5 package-image' />
-						<span>Home</span>
-					</Link>
 					<Link
 						href='/'
 						onClick={toggleMenu}
