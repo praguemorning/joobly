@@ -10,7 +10,7 @@ const FavoriteJobPostItem = ({data}: any) => {
 
   async function handleDeleteClick() {
 
-    const res = await fetch('/api/favorite-jobs?_id=' + data._id, {
+    const res = await fetch('/jobs/api/favorite-jobs?_id=' + data._id, {
             method: 'DELETE',
         });
         if (res.ok) {

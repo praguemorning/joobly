@@ -25,8 +25,8 @@ const AdminUsersJobs = () => {
     useEffect(() => {
         async function fetchData() {
             setLoading(true);
-            const usersRes = await fetch('/api/admin/users');
-            const jobsRes = await fetch('/api/admin/jobs');
+            const usersRes = await fetch('/jobs/api/admin/users');
+            const jobsRes = await fetch('/jobs/api/admin/jobs');
             const usersData = await usersRes.json();
             const jobsData = await jobsRes.json();
             setUsers(usersData.users || []);
@@ -52,7 +52,7 @@ const AdminUsersJobs = () => {
         if (modalType === 'user' && pendingDeleteId) {
             setDeletingUserId(pendingDeleteId);
             closeModal();
-            const res = await fetch('/api/admin/users?_id=' + pendingDeleteId, {
+            const res = await fetch('/jobs/api/admin/users?_id=' + pendingDeleteId, {
                 method: 'DELETE',
             });
             if (res.ok) {
@@ -64,7 +64,7 @@ const AdminUsersJobs = () => {
         if (modalType === 'job' && pendingDeleteId) {
             setDeletingJobId(pendingDeleteId);
             closeModal();
-            const res = await fetch('/api/admin/jobs?_id=' + pendingDeleteId, {
+            const res = await fetch('/jobs/api/admin/jobs?_id=' + pendingDeleteId, {
                 method: 'DELETE',
             });
             if (res.ok) {

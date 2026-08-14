@@ -20,7 +20,7 @@ const PaymentContainer = ({props}: any) => {
 
 	async function handleSubmit() {
 		try {
-			const response = await fetch("/api/checkout", {
+			const response = await fetch("/jobs/api/checkout", {
 				method: "POST",
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify({
@@ -48,7 +48,7 @@ const PaymentContainer = ({props}: any) => {
 
 	//paypal logic
 	const createOrder = async () => {
-        const response = await fetch("/api/paypal/create-order", {
+        const response = await fetch("/jobs/api/paypal/create-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -64,7 +64,7 @@ const PaymentContainer = ({props}: any) => {
 
 
 	const orderRecord = async () => {
-		const response = await fetch("/api/paypal/order-record", {
+		const response = await fetch("/jobs/api/paypal/order-record", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -128,7 +128,7 @@ const PaymentContainer = ({props}: any) => {
 								fundingSource={undefined}
 								createOrder={createOrder}
 								onApprove={async (data) => {
-									const res = await fetch(`/api/paypal/capture-order`, {
+									const res = await fetch(`/jobs/api/paypal/capture-order`, {
 										method: "POST",
 										headers: { "Content-Type": "application/json" },
 										body: JSON.stringify({ orderId: data.orderID }),

@@ -38,7 +38,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 		toast.success("Job added to favorites");
 
 		try {
-			await fetch("/api/favorite-jobs", {
+			await fetch("/jobs/api/favorite-jobs", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -57,7 +57,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 		setIsFavorite(false);
 		toast.success("Job removed from favorites");
 		try {
-			await fetch(`/api/favorite-jobs?_id=${data._id}`, {
+			await fetch(`/jobs/api/favorite-jobs?_id=${data._id}`, {
 				method: "DELETE",
 			});
 		} catch (error) {

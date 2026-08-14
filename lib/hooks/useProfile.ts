@@ -11,7 +11,7 @@ export const useProfile = () => {
     const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {
         setLoading(true);
-        fetch('/api/profile').then(response => {
+        fetch('/jobs/api/profile').then(response => {
             response.json().then(data => {
                 setData(data);
                 setLoading(false);

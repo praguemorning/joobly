@@ -28,7 +28,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (userId) {
-      fetch(`/api/my-jobs/${userId}`)
+      fetch(`/jobs/api/my-jobs/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           setJobs(data);

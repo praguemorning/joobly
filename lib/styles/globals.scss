@@ -306,21 +306,16 @@ body header.header .news {
   display: none;
 }
 
-// The wordmark: the live Prague Morning asset, with "jobs" set in the accent.
+// The supplied "prague morning jobs" logo.
 .jobs-wordmark {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
 
   img {
-    height: 26px;
+    height: 30px;
     width: auto;
     max-width: none;
-  }
-
-  span {
-    color: #cc0303;
-    font-weight: 700;
-    font-size: 26px;
-    line-height: 1;
   }
 }
 
@@ -375,5 +370,24 @@ body header.header .news {
   // The row's own Jobs link, pointing at the page you are already on.
   body header.header .news .news-top__list:has(> a[href="/jobs"]) {
     display: none;
+  }
+}
+
+// Align the jobs bar with the site's content column. It ran to the viewport
+// edges while the header nav above and the footer below are both centred in a
+// 1300px column, so the logo and links sat noticeably further left than
+// everything else on the page.
+.jobs-app .header .header-top {
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (max-width: 768px) {
+  .jobs-app .header .header-top {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
