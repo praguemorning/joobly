@@ -1,3 +1,4 @@
+import { categoryMatches } from "@/lib/constant/jobCategories";
 import { Job } from "@/models/Job";
 import mongoose from "mongoose";
 import xlsx from "xlsx";
@@ -57,7 +58,14 @@ export async function GET(req: Request) {
 
   for (const key in query) {
     const value = query[key];
-    if (value && value !== "Any") {
+    if (!value || value === "Any") continue;
+
+    if (key === "jobCategory") {
+      // Records still carry legacy names ("HR" for "HR & Recruitment"), and the
+      // match below is exact, so expand to every value that means the same.
+      const matches = categoryMatches(value);
+      filter[key] = matches.length > 1 ? { $in: matches } : value;
+    } else {
       filter[key] = value;
     }
   }
