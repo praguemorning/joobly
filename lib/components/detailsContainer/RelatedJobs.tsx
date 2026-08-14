@@ -29,7 +29,7 @@ function RelatedJobs({companyName,currentJobId}: {companyName: string,currentJob
     // Fetch related jobs based on companyName
     if(companyName){
       const fetchRelatedJobs = async () => {
-          const res = await fetch(`/api/related-jobs/${companyName}`, {
+          const res = await fetch(`/jobs/api/related-jobs/${companyName}`, {
             next: { revalidate: 60 },
           });
           const resData = await res.json();

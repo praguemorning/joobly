@@ -29,8 +29,6 @@ export interface SiteChrome {
 	adTags: string;
 	/** Search overlay the header buttons open; required by the theme JS. */
 	searchOverlay: string | null;
-	/** Prague Morning wordmark, reused in the jobs bar. */
-	logoSrc: string | null;
 }
 
 /**
@@ -68,14 +66,6 @@ function rewriteLegacyJobLinks(html: string | null): string | null {
 			.replace(/\starget=(["'])_blank\1/i, "")
 			.replace(/\srel=(["'])noopener\1/i, "");
 	});
-}
-
-/** The wordmark inside section.logo, so the jobs bar reuses the real asset. */
-function extractLogoSrc(html: string): string | null {
-	const section = html.indexOf('<section class="logo"');
-	if (section === -1) return null;
-	const src = html.slice(section, section + 800).match(/<img[^>]+src="([^"]+)"/i);
-	return src ? src[1] : null;
 }
 
 /**
@@ -160,11 +150,10 @@ export async function getSiteChrome(): Promise<SiteChrome> {
 			footer: rewriteLegacyJobLinks(extractElement(html, "footer")),
 			adTags: extractAdTags(html),
 			searchOverlay: extractSearchOverlay(html),
-			logoSrc: extractLogoSrc(html),
 		};
 	} catch (error) {
 		// Never take the jobs section down because the main site is unreachable.
 		console.error("site chrome: could not load praguemorning.cz", error);
-		return { header: null, footer: null, adTags: "", searchOverlay: null, logoSrc: null };
+		return { header: null, footer: null, adTags: "", searchOverlay: null };
 	}
 }

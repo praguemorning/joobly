@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         setError(null);
         try {
-            const res = await fetch('/api/forgot-password', {
+            const res = await fetch('/jobs/api/forgot-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: data.email })

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const { header, footer, adTags, searchOverlay, logoSrc } = await getSiteChrome();
+    const { header, footer, adTags, searchOverlay } = await getSiteChrome();
 
     return (
         <html lang="en">
@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <ClientProviders>
                         {/* The jobs section's own nav, kept as a secondary bar
                             so Post a job / Packages / Login stay reachable. */}
-                        <TopHeader logoSrc={logoSrc} />
+                        <TopHeader />
                         {children}
                     </ClientProviders>
                 </div>

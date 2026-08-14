@@ -37,7 +37,7 @@ const ContactPage = () => {
 		setIsSubmitting(true);
 
 		try {
-			const response = await fetch('/api/contact', {
+			const response = await fetch('/jobs/api/contact', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

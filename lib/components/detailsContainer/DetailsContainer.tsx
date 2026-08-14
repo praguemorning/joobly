@@ -116,7 +116,7 @@ const DetailsContainer = ({ data }: any) => {
 
 		setIsFavorite(false);
 
-		const res = await fetch('/api/favorite-jobs?_id=' + data._id, {
+		const res = await fetch('/jobs/api/favorite-jobs?_id=' + data._id, {
 			method: 'DELETE',
 		});
 		if (res.ok) {
@@ -142,7 +142,7 @@ const DetailsContainer = ({ data }: any) => {
 		}
 
 		try {
-			const response = await fetch("/api/favorite-jobs", {
+			const response = await fetch("/jobs/api/favorite-jobs", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ jobId: data._id }),
