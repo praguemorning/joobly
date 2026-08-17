@@ -313,10 +313,21 @@ body header.header .news {
   text-decoration: none;
 
   img {
-    // .header carries zoom: 0.9, so the rendered height is ~0.9x this.
-    height: 60px;
+    // The wordmark is roughly 7.7:1, so height drives a lot of width — at 60px
+    // it measured 414px and pushed the row into horizontal overflow. Scaled
+    // down at narrower viewports for the same reason.
+    // .header carries zoom: 0.9, so rendered height is ~0.9x these.
+    height: 44px;
     width: auto;
     max-width: none;
+
+    @media (max-width: 1279px) {
+      height: 34px;
+    }
+
+    @media (max-width: 767px) {
+      height: 28px;
+    }
   }
 }
 

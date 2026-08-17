@@ -51,7 +51,7 @@ const TopHeader = () => {
 					{/* The section's identity: Prague Morning's logo row is hidden on
 					    these pages, so this stands in for it. */}
 					<Link href='/' className='jobs-wordmark shrink-0'>
-						<Image src={jobsLogo} alt='Prague Morning Jobs' height={60} priority />
+						<Image src={jobsLogo} alt='Prague Morning Jobs' height={44} priority />
 					</Link>
 					{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					{/*hеader nav links*/}

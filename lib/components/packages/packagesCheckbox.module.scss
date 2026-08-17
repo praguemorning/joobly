@@ -44,6 +44,12 @@
 	.packages-checkbox__image-label-wrapper {
 		display: flex;
 		align-items: center;
+
+		// "20 Job Postings" wrapped onto two lines once the count reached two
+		// digits; the label should stay on one.
+		label {
+			white-space: nowrap;
+		}
 	}
 
 	@media screen and (min-width: 300px) and (max-width: 1400px) {
