@@ -429,3 +429,29 @@ body header.header .news {
     margin-left: 0;
   }
 }
+
+// Nav icons must never absorb the row's overflow. They are flex items with the
+// default flex-shrink: 1 and no intrinsic minimum, so when the row was
+// over-constrained the browser collapsed them to 0px wide instead of
+// overflowing — the header looked like it fitted, and the icons had simply
+// vanished.
+.jobs-app .jobs-nav svg {
+  flex-shrink: 0;
+}
+
+// Above 1500px the jobs bar is allowed a wider column than the site's 1300px,
+// which is what buys room for the larger logo and text while keeping the icons.
+// It does mean the bar is slightly wider than the footer's column below it.
+@media (min-width: 1500px) {
+  .jobs-app .header .header-top {
+    max-width: 1500px;
+  }
+
+  .jobs-wordmark img {
+    height: 56px;
+  }
+
+  .jobs-app .jobs-nav {
+    font-size: 21px;
+  }
+}
