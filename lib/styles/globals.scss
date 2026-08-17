@@ -403,3 +403,29 @@ body header.header .news {
     padding-right: 20px;
   }
 }
+
+// Header sizing. The wordmark is ~7.7:1, so height drives width hard — at 60px
+// it measured 414px and overflowed the row. Sizes step up only where there is
+// room for them.
+@media (min-width: 1400px) {
+  .jobs-wordmark img {
+    height: 52px;
+  }
+
+  .jobs-app .jobs-nav {
+    font-size: 20px;
+  }
+}
+
+// Clear separation between the nav and the Contact us / Log in buttons. The two
+// groups sat 3px apart because the row was full; the tightened nav gaps above
+// are what pays for this.
+.jobs-app .header .header-top .post-btn-group {
+  margin-left: 40px;
+}
+
+@media (max-width: 1023px) {
+  .jobs-app .header .header-top .post-btn-group {
+    margin-left: 0;
+  }
+}

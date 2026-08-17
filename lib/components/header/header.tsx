@@ -47,7 +47,7 @@ const TopHeader = () => {
 	return (
 		<div className='header'>
 			<div className='header-top'>
-				<div className='search-post-group flex gap-2 -ml-3 xl:gap-12 items-center'>
+				<div className='search-post-group flex gap-2 -ml-3 xl:gap-10 items-center'>
 					{/* The section's identity: Prague Morning's logo row is hidden on
 					    these pages, so this stands in for it. */}
 					<Link href='/' className='jobs-wordmark shrink-0'>
@@ -56,7 +56,7 @@ const TopHeader = () => {
 					{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					{/*hеader nav links*/}
 					{!isMenuOpen && (
-						<div className="text-lg hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
+						<div className="jobs-nav text-lg hidden md:flex gap-6 lg:gap-4 xl:gap-8 text-baseBlack50">
 							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
 								<MdWork className='w-5 h-5 package-image' />
 								<span className="text-nowrap">Find a job</span>
