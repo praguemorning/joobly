@@ -1,16 +1,11 @@
 'use client'
 import styles from "./postJobInfo.module.scss";
 import bg from "@/public/images/postJobInfoBg.svg";
-import dashboard from "@/public/images/Dashboard.svg";
 //import chart from "@/public/images/Chart.svg";
-import greenDashboardMin from "@/public/images/greenDashboardMin.png";
-import greenDashboardMax from "@/public/images/greenDashboardMax.png";
-import employerLoptop from "@/public/images/employerLoptop.png";
 import checkMark from "@/public/images/icons/checkmark.svg";
 import checkMarkLight from "@/public/images/icons/checkmarkLight.svg";
 import PostJobActions from "@/lib/components/postJobActions/postJobActions";
 import Button from "@/lib/components/button/button";
-import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import { POST_JOB_ACTIONS_SECTION_1, POST_JOB_ACTIONS_SECTION_2 } from '@/lib/constant/constants';
@@ -55,10 +50,8 @@ const PostJobInfo = () => {
             </Button>
           )}
         </div>
-        <Image src={greenDashboardMax} width={565} alt="dashboard image"/>
       </div>
       <div className={styles["post-job-info__bottom"]}>
-        <Image src={employerLoptop} width={570} alt="employer"/>
         <div>
           <h1>Automatically index jobs </h1>
           <h4>Jobs already online? Save time and have them
