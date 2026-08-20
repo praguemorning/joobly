@@ -4,7 +4,7 @@ import {
   SALARY_RANGES as SALARY_BAND_RANGES,
   SALARY_NOT_SPECIFIED,
 } from "@/lib/constant/filters";
-import { parseSalary, isExpired } from "@/lib/seo/jobPosting";
+import { parseSalary } from "@/lib/seo/jobPosting";
 import { Job } from "@/models/Job";
 import mongoose from "mongoose";
 import xlsx from "xlsx";
@@ -110,16 +110,6 @@ export async function GET(req: Request) {
 
   let jobs = await Job.find(filter).sort({ createdAt: -1 });
 
-  // Expired postings are excluded from the public listing: three quarters of the
-  // collection has a closeDate in the past, so readers were scrolling mostly
-  // dead adverts, and Google penalises pages that surface expired listings.
-  //
-  // Filtered here rather than in the query because closeDate is stored as an
-  // ISO string, not a Date — a { $gte: new Date() } comparison matches nothing
-  // at all. includeExpired=true opts back in.
-  if (query.includeExpired !== "true") {
-    jobs = jobs.filter((job: any) => !isExpired(job));
-  }
 
   if (salaryBand) {
     jobs = jobs.filter((job: any) => matchesSalaryBand(job.salary, salaryBand as string));
