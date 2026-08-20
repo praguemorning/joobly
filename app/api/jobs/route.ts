@@ -106,6 +106,16 @@ export async function GET(req: Request) {
   }
 
   // Aplica el filtro correctamente
+  // Expired postings are excluded from the public listing. Three quarters of
+  // the collection has a closeDate in the past, so without this readers scroll
+  // mostly dead adverts — and Google penalises job pages that surface expired
+  // listings. includeExpired=true opts back in, for dashboards and any caller
+  // that needs the full set.
+  if (query.includeExpired !== "true") {
+    filter.closeDate = { $gte: new Date() };
+  }
+  delete filter.includeExpired;
+
   let jobs = await Job.find(filter).sort({ createdAt: -1 });
 
   if (salaryBand) {
