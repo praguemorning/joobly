@@ -98,6 +98,7 @@ export interface JobsPagePropsTypes {
 		jobTitle: string | undefined;
 		workType: string | undefined;
 		jobTime: string | undefined;
+		jobType: string | undefined;
 		jobCategory: string | undefined;
 		language: string | undefined;
 		location: string | undefined;
