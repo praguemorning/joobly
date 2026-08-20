@@ -23,7 +23,7 @@ export const JOB_CATEGORIES = [
 	"Construction & Real Estate",
 	"Administration",
 	"Retail",
-	"Other",
+
 ];
 
 /**

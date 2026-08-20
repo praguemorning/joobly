@@ -14,7 +14,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 		workType: searchParams?.workType ?? "",
 		jobCategory: searchParams?.jobCategory ?? "",
 		education: searchParams?.education ?? "",
-		jobTime: searchParams?.jobTime ?? "",
+		jobType: searchParams?.jobType ?? "",
 		salary: searchParams?.salary ?? "",
 		experienceLevel: searchParams?.experienceLevel ?? "",
 	};
