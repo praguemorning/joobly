@@ -22,7 +22,7 @@
     background: $input-bg;
     width: 100%;
     height: 56px;
-    :global .Mui-focused fieldset {
+    :global(.Mui-focused) fieldset {
       border:unset;
     }
     fieldset {
@@ -39,7 +39,7 @@
     background: #FFF;
     width: 100%;
     height: 56px;
-    :global .Mui-focused fieldset {
+    :global(.Mui-focused) fieldset {
       border:unset;
     }
     fieldset {

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { BACKEND_URL } from "@/lib/constant/constants";
 
 export async function getUserFavsJobs() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const cookie = cookieStore.toString();
 
     const res = await fetch(`${BACKEND_URL}/profile`, {
@@ -22,7 +22,7 @@ export async function getUserFavsJobs() {
 }
 
 export async function getUserInfo() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const cookie = cookieStore.toString();
 
     const res = await fetch(`${BACKEND_URL}/profile`, {

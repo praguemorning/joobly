@@ -10,9 +10,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	isRequired?: boolean;
 	helpIcon?: boolean;
 	placeholder?: string | undefined;
-	endIcon?: JSX.Element;
+	endIcon?: React.JSX.Element;
 	type?: string;
-	startIcon?: JSX.Element;
+	startIcon?: React.JSX.Element;
 	authInput?: boolean;
 	pattern?: any;
 	minLength?: any;

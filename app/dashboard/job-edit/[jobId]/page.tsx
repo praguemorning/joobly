@@ -3,9 +3,9 @@ import { getItem } from "@/lib/jobs/jobsUtils";
 import { extractId } from "@/lib/utils/extractId";
 
 interface EditJobPageProps {
-    params: {
+    params: Promise<{
         jobId: string;
-    };
+    }>;
 }
 
 export const metadata = {
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 export default async function EditJobPage({ params }: EditJobPageProps) {
-    const jobId = params.jobId;
+    const { jobId } = await params;
     const id = extractId(jobId);
     const initialJob = jobId ? await getItem(id) : null; 
 

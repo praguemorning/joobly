@@ -62,7 +62,7 @@ export async function processOptions(options: JobData[]) {
 }
 
 export async function getData(params: any) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const cookie = cookieStore.toString();
 
     const res = await fetch(`${BACKEND_URL}/jobs?${params}`, {
@@ -78,7 +78,7 @@ export async function getData(params: any) {
 }
 
 export async function getOptions() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const cookie = cookieStore.toString();
 
     const res = await fetch(`${BACKEND_URL}/job-options`, {

@@ -3,15 +3,15 @@ import { NextResponse } from 'next/server';
 import mongoose from "mongoose";
 
 
-export async function GET(request: Request, { params }: { params: { id: string }}) {
-    const { id } = params;
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }>}) {
+    const { id } = await params;
     await mongoose.connect(process.env.MONGODB_URI as string);
     const singleJob = await Job.findById(id);
     return NextResponse.json(singleJob);
   }
 
-export async function PUT (request: Request, { params }: { params: { id: string }}) {
-    const { id } = params;
+export async function PUT (request: Request, { params }: { params: Promise<{ id: string }>}) {
+    const { id } = await params;
     try {
         await mongoose.connect(process.env.MONGODB_URI as string);
         const data = await request.json();

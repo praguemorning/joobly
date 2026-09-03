@@ -93,8 +93,8 @@ export type ServicePlanType = {
 	price?: number | string;
 };
 export interface JobsPagePropsTypes {
-	params?: { value: string | number };
-	searchParams?: {
+	params?: Promise<{ value: string | number }>;
+	searchParams?: Promise<{
 		jobTitle: string | undefined;
 		workType: string | undefined;
 		jobTime: string | undefined;
@@ -106,7 +106,7 @@ export interface JobsPagePropsTypes {
 		experienceLevel: string | undefined;
 		salary: string | undefined;
 		salaryLabel: string | undefined;
-	};
+	}>;
 }
 export type PackageType = {
 	title: string;

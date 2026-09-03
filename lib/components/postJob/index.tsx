@@ -294,7 +294,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                         />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        <TextEditor control={control} label={"Job Description"} name='description' />
+                        <TextEditor control={control as any} label={"Job Description"} name='description' />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
                         <Input

@@ -5,7 +5,7 @@
   width: 100%;
   border-radius:8px;
 
-  :global .ck.ck-editor__editable_inline{
+  :global(.ck.ck-editor__editable_inline) {
   border-radius: 0px 0px 8px 8px !important;
   border: 1px solid #F3F3F3;
   background: #FFF;
@@ -15,7 +15,7 @@
       border: unset !important;
     }
 }
- :global .ck.ck-toolbar {
+ :global(.ck.ck-toolbar) {
    border-radius: 8px 8px 0px 0px !important;
    background: #F6F8F9;
    border: unset;
@@ -23,10 +23,10 @@
      border: unset !important;
    }
  }
-  :global .ck-powered-by-balloon{
+  :global(.ck-powered-by-balloon) {
     display: none !important;
   }
-  :global .ck.ck-editor__editable.ck-focused{
+  :global(.ck.ck-editor__editable.ck-focused) {
     border: unset !important;
     outline: 1px solid #F3F3F3 !important;
     box-shadow: unset !important;

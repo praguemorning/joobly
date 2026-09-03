@@ -34,11 +34,11 @@ const TextEditor = ({ control, name, label }: TextEditorProps) => (
               removePlugins: ['ListProperties'],
             }}
             data={field.value}
-            onChange={(event, editor) => {
+            onChange={(_event: unknown, editor: any) => {
               const data = editor.getData();
               field.onChange(data);
             }}
-            onReady={(editor) => {
+            onReady={(editor: any) => {
               const ui = editor.ui as any; 
               editor.ui
                 ?.getEditableElement()?.parentElement?.insertBefore(
