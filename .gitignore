@@ -29,6 +29,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# client secrets / credential dumps — never commit
+*.rtf
+pmj.rtf
+
 # vercel
 .vercel
 

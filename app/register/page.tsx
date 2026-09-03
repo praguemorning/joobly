@@ -18,6 +18,7 @@ import { AppDispatch } from "@/lib/store";
 import { useAppSelector } from "@/lib/hooks";
 import { createUser } from "@/actions/user.actions";
 import { signIn } from "next-auth/react";
+import toast, { Toaster } from "react-hot-toast";
 
 import { FaLinkedin } from "react-icons/fa";
 
@@ -50,14 +51,25 @@ const Register = () => {
 		const newUser = await createUser(userBody);
 
 		if (newUser) {
-			router.push("/register-success");
+			// Auto sign-in after registration so the user lands logged in
+			const result = await signIn("credentials", {
+				redirect: false,
+				email: values.email,
+				password: values.password,
+			});
+			if (result?.ok) {
+				router.push("/register-success");
+			} else {
+				// Account created but sign-in failed — let them log in manually
+				router.push("/login");
+			}
 		} else {
-			router.push("/not-found")
+			toast.error("Registration failed. The email may already be in use.");
 		}
-
 	};
 	return (
 		<section className={styles["login-page"]}>
+			<Toaster />
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className={styles["login-modal"]}>
 					<div className={styles["login--modal-header"]}>
@@ -66,7 +78,7 @@ const Register = () => {
 					</div>
 					<div className="flex flex-col gap-2">
 						<Button
-							onClick={() => signIn('google', { callbackUrl: '/' })}
+							onClick={() => signIn('google', { callbackUrl: '/jobs' })}
 							className={"btn-google-login-button"}
 							type="button"
 						>
@@ -74,7 +86,7 @@ const Register = () => {
 							Sign in with Google
 						</Button>
 						<Button
-							onClick={() => signIn('linkedin', { callbackUrl: '/' })}
+							onClick={() => signIn('linkedin', { callbackUrl: '/jobs' })}
 							className={"btn-linkedin-login-button"}
 							type="button"
 						>

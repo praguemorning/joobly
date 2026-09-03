@@ -18,6 +18,7 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import RelatedJobs from "./RelatedJobs";
+import LanguageFlags from "@/lib/components/languageFlags/LanguageFlags";
 
 const DetailsContainer = ({ data }: any) => {
 	const session = useSession();
@@ -228,6 +229,11 @@ const DetailsContainer = ({ data }: any) => {
 											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
 										/> */}
 										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
+										{data?.language && (
+											<div className="flex justify-center">
+												<LanguageFlags language={data.language} size="md" showLabel />
+											</div>
+										)}
 										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
 											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
 												<Button

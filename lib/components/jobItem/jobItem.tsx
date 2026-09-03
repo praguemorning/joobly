@@ -16,6 +16,7 @@ import DOMPurify from "dompurify";
 import { truncateText } from "@/lib/constant/helpers";
 import toast from "react-hot-toast";
 import { slugify } from "@/lib/utils/slugify";
+import LanguageFlags from "@/lib/components/languageFlags/LanguageFlags";
 
 interface JobItem {
 	data: JobData;
@@ -88,15 +89,18 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							{/* A real anchor, not just the card's onClick: crawlers cannot
 							    follow a click handler, so without this the job pages are
 							    reachable only via the sitemap. */}
-							<h4 className="font-bold text-lg text-dark">
-								<Link
-									href={`/${slugify(data.jobTitle)}-${data._id}`}
-									className="text-inherit hover:underline"
-									onClick={(e) => e.stopPropagation()}
-								>
-									{data?.jobTitle}
-								</Link>
-							</h4>
+							<div className="flex flex-wrap items-center gap-3">
+								<h4 className="font-bold text-lg text-dark">
+									<Link
+										href={`/${slugify(data.jobTitle)}-${data._id}`}
+										className="text-inherit hover:underline"
+										onClick={(e) => e.stopPropagation()}
+									>
+										{data?.jobTitle}
+									</Link>
+								</h4>
+								<LanguageFlags language={data.language} />
+							</div>
 							<div className="max-w-[700px]">
 								{data?.description && isClient && (
 									<p

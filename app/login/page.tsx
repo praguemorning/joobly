@@ -72,7 +72,7 @@ const Login = () => {
 					</div>
 					<div className="flex flex-col gap-2">
 						<Button
-							onClick={() => signIn('google', { callbackUrl: '/' })}
+							onClick={() => signIn('google', { callbackUrl: '/jobs' })}
 							className={"btn-google-login-button"}
 							type="button"
 						>
@@ -80,7 +80,7 @@ const Login = () => {
 							Sign in with Google
 						</Button>
 						<Button
-							onClick={() => signIn('linkedin', { callbackUrl: '/' })}
+							onClick={() => signIn('linkedin', { callbackUrl: '/jobs' })}
 							className={"btn-linkedin-login-button"}
 							type="button"
 						>
