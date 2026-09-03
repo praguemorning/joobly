@@ -1,5 +1,4 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .custom-input-container {
   width: 100%;
