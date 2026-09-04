@@ -1,8 +1,7 @@
 import React from "react";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import styles from "../input/input.module.scss";
-import { Autocomplete, TextField } from "@mui/material";
-import { Box } from "@mui/system";
+import { Autocomplete, Box, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import Image from "next/image";
 
