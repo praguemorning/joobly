@@ -8,9 +8,7 @@ import { parseSalary } from "@/lib/seo/jobPosting";
 import { Job } from "@/models/Job";
 import xlsx from "xlsx";
 
-import { authOptions } from "@/lib/authOptions";
-import { getServerSession } from "next-auth";
-import { User } from "@/models/User";
+import { getSessionUser } from "@/lib/auth/session";
 import { SALARY_RANGES } from "@/lib/constant/constants";
 import dbConnect from "@/database/dbConnect";
 
@@ -19,26 +17,22 @@ export async function POST(req: Request) {
   try {
     await dbConnect();
 
-    const session = await getServerSession(authOptions);
-    if (!session) throw 'you need to be logged in';
-    const email = session.user?.email;
-    const profileInfoDoc = await User.findOne({ email });
-
-    if (profileInfoDoc) {
-      const data = await req.json();
-      const job = await Job.create({
-        ...data,
-        advertisedDate: new Date().toISOString(),
-        jobPostAuthorId: profileInfoDoc._id,
-      });
-
-      profileInfoDoc.jobPostPoints -= 1;
-      await profileInfoDoc.save();
-
-      return Response.json(job);
-    } else {
-      throw 'you need to be logged in';
+    const profileInfoDoc = await getSessionUser();
+    if (!profileInfoDoc) {
+      return Response.json({ error: "you need to be logged in" }, { status: 401 });
     }
+
+    const data = await req.json();
+    const job = await Job.create({
+      ...data,
+      advertisedDate: new Date().toISOString(),
+      jobPostAuthorId: profileInfoDoc._id,
+    });
+
+    profileInfoDoc.jobPostPoints -= 1;
+    await profileInfoDoc.save();
+
+    return Response.json(job);
   } catch (error) {
     return Response.json({ error });
   }

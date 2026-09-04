@@ -2,7 +2,7 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 
 /**
  * Next.js 16 uses proxy.ts (same as former middleware.ts).
- * Public-by-default — NextAuth still handles login in Step 1.
+ * Public-by-default; Clerk auth is available via auth()/currentUser().
  */
 export default clerkMiddleware();
 

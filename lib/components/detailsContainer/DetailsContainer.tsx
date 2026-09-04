@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useClient } from "@/lib/hooks/useClient";
 import DateConverter from "../dateConverter/DateConverter";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
@@ -21,11 +21,10 @@ import RelatedJobs from "./RelatedJobs";
 import LanguageFlags from "@/lib/components/languageFlags/LanguageFlags";
 
 const DetailsContainer = ({ data }: any) => {
-	const session = useSession();
+	const { isSignedIn } = useAuth();
 	const profile = useProfile();
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 	const currentUrl = typeof window !== "undefined" ? encodeURIComponent(window.location.href) : "";
-	const userData = session.data?.user as UserTypes;
 	const { back } = useRouter();
 	const isClient = useClient();
 
@@ -131,7 +130,7 @@ const DetailsContainer = ({ data }: any) => {
 	async function addJobToFavorite() {
 		setIsFavorite(true);
 
-		if (!userData.email) {
+		if (!isSignedIn) {
 			toast((t) => (
 				<div className="flex flex-col gap-4 text-[#a80202] text-center items-center mb-2">
 					<span className="font-medium">
@@ -200,7 +199,7 @@ const DetailsContainer = ({ data }: any) => {
 											</div>
 										</div>
 									)}
-									{userData &&
+									{isSignedIn &&
 										<div className="flex justify-end gap-4 items-center">
 											<span onClick={isFavorite ? handleDeleteClick : addJobToFavorite}>
 												<Image

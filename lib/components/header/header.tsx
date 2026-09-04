@@ -4,7 +4,6 @@ import { FaUser } from "react-icons/fa";
 import { MdContactMail, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
 import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
-import { signOut, useSession } from 'next-auth/react';
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -15,23 +14,13 @@ import jobsLogo from "@/public/images/logos/prague-morning-jobs.svg";
 import LoginBtn from "../loginBtn/loginBtn";
 
 const TopHeader = () => {
-	const { status } = useSession();
-	const { isSignedIn: clerkSignedIn, isLoaded: clerkLoaded } = useAuth();
+	const { isSignedIn, isLoaded: clerkLoaded } = useAuth();
 	const { signOut: clerkSignOut } = useClerk();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const pathname = usePathname();
 
-	// Hybrid auth: Clerk (Google/LinkedIn) OR NextAuth (email) counts as signed in
-	const isAuthenticated =
-		clerkSignedIn === true || status === "authenticated";
-
 	const handleSignOut = async () => {
-		if (clerkSignedIn) {
-			await clerkSignOut({ redirectUrl: `${window.location.origin}/jobs` });
-		}
-		if (status === "authenticated") {
-			await signOut({ callbackUrl: "/" });
-		}
+		await clerkSignOut({ redirectUrl: `${window.location.origin}/jobs` });
 	};
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -100,7 +89,7 @@ const TopHeader = () => {
 					</Link>
 
 					<div className="hidden lgl:flex">
-						{!clerkLoaded ? null : isAuthenticated ? (
+						{!clerkLoaded ? null : isSignedIn ? (
 							<div className="flex gap-4 items-center">
 								<Link
 									href={'/dashboard'}
@@ -179,7 +168,7 @@ const TopHeader = () => {
 					</Link>
 				</nav>
 				<div className="mt-6 lgl:inline">
-					{!clerkLoaded ? null : isAuthenticated ? (
+					{!clerkLoaded ? null : isSignedIn ? (
 						<div className="flex gap-4 items-center">
 							<Link
 								href={'/dashboard'}

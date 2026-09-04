@@ -4,7 +4,7 @@ import { PackageType } from "@/lib/types/componentTypes";
 import { RootState } from "@/lib/store";
 import { setPackage } from "@/lib/features/packageSlice/packageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import Button from "@/lib/components/button/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 
 const PackagesPage = () => {
     const dispatch = useDispatch();
-    const user = useSession();
+    const { isSignedIn } = useAuth();
     const router = useRouter();
     const selectedPackage = useSelector((state: RootState) => state.packages.selectedPackage);
 
@@ -46,7 +46,7 @@ const PackagesPage = () => {
                     />
                 ))}
             </div>
-            {user?.data?.user ? (
+            {isSignedIn ? (
                 <PaymentContainer />
             ) : (
                 <div className="flex justify-start items-center">

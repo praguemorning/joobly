@@ -1,6 +1,6 @@
 "use client"
 import { Suspense, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import { redirect, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
@@ -15,11 +15,10 @@ import MyJobPostItem from "./MyJobPostItem";
 const DashboardPage = () => {
   const [jobs, setJobs] = useState<any>([]);
   const [showAllJobs, setShowAllJobs] = useState(false);
-  const session = useSession();
+  const { isSignedIn, isLoaded } = useAuth();
   const router = useRouter();
 
 
-  const { status } = session;
   const profile = useProfile();
 
   const { email, image, name, jobPostPoints } = (profile.data as UserProfileTypes);
@@ -64,7 +63,7 @@ const DashboardPage = () => {
     }
   }
 
-  if (status === "unauthenticated") {
+  if (isLoaded && !isSignedIn) {
     return redirect('/');
   }
 

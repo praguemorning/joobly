@@ -12,7 +12,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Checkbox, Divider, FormControlLabel } from "@mui/material";
 import { emailValidationRegexp } from "@/lib/constant/constants";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { useSignIn } from "@clerk/nextjs/legacy";
 import toast, { Toaster } from "react-hot-toast";
@@ -45,21 +44,18 @@ const Login = () => {
 
 	const [errorMessage, setErrorMessage] = useState<string>();
 	const [submitting, setSubmitting] = useState(false);
-	const { status } = useSession();
-	const { isLoaded: authLoaded, isSignedIn: clerkSignedIn } = useAuth();
+	const { isLoaded: authLoaded, isSignedIn } = useAuth();
 	const { isLoaded: signInLoaded, signIn, setActive } = useSignIn();
 	const clerk = useClerk();
 	const router = useRouter();
 
 	const clerkReady = authLoaded && signInLoaded;
-	const isAuthenticated =
-		clerkSignedIn === true || status === "authenticated";
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (isSignedIn) {
 			router.replace("/");
 		}
-	}, [isAuthenticated, router]);
+	}, [isSignedIn, router]);
 
 	/** Step 5 — Email/password via Clerk (legacy create + setActive). */
 	const onSubmit: SubmitHandler<Inputs> = async (values) => {
@@ -127,7 +123,6 @@ const Login = () => {
 		}
 	};
 
-	// Only wait on Clerk — do not block forever if NextAuth is slow/unavailable
 	if (!clerkReady) {
 		return (
 			<section className={styles["login-page"]}>
@@ -138,7 +133,7 @@ const Login = () => {
 		);
 	}
 
-	if (isAuthenticated) {
+	if (isSignedIn) {
 		return null;
 	}
 
