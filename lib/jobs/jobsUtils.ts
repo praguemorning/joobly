@@ -62,35 +62,47 @@ export async function processOptions(options: JobData[]) {
 }
 
 export async function getData(params: any) {
-    const cookieStore = await cookies();
-    const cookie = cookieStore.toString();
+    try {
+        const cookieStore = await cookies();
+        const cookie = cookieStore.toString();
 
-    const res = await fetch(`${BACKEND_URL}/jobs?${params}`, {
-        headers: {
-            cookie,
-        },
-        next: { revalidate: 60 },
-    });
-    if (!res.ok) {
-        throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
+        const res = await fetch(`${BACKEND_URL}/jobs?${params}`, {
+            headers: {
+                cookie,
+            },
+            next: { revalidate: 60 },
+        });
+        if (!res.ok) {
+            console.error(`Failed to fetch jobs: ${res.status} ${res.statusText}`);
+            return { length: 0, jobs: [] };
+        }
+        return res.json();
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        return { length: 0, jobs: [] };
     }
-    return res.json();
 }
 
 export async function getOptions() {
-    const cookieStore = await cookies();
-    const cookie = cookieStore.toString();
+    try {
+        const cookieStore = await cookies();
+        const cookie = cookieStore.toString();
 
-    const res = await fetch(`${BACKEND_URL}/job-options`, {
-        headers: {
-            cookie,
-        },
-        next: { revalidate: 60 },
-    });
-    if (!res.ok) {
-        throw new Error("Failed to fetch data");
+        const res = await fetch(`${BACKEND_URL}/job-options`, {
+            headers: {
+                cookie,
+            },
+            next: { revalidate: 60 },
+        });
+        if (!res.ok) {
+            console.error("Failed to fetch job options");
+            return [];
+        }
+        return res.json();
+    } catch (error) {
+        console.error("Error fetching job options:", error);
+        return [];
     }
-    return res.json();
 }
 
 export async function getItem(id: string) {

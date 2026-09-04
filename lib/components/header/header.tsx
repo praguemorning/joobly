@@ -100,7 +100,7 @@ const TopHeader = () => {
 					</Link>
 
 					<div className="hidden lgl:flex">
-						{!clerkLoaded && status === "loading" ? null : isAuthenticated ? (
+						{!clerkLoaded ? null : isAuthenticated ? (
 							<div className="flex gap-4 items-center">
 								<Link
 									href={'/dashboard'}
@@ -179,7 +179,7 @@ const TopHeader = () => {
 					</Link>
 				</nav>
 				<div className="mt-6 lgl:inline">
-					{!clerkLoaded && status === "loading" ? null : isAuthenticated ? (
+					{!clerkLoaded ? null : isAuthenticated ? (
 						<div className="flex gap-4 items-center">
 							<Link
 								href={'/dashboard'}

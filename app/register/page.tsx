@@ -10,19 +10,14 @@ import Person from "@mui/icons-material/Person";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Checkbox, Divider, FormControlLabel } from "@mui/material";
+import { Divider } from "@mui/material";
 import { emailValidationRegexp } from "@/lib/constant/constants";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/store";
-import { useAppSelector } from "@/lib/hooks";
-import { createUser } from "@/actions/user.actions";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs/legacy";
 import toast, { Toaster } from "react-hot-toast";
-
 import { FaLinkedin } from "react-icons/fa";
-
 
 interface Inputs {
 	name: string;
@@ -30,22 +25,56 @@ interface Inputs {
 	password: string;
 }
 
+interface VerifyInputs {
+	code: string;
+}
+
+function clerkErrorMessage(err: unknown, fallback: string): string {
+	const e = err as {
+		errors?: { message?: string; longMessage?: string }[];
+		message?: string;
+	};
+	return (
+		e?.errors?.[0]?.longMessage ||
+		e?.errors?.[0]?.message ||
+		e?.message ||
+		fallback
+	);
+}
+
+function splitName(fullName: string): { firstName: string; lastName?: string } {
+	const parts = fullName.trim().split(/\s+/).filter(Boolean);
+	if (parts.length === 0) return { firstName: "User" };
+	if (parts.length === 1) return { firstName: parts[0]! };
+	return {
+		firstName: parts[0]!,
+		lastName: parts.slice(1).join(" "),
+	};
+}
+
 const Register = () => {
 	const {
 		handleSubmit,
 		control,
-		resetField,
 		formState: { errors },
 	} = useForm<Inputs>();
 
+	const {
+		handleSubmit: handleVerifySubmit,
+		control: verifyControl,
+		formState: { errors: verifyErrors },
+	} = useForm<VerifyInputs>();
+
 	const [errorMessage, setErrorMessage] = useState<string>();
+	const [submitting, setSubmitting] = useState(false);
+	const [pendingVerification, setPendingVerification] = useState(false);
 	const router = useRouter();
-	const dispatch: AppDispatch = useDispatch();
-	const loading = useAppSelector((state) => state.user.loading);
 	const { status } = useSession();
-	const { isLoaded: clerkLoaded, isSignedIn: clerkSignedIn } = useAuth();
+	const { isLoaded: authLoaded, isSignedIn: clerkSignedIn } = useAuth();
+	const { isLoaded: signUpLoaded, signUp, setActive } = useSignUp();
 	const clerk = useClerk();
 
+	const clerkReady = authLoaded && signUpLoaded;
 	const isAuthenticated =
 		clerkSignedIn === true || status === "authenticated";
 
@@ -55,29 +84,69 @@ const Register = () => {
 		}
 	}, [isAuthenticated, router]);
 
-	const onSubmit: SubmitHandler<Inputs> = async (values: Inputs) => {
-		const userBody: Inputs = {
-			name: values.name,
-			email: values.email,
-			password: values.password,
-		};
-		const newUser = await createUser(userBody);
+	/** Step 5 — Email/password sign-up via Clerk (legacy create + setActive). */
+	const onSubmit: SubmitHandler<Inputs> = async (values) => {
+		setErrorMessage(undefined);
 
-		if (newUser) {
-			// Auto sign-in after registration so the user lands logged in
-			const result = await signIn("credentials", {
-				redirect: false,
-				email: values.email,
+		if (!signUp || !setActive) {
+			toast.error("Clerk is still loading. Wait a second and try again.");
+			return;
+		}
+
+		setSubmitting(true);
+		try {
+			const { firstName, lastName } = splitName(values.name);
+
+			await signUp.create({
+				emailAddress: values.email,
 				password: values.password,
+				firstName,
+				...(lastName ? { lastName } : {}),
 			});
-			if (result?.ok) {
+
+			if (signUp.status === "complete") {
+				await setActive({ session: signUp.createdSessionId });
 				router.push("/register-success");
-			} else {
-				// Account created but sign-in failed — let them log in manually
-				router.push("/login");
+				return;
 			}
-		} else {
-			toast.error("Registration failed. The email may already be in use.");
+
+			await signUp.prepareEmailAddressVerification({
+				strategy: "email_code",
+			});
+			setPendingVerification(true);
+			toast.success("Check your email for a verification code.");
+		} catch (err: unknown) {
+			const message = clerkErrorMessage(
+				err,
+				"Registration failed. The email may already be in use."
+			);
+			setErrorMessage(message);
+			toast.error(message);
+		} finally {
+			setSubmitting(false);
+		}
+	};
+
+	const onVerify: SubmitHandler<VerifyInputs> = async (values) => {
+		if (!signUp || !setActive) return;
+
+		setSubmitting(true);
+		try {
+			const result = await signUp.attemptEmailAddressVerification({
+				code: values.code,
+			});
+
+			if (result.status === "complete") {
+				await setActive({ session: result.createdSessionId });
+				router.push("/register-success");
+				return;
+			}
+
+			toast.error(`Sign-up incomplete (${result.status}). Try again.`);
+		} catch (err: unknown) {
+			toast.error(clerkErrorMessage(err, "Invalid verification code."));
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -89,7 +158,7 @@ const Register = () => {
 		e?.preventDefault();
 		e?.stopPropagation();
 
-		if (!clerkLoaded || !clerk.client) {
+		if (!authLoaded || !clerk.client) {
 			toast.error("Clerk is still loading. Wait a second and try again.");
 			return;
 		}
@@ -104,17 +173,16 @@ const Register = () => {
 			});
 		} catch (err: unknown) {
 			console.error(`${label} sign-in error:`, err);
-			const clerkErr = err as { errors?: { message?: string; longMessage?: string }[]; message?: string };
-			const message =
-				clerkErr?.errors?.[0]?.longMessage ||
-				clerkErr?.errors?.[0]?.message ||
-				clerkErr?.message ||
-				`${label} sign in failed. Is ${label} enabled in the Clerk Dashboard?`;
-			toast.error(message);
+			toast.error(
+				clerkErrorMessage(
+					err,
+					`${label} sign in failed. Is ${label} enabled in the Clerk Dashboard?`
+				)
+			);
 		}
 	};
 
-	if (!clerkLoaded || status === "loading") {
+	if (!clerkReady) {
 		return (
 			<section className={styles["login-page"]}>
 				<div className={styles["login-modal"]}>
@@ -128,32 +196,98 @@ const Register = () => {
 		return null;
 	}
 
+	if (pendingVerification) {
+		return (
+			<section className={styles["login-page"]}>
+				<Toaster />
+				<div className={styles["login-modal"]}>
+					<div className={styles["login--modal-header"]}>
+						<h1>Verify your email</h1>
+						<p>
+							Enter the code we sent to your email to finish creating your
+							account.
+						</p>
+					</div>
+					<form onSubmit={handleVerifySubmit(onVerify)}>
+						<div className={styles["login-modal-form"]}>
+							<Input
+								control={verifyControl}
+								startIcon={
+									<MailOutlineIcon
+										className={styles["login-modal-form-icon"]}
+									/>
+								}
+								authInput
+								errors={verifyErrors}
+								name={"code"}
+								label="Verification code"
+								isRequired
+								placeholder="123456"
+							/>
+							<div id="clerk-captcha" />
+							<Button
+								style={{ width: "100%" }}
+								className={"btn-primary"}
+								type="submit"
+								disabled={submitting}
+							>
+								{submitting ? <CircularProgress size={24} /> : "Verify email"}
+							</Button>
+							<button
+								type="button"
+								className="text-sm underline mt-2"
+								disabled={submitting}
+								onClick={async () => {
+									if (!signUp) return;
+									try {
+										await signUp.prepareEmailAddressVerification({
+											strategy: "email_code",
+										});
+										toast.success("New code sent.");
+									} catch (err: unknown) {
+										toast.error(clerkErrorMessage(err, "Could not resend code."));
+									}
+								}}
+							>
+								Resend code
+							</button>
+						</div>
+					</form>
+				</div>
+			</section>
+		);
+	}
+
 	return (
 		<section className={styles["login-page"]}>
 			<Toaster />
 			<div className={styles["login-modal"]}>
 				<div className={styles["login--modal-header"]}>
 					<h1>Hi, Welcome to Prague Morning</h1>
-					<p>Find your dream job with Prague Morning! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
+					<p>
+						Find your dream job with Prague Morning! We&apos;ll help you connect
+						with top employers and take the first step toward a successful
+						career.
+					</p>
 				</div>
 				<div className="flex flex-col gap-2">
 					<Button
 						onClick={(e) => signInWithOAuth("oauth_google", e)}
 						className={"btn-google-login-button"}
 						type="button"
-						disabled={!clerkLoaded}
+						disabled={!clerkReady}
 					>
-						<Image src={google} alt='' width={25} height={25} />
-						{clerkLoaded ? "Sign in with Google" : "Loading…"}
+						<Image src={google} alt="" width={25} height={25} />
+						Sign in with Google
 					</Button>
 					<Button
 						onClick={(e) => signInWithOAuth("oauth_linkedin_oidc", e)}
 						className={"btn-linkedin-login-button"}
 						type="button"
-						disabled={!clerkLoaded}
+						disabled={!clerkReady}
 					>
 						<FaLinkedin className="text-[#2873B3] w-7 h-7" />
-						{clerkLoaded ? "Sign in with LinkedIn" : "Loading…"}
+						Sign in with LinkedIn
 					</Button>
 				</div>
 				<div className={styles["login-modal-email-login"]}>
@@ -169,9 +303,9 @@ const Register = () => {
 							authInput
 							errors={errors}
 							name={"name"}
-							label='Name'
+							label="Name"
 							isRequired
-							placeholder='John Doe'
+							placeholder="John Doe"
 						/>
 						<Input
 							control={control}
@@ -179,13 +313,15 @@ const Register = () => {
 								value: emailValidationRegexp,
 								message: "Invalid email address",
 							}}
-							startIcon={<MailOutlineIcon className={styles["login-modal-form-icon"]} />}
+							startIcon={
+								<MailOutlineIcon className={styles["login-modal-form-icon"]} />
+							}
 							authInput
 							errors={errors}
 							name={"email"}
-							label='Email address'
+							label="Email address"
 							isRequired
-							placeholder='johndoe@mail.com'
+							placeholder="johndoe@mail.com"
 						/>
 						<Input
 							control={control}
@@ -193,20 +329,29 @@ const Register = () => {
 								value: 8,
 								message: "Password must have at least 8 characters",
 							}}
-							startIcon={<LockOutlinedIcon className={styles["login-modal-form-icon"]} />}
-							type='password'
+							startIcon={
+								<LockOutlinedIcon className={styles["login-modal-form-icon"]} />
+							}
+							type="password"
 							authInput
 							errors={errors}
 							name={"password"}
-							label='Password'
+							label="Password"
 							isRequired
-							placeholder='***********'
+							placeholder="***********"
 						/>
-						<Button style={{ width: "100%" }} className={"btn-primary"}>
+						{/* Clerk bot protection — must be in the DOM before signUp.create() */}
+						<div id="clerk-captcha" />
+						<Button
+							style={{ width: "100%" }}
+							className={"btn-primary"}
+							type="submit"
+							disabled={submitting}
+						>
 							{errorMessage ? (
 								<span className={styles["error-message"]}>{errorMessage}</span>
-							) : loading ? (
-								<CircularProgress />
+							) : submitting ? (
+								<CircularProgress size={24} />
 							) : (
 								"Register"
 							)}
@@ -214,7 +359,7 @@ const Register = () => {
 						<div className={styles["login-modal-form-create-account"]}>
 							<p>
 								Already have an account?{" "}
-								<a href='/login'>
+								<a href="/login">
 									<span>Log in</span>
 								</a>
 							</p>

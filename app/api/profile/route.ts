@@ -1,13 +1,13 @@
 import { User } from '@/models/User';
 import generateRandomString from "@/lib/utils/generateRandomString";
-import mongoose from "mongoose";
 import { hash } from "bcryptjs";
 import { authOptions } from '@/lib/authOptions';
 import { getServerSession } from 'next-auth';
+import dbConnect from "@/database/dbConnect";
 
 export async function POST(req: Request) {
   try {
-    await mongoose.connect(process.env.MONGODB_URI as string);
+    await dbConnect();
     const body = await req.json();
     const { email } = body;
 
@@ -36,13 +36,16 @@ export async function POST(req: Request) {
 
 
 export async function GET() {
-  mongoose.connect(process.env.MONGODB_URI as string);
-  const session = await getServerSession(authOptions);
-  const email = session?.user?.email;
-  if (!email) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(authOptions);
+    const email = session?.user?.email;
+    if (!email) {
+      return Response.json({});
+    }
+    return Response.json(await User.findOne({ email }));
+  } catch (error) {
+    console.error("Error fetching profile:", error);
     return Response.json({});
   }
-  return Response.json(
-    await User.findOne({ email })
-  )
 }
