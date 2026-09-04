@@ -1,4 +1,4 @@
-import { currentUser, type User as ClerkUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import dbConnect from "@/database/dbConnect";
 import { User, type UserProfileTypes } from "@/models/User";
 import type { Document } from "mongoose";
@@ -7,6 +7,8 @@ export type MongoUser = Document & UserProfileTypes & {
 	clerkId?: string;
 	admin?: boolean;
 };
+
+type ClerkUser = NonNullable<Awaited<ReturnType<typeof currentUser>>>;
 
 function primaryEmail(clerkUser: ClerkUser): string | null {
 	const primary = clerkUser.emailAddresses.find(

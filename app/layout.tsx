@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     const { header, footer, adTags, searchOverlay } = await getSiteChrome();
 
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 {/* Next hoists its own imported CSS above these tags, so the
                     theme stylesheet ends up last and wins ties on equal
@@ -48,7 +48,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <link rel="stylesheet" href={PM_ASSETS.reset} />
                 <link rel="stylesheet" href={PM_ASSETS.style} />
             </head>
-            <body>
+            {/* Clickio CMP mutates <body class> before React hydrates
+                (e.g. clickio-cmp-out-of-scope). suppressHydrationWarning
+                keeps that third-party attribute from erroring the tree. */}
+            <body suppressHydrationWarning>
                 {/* Consent platform and ad tags, in the live site's own order,
                     so these pages behave like every other page. Server-rendered
                     rather than injected client-side, which is what lets the
@@ -56,6 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {adTags && (
                     <div
                         style={{ display: 'contents' }}
+                        suppressHydrationWarning
                         dangerouslySetInnerHTML={{ __html: adTags }}
                     />
                 )}
@@ -65,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {header && (
                     <div
                         style={{ display: 'contents' }}
+                        suppressHydrationWarning
                         dangerouslySetInnerHTML={{ __html: header }}
                     />
                 )}
@@ -85,6 +90,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {footer && (
                     <div
                         style={{ display: 'contents' }}
+                        suppressHydrationWarning
                         dangerouslySetInnerHTML={{ __html: footer }}
                     />
                 )}
@@ -96,6 +102,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {searchOverlay && (
                     <div
                         style={{ display: 'contents' }}
+                        suppressHydrationWarning
                         dangerouslySetInnerHTML={{ __html: searchOverlay }}
                     />
                 )}

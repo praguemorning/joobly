@@ -1,4 +1,3 @@
-import { User } from "@/models/User";
 import { getSessionUser } from "@/lib/auth/session";
 import dbConnect from "@/database/dbConnect";
 
