@@ -2,7 +2,7 @@ import bronze from "@/public/images/logos/bronzePlan.svg";
 import { BASIC_PLAN_PERMISSIONS } from "@/lib/constant/constants";
 
 export type ButtonProps = {
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	style?: React.CSSProperties;
 	className?: string;
 	disabled?: boolean;

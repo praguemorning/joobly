@@ -73,7 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     is global, can be neutralised where its class names collide
                     with Tailwind's. See the .jobs-app rules in globals.scss. */}
                 <div className="jobs-app">
-                    {/* ClientProviders already supplies SessionProvider. */}
+                    {/* ClientProviders supplies ClerkProvider + NextAuth SessionProvider. */}
                     <ClientProviders>
                         {/* The jobs section's own nav, kept as a secondary bar
                             so Post a job / Packages / Login stay reachable. */}

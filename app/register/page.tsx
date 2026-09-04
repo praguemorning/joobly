@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./register.module.scss";
 import Button from "@/lib/components/button/button";
 import Image from "next/image";
@@ -17,7 +17,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useAppSelector } from "@/lib/hooks";
 import { createUser } from "@/actions/user.actions";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import toast, { Toaster } from "react-hot-toast";
 
 import { FaLinkedin } from "react-icons/fa";
@@ -41,6 +42,18 @@ const Register = () => {
 	const router = useRouter();
 	const dispatch: AppDispatch = useDispatch();
 	const loading = useAppSelector((state) => state.user.loading);
+	const { status } = useSession();
+	const { isLoaded: clerkLoaded, isSignedIn: clerkSignedIn } = useAuth();
+	const clerk = useClerk();
+
+	const isAuthenticated =
+		clerkSignedIn === true || status === "authenticated";
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.replace("/");
+		}
+	}, [isAuthenticated, router]);
 
 	const onSubmit: SubmitHandler<Inputs> = async (values: Inputs) => {
 		const userBody: Inputs = {
@@ -67,38 +80,88 @@ const Register = () => {
 			toast.error("Registration failed. The email may already be in use.");
 		}
 	};
+
+	/** Step 3–4 — Social via Clerk. Absolute URLs required with basePath /jobs. */
+	const signInWithOAuth = async (
+		strategy: "oauth_google" | "oauth_linkedin_oidc",
+		e?: React.MouseEvent
+	) => {
+		e?.preventDefault();
+		e?.stopPropagation();
+
+		if (!clerkLoaded || !clerk.client) {
+			toast.error("Clerk is still loading. Wait a second and try again.");
+			return;
+		}
+
+		const label = strategy === "oauth_google" ? "Google" : "LinkedIn";
+		try {
+			const origin = window.location.origin;
+			await clerk.client.signIn.authenticateWithRedirect({
+				strategy,
+				redirectUrl: `${origin}/jobs/sso-callback`,
+				redirectUrlComplete: `${origin}/jobs`,
+			});
+		} catch (err: unknown) {
+			console.error(`${label} sign-in error:`, err);
+			const clerkErr = err as { errors?: { message?: string; longMessage?: string }[]; message?: string };
+			const message =
+				clerkErr?.errors?.[0]?.longMessage ||
+				clerkErr?.errors?.[0]?.message ||
+				clerkErr?.message ||
+				`${label} sign in failed. Is ${label} enabled in the Clerk Dashboard?`;
+			toast.error(message);
+		}
+	};
+
+	if (!clerkLoaded || status === "loading") {
+		return (
+			<section className={styles["login-page"]}>
+				<div className={styles["login-modal"]}>
+					<p className="text-center py-8">Loading…</p>
+				</div>
+			</section>
+		);
+	}
+
+	if (isAuthenticated) {
+		return null;
+	}
+
 	return (
 		<section className={styles["login-page"]}>
 			<Toaster />
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className={styles["login-modal"]}>
-					<div className={styles["login--modal-header"]}>
-						<h1>Hi, Welcome to Prague Morning</h1>
-						<p>Find your dream job with Prague Morning! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
-					</div>
-					<div className="flex flex-col gap-2">
-						<Button
-							onClick={() => signIn('google', { callbackUrl: '/jobs' })}
-							className={"btn-google-login-button"}
-							type="button"
-						>
-							<Image src={google} alt='' width={25} height={25} />
-							Sign in with Google
-						</Button>
-						<Button
-							onClick={() => signIn('linkedin', { callbackUrl: '/jobs' })}
-							className={"btn-linkedin-login-button"}
-							type="button"
-						>
-							<FaLinkedin className="text-[#2873B3] w-7 h-7" />
-							Sign in with LinkedIn
-						</Button>
-					</div>
-					<div className={styles["login-modal-email-login"]}>
-						<Divider>
-							<p>or Register in with Email</p>
-						</Divider>
-					</div>
+			<div className={styles["login-modal"]}>
+				<div className={styles["login--modal-header"]}>
+					<h1>Hi, Welcome to Prague Morning</h1>
+					<p>Find your dream job with Prague Morning! We&apos;ll help you connect with top employers and take the first step toward a successful career.</p>
+				</div>
+				<div className="flex flex-col gap-2">
+					<Button
+						onClick={(e) => signInWithOAuth("oauth_google", e)}
+						className={"btn-google-login-button"}
+						type="button"
+						disabled={!clerkLoaded}
+					>
+						<Image src={google} alt='' width={25} height={25} />
+						{clerkLoaded ? "Sign in with Google" : "Loading…"}
+					</Button>
+					<Button
+						onClick={(e) => signInWithOAuth("oauth_linkedin_oidc", e)}
+						className={"btn-linkedin-login-button"}
+						type="button"
+						disabled={!clerkLoaded}
+					>
+						<FaLinkedin className="text-[#2873B3] w-7 h-7" />
+						{clerkLoaded ? "Sign in with LinkedIn" : "Loading…"}
+					</Button>
+				</div>
+				<div className={styles["login-modal-email-login"]}>
+					<Divider>
+						<p>or Register in with Email</p>
+					</Divider>
+				</div>
+				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className={styles["login-modal-form"]}>
 						<Input
 							control={control}
@@ -157,11 +220,11 @@ const Register = () => {
 							</p>
 						</div>
 					</div>
-					<div className={styles["login-modal-footer"]}>
-						<p>Prague Morning. All rights reserved.</p>
-					</div>
+				</form>
+				<div className={styles["login-modal-footer"]}>
+					<p>Prague Morning. All rights reserved.</p>
 				</div>
-			</form>
+			</div>
 		</section>
 	);
 };

@@ -18,7 +18,8 @@ const AUTH_BASE_PATH = "/jobs/api/auth";
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
 	return (
-		<ClerkProvider>
+		// `dynamic` is required on App Router so Clerk can initialize auth on the client.
+		<ClerkProvider dynamic>
 			<SessionProvider basePath={AUTH_BASE_PATH}>
 				<Provider store={store}>{children}</Provider>
 			</SessionProvider>
