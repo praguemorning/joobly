@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "tsc": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "db:local": "node scripts/setup-local-db.js",
     "dev:local": "concurrently \"npm run db:local\" \"npm run dev\"",
     "jobs:update-expiration": "node scripts/update-jobs-expiration.js"

@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       return new Response(JSON.stringify({ error: "No jobId provided" }), { status: 400 });
     }
 
-    const jobExists = user.favoriteJobs?.some((job: { _id: { toString: () => string } }) => job._id.toString() === jobId.toString());
+    const jobExists = user.favoriteJobs?.some(
+      (job) => job._id != null && String(job._id) === String(jobId)
+    );
     if (jobExists) {
       return new Response(JSON.stringify({ message: "Job already in favorites" }), { status: 400 });
     }
@@ -55,7 +57,10 @@ export async function DELETE(req: Request) {
       return new Response(JSON.stringify({ error: "You need to be logged in" }), { status: 401 });
     }
 
-    const jobIndex = user.favoriteJobs?.findIndex((job: { _id: { toString: () => string } }) => job._id.toString() === _id) ?? -1;
+    const jobIndex =
+      user.favoriteJobs?.findIndex(
+        (job) => job._id != null && String(job._id) === _id
+      ) ?? -1;
 
     if (jobIndex === -1) {
       return new Response(JSON.stringify({ error: "Job not found in favorites" }), { status: 404 });
