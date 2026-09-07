@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Button from '../button/button';
 import { MdDelete } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { isFeaturedActive } from '@/lib/jobs/featured';
 
 const AdminUsersJobs = () => {
     const router = useRouter();
@@ -13,6 +15,7 @@ const AdminUsersJobs = () => {
     const [expanded, setExpanded] = useState<{ [userId: string]: boolean }>({});
     const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
     const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
+    const [featuringJobId, setFeaturingJobId] = useState<string | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalType, setModalType] = useState<'user' | 'job' | null>(null);
     const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
@@ -46,6 +49,39 @@ const AdminUsersJobs = () => {
         setModalOpen(false);
         setModalType(null);
         setPendingDeleteId(null);
+    }
+
+    async function toggleFeatured(job: any) {
+        const nextFeatured = !isFeaturedActive(job);
+        setFeaturingJobId(job._id);
+        try {
+            const res = await fetch(`/jobs/api/jobs/${job._id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ isFeatured: nextFeatured }),
+            });
+            const updated = await res.json();
+            if (!res.ok) {
+                toast.error(updated.message || 'Could not update Featured status');
+                return;
+            }
+            setJobs((prev) =>
+                prev.map((j) =>
+                    j._id === job._id
+                        ? {
+                              ...j,
+                              isFeatured: updated.isFeatured,
+                              featuredUntil: updated.featuredUntil,
+                          }
+                        : j,
+                ),
+            );
+            toast.success(nextFeatured ? 'Job featured for 7 days' : 'Featured removed');
+        } catch {
+            toast.error('Could not update Featured status');
+        } finally {
+            setFeaturingJobId(null);
+        }
     }
 
     async function confirmDelete() {
@@ -138,8 +174,28 @@ const AdminUsersJobs = () => {
                                         <div>
                                             <span className="font-bold">{job.jobTitle}</span>
                                             <span className="ml-2 text-gray-500">({job.location})</span>
+                                            {isFeaturedActive(job) && (
+                                                <span className="ml-2 inline-flex items-center rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide bg-[#a80202] text-white">
+                                                    Featured
+                                                </span>
+                                            )}
                                         </div>
                                         <div className="flex gap-2 items-center">
+                                            <Button
+                                                onClick={() => toggleFeatured(job)}
+                                                className={`font-bold text-sm border-2 px-3 py-1 rounded-2xl flex items-center duration-200 ${
+                                                    isFeaturedActive(job)
+                                                        ? 'bg-white text-[#a80202] border-[#a80202] hover:bg-[#fff5f5]'
+                                                        : 'bg-[#a80202] text-white border-[#a80202] hover:bg-[#8a0202]'
+                                                } ${featuringJobId === job._id ? 'opacity-60 cursor-not-allowed' : ''}`}
+                                                disabled={featuringJobId === job._id}
+                                            >
+                                                {featuringJobId === job._id
+                                                    ? 'Saving...'
+                                                    : isFeaturedActive(job)
+                                                      ? 'Unfeature'
+                                                      : 'Feature'}
+                                            </Button>
                                             <Button
                                                 onClick={() => router.push(`/dashboard/job-post-preview/${job._id}`)}
                                                 className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#a80202] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"

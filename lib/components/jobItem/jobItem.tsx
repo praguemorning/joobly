@@ -17,6 +17,7 @@ import { truncateText } from "@/lib/constant/helpers";
 import toast from "react-hot-toast";
 import { slugify } from "@/lib/utils/slugify";
 import LanguageFlags from "@/lib/components/languageFlags/LanguageFlags";
+import { isFeaturedActive } from "@/lib/jobs/featured";
 
 interface JobItem {
 	data: JobData;
@@ -27,6 +28,7 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 	const { push } = useRouter();
 	const isClient = useClient();
 	const [isFavorite, setIsFavorite] = React.useState(favoriteJobIds?.includes(data._id!) ?? false);
+	const featured = isFeaturedActive(data);
 
 	const handleAddFavorite = async (e: React.MouseEvent) => {
 		if (!userLoggedIn) {
@@ -70,7 +72,14 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 	return (
 		<>
 			{isClient ? (
-				<div key={data?._id} className="flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
+				<div
+					key={data?._id}
+					className={`flex flex-col gap-6 justify-between rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200 ${
+						featured
+							? "bg-[#fff5f5] border-2 border-[#a80202] ring-1 ring-[#a80202]/20"
+							: "bg-light border border-transparent"
+					}`}
+				>
 					<div className="flex-shrink-0">
 						<img
 							src={data?.imageUrl || defaultJobLogo.src}
@@ -90,6 +99,11 @@ const JobItem = ({ data, favoriteJobIds, userLoggedIn }: JobItem) => {
 							    follow a click handler, so without this the job pages are
 							    reachable only via the sitemap. */}
 							<div className="flex flex-wrap items-center gap-3">
+								{featured && (
+									<span className="inline-flex items-center rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide bg-[#a80202] text-white">
+										Featured
+									</span>
+								)}
 								<h4 className="font-bold text-lg text-dark">
 									<Link
 										href={`/${slugify(data.jobTitle)}-${data._id}`}

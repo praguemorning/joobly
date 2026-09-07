@@ -28,6 +28,8 @@ export type JobTypes = {
   };
   views: number;
   jobPostAuthorId: string;
+  isFeatured?: boolean;
+  featuredUntil?: Date | null;
   createdAt?: Date;
 };
 
@@ -60,7 +62,10 @@ export const JobSchema = new Schema({
   },
   views: { type: Number, default: 0 },
   jobPostAuthorId: { type: String },
+  isFeatured: { type: Boolean, default: false },
+  featuredUntil: { type: Date, default: null },
 }, { timestamps: true });
 
+JobSchema.index({ isFeatured: 1, featuredUntil: 1, createdAt: -1 });
 
 export const Job = models?.Job || model<JobTypes>('Job', JobSchema);

@@ -57,6 +57,8 @@ export type JobData = {
 	},
 	views: number;
 	jobPostAuthorId: string;
+	isFeatured?: boolean;
+	featuredUntil?: Date | string | null;
 	createdAt?: Date;
 };
 

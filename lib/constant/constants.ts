@@ -697,6 +697,13 @@ export const POST_JOB_ACTIONS_SECTION_2 = [
 	"Focus on hiring while we handle the indexing for you!",
 ];
 
+/** Extra job-post points charged when Featured is selected at post time. */
+export const FEATURED_POINTS_COST = 1;
+/** Display price shown next to the Featured checkbox (CZK). */
+export const FEATURED_PRICE_CZK = 99;
+/** How long Featured stays active after purchase/activation. */
+export const FEATURED_DURATION_DAYS = 7;
+
 export const POST_PACKAGES_ACTIONS = [
 	"Save money by posting multiple vacancies at a reduced price",
 	"Benefit from additional promotion in our newsletter and social networks",

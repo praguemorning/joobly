@@ -9,7 +9,8 @@ import { Job } from "@/models/Job";
 import xlsx from "xlsx";
 
 import { getSessionUser } from "@/lib/auth/session";
-import { SALARY_RANGES } from "@/lib/constant/constants";
+import { FEATURED_POINTS_COST } from "@/lib/constant/constants";
+import { featuredUntilFromNow, sortJobsFeaturedFirst } from "@/lib/jobs/featured";
 import dbConnect from "@/database/dbConnect";
 
 
@@ -23,14 +24,36 @@ export async function POST(req: Request) {
     }
 
     const data = await req.json();
+    const wantsFeatured = Boolean(data.isFeatured);
+    const isAdminUser = Boolean(profileInfoDoc.admin);
+    const pointsNeeded = wantsFeatured ? 1 + FEATURED_POINTS_COST : 1;
+    const availablePoints = profileInfoDoc.jobPostPoints ?? 0;
+
+    if (!isAdminUser && availablePoints < pointsNeeded) {
+      return Response.json(
+        {
+          error: wantsFeatured
+            ? `Featured jobs need ${pointsNeeded} points (1 for the post + ${FEATURED_POINTS_COST} for Featured). You have ${availablePoints}.`
+            : "You need at least 1 job post point to publish.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const { isFeatured: _ignored, featuredUntil: _ignoredUntil, ...jobFields } = data;
+
     const job = await Job.create({
-      ...data,
+      ...jobFields,
       advertisedDate: new Date().toISOString(),
       jobPostAuthorId: profileInfoDoc._id,
+      isFeatured: wantsFeatured,
+      featuredUntil: wantsFeatured ? featuredUntilFromNow() : null,
     });
 
-    profileInfoDoc.jobPostPoints -= 1;
-    await profileInfoDoc.save();
+    if (!isAdminUser) {
+      profileInfoDoc.jobPostPoints = availablePoints - pointsNeeded;
+      await profileInfoDoc.save();
+    }
 
     return Response.json(job);
   } catch (error) {
@@ -108,6 +131,8 @@ export async function GET(req: Request) {
     if (salaryBand) {
       jobs = jobs.filter((job: any) => matchesSalaryBand(job.salary, salaryBand as string));
     }
+
+    jobs = sortJobsFeaturedFirst(jobs);
 
     return Response.json({ length: jobs.length, jobs });
   } catch (error) {
