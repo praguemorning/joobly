@@ -5,7 +5,7 @@ import { MdContactMail, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icon
 import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import Button from "../button/button";
 import Link from "next/link";
@@ -17,10 +17,31 @@ const TopHeader = () => {
 	const { isSignedIn, isLoaded: clerkLoaded } = useAuth();
 	const { signOut: clerkSignOut } = useClerk();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [signingOut, setSigningOut] = useState(false);
 	const pathname = usePathname();
 
-	const handleSignOut = async () => {
-		await clerkSignOut({ redirectUrl: `${window.location.origin}/jobs` });
+	const handleSignOut = async (e?: MouseEvent) => {
+		// Mobile drawer wraps content in an onClick that closes the menu;
+		// stop that from racing with sign-out.
+		e?.preventDefault();
+		e?.stopPropagation();
+		if (signingOut) return;
+
+		setSigningOut(true);
+		const home = `${window.location.origin}/jobs`;
+		try {
+			// Clear legacy NextAuth/local leftovers so the Log in button
+			// cannot flip back to the old UserMenu after Clerk signs out.
+			localStorage.removeItem("token");
+			localStorage.removeItem("user");
+			await clerkSignOut();
+		} catch (err) {
+			console.error("Sign out failed:", err);
+		} finally {
+			// Hard navigation is more reliable than Clerk's soft redirect
+			// behind the Cloudflare Worker / basePath setup.
+			window.location.assign(home);
+		}
 	};
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -97,11 +118,14 @@ const TopHeader = () => {
 								px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<FaUser className="text-black w-7 h-7 cursor-pointer" />
 								</Link>
-								<div
-									onClick={() => void handleSignOut()}
-									className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
-									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
-								</div>
+								<button
+									type="button"
+									aria-label="Log out"
+									disabled={signingOut}
+									onClick={(e) => void handleSignOut(e)}
+									className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300 disabled:opacity-60">
+									<RiDoorOpenFill className="text-black w-10 h-10" />
+								</button>
 							</div>
 						) : (
 							<LoginBtn />
@@ -176,11 +200,14 @@ const TopHeader = () => {
 							px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<FaUser className="text-black w-7 h-7 cursor-pointer" />
 							</Link>
-							<div
-								onClick={() => void handleSignOut()}
-								className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
-								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
-							</div>
+							<button
+								type="button"
+								aria-label="Log out"
+								disabled={signingOut}
+								onClick={(e) => void handleSignOut(e)}
+								className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300 disabled:opacity-60">
+								<RiDoorOpenFill className="text-black w-10 h-10" />
+							</button>
 						</div>
 					) : (
 						<LoginBtn />
