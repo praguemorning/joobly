@@ -1,5 +1,4 @@
-@import "@/lib/styles/mixins.scss";
-@import "@/lib/styles/variables.scss";
+@use '@/lib/styles/mixins' as *;
 
 .post-job-page {
 	@include flex-col-center;

@@ -1,9 +1,10 @@
+@use './mixins' as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import './mixins';
-@import './variables';
+
 
 .no-arrows::-webkit-outer-spin-button,
 .no-arrows::-webkit-inner-spin-button {
@@ -51,14 +52,119 @@
 
 html {
   text-size-adjust: none;
-  height: 100%;
+  // min-height, not height: a fixed 100% caps the sticky containing block at
+  // one viewport, so the theme's position:sticky header scrolls away instead of
+  // staying pinned.
+  min-height: 100%;
 }
 
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  height:100%;
+  // Matches praguemorning.cz, which renders in Poppins. Set here rather than as
+  // a class on <body>: a class outranks the theme's element selectors and would
+  // override the theme's own typography everywhere.
+  font-family: 'Poppins', sans-serif;
+  min-height: 100%;
   padding: 0;
+  // Neither html nor body declared a background, so browsers set to a dark
+  // colour scheme painted their own dark canvas behind the page — light text
+  // and white cards on near-black. Explicit and matching Prague Morning.
+  background-color: #fff;
+  color: #222;
+}
+
+// Full-bleed footer: the theme centres the dark panel in a 1300px .container,
+// so it reads as a floating box. Let the background span the viewport while the
+// content stays centred and readable.
+//
+// This also clears the theme's `.container { min-width: 932px }`, which would
+// otherwise force horizontal overflow on phones — the .jobs-app override does
+// not reach here, because the footer sits outside that wrapper.
+footer.footer > .container {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  // The theme's own footer spacing. Going full-bleed must not drop it, or the
+  // content sits flush against the viewport edges.
+  padding: 73px 50px 60px;
+}
+
+@media (max-width: 768px) {
+  footer.footer > .container {
+    padding: 48px 20px 40px;
+  }
+}
+
+footer.footer .footer-inner {
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// The theme's headerScrollBehavior() adds .unpinned on scroll down, which
+// slides the header out of view via translateY(-100%). That code never runs on
+// praguemorning.cz itself — its main.js is never executed — so the header there
+// is permanently pinned. Keep the same behaviour here rather than introducing a
+// hide-on-scroll the rest of the site does not have.
+//
+// `body` prefix for specificity: Next hoists its own CSS above the theme
+// <link>, so the theme wins ties against a bare .header.unpinned.
+body .header.unpinned {
+  -webkit-transform: none;
+  transform: none;
+}
+
+// Prague Morning's theme stylesheet is global, and two of its class names mean
+// something different in Tailwind. Neutralised for this app's markup only, so
+// the theme's own header, footer and search overlay keep their behaviour.
+.jobs-app {
+  // Theme: `.hidden { opacity: 0 }`. Tailwind's `.hidden` only sets
+  // `display: none`, so the common `hidden md:flex` pattern stayed laid out but
+  // fully transparent — this is what made the jobs nav render as an empty bar.
+  // Elements Tailwind really is hiding are still display:none, so this is safe.
+  .hidden {
+    opacity: 1;
+    z-index: auto;
+  }
+
+  // Theme: `.header { position: sticky; top: 0 }`. The jobs nav bar reuses that
+  // class name, so it pinned itself to the top too — landing on top of Prague
+  // Morning's own header, which is already pinned there at the same z-index.
+  // Only the site header should stick.
+  .header {
+    position: static;
+  }
+
+  // Theme: `.container { min-width: 932px }`. The listing uses
+  // `container mx-auto`, so that floor forces horizontal overflow on phones.
+  .container {
+    min-width: 0;
+  }
+}
+
+// Prague Morning's theme stylesheet is loaded globally and styles `.header`.
+// The jobs bar wrapper uses that same class name, so it inherited the theme's
+// white text and became invisible against a white background. Re-assert the
+// app's own colour inside the jobs bar only.
+//
+// This is a class-name collision, not a one-off: any generic name shared with
+// the theme (`.container`, `.footer`, ...) can collide the same way. The
+// durable fix is to namespace this app's class names.
+.header-top {
+  color: #222;
+
+  // Not `inherit`: the nav container carries text-baseBlack50 (#54555e), which
+  // against the white bar is roughly a 2:1 contrast ratio — well under the
+  // 4.5:1 minimum, and in practice the links read as an empty bar. Set an
+  // explicit readable colour instead of inheriting that.
+  a {
+    color: #222;
+
+    &:hover {
+      color: #a80202; // the app's existing accent
+    }
+  }
 }
 
 img, picture, video, canvas, svg {
@@ -96,7 +202,7 @@ strong {
   font-size: 40px;
   font-weight: 700;
   line-height: 56.96px;
-  color: #1D2124;
+  color: #171821;
 }
 
 p {
@@ -162,15 +268,191 @@ p {
 }
 
 
-.header-background-line {
-  background: url('/images/header-bg.svg') $secondary-color no-repeat;
-  height: 55px;
-  max-height: 55px;
-  width: 100%;
-}
 
 
 .secondary-gradient-hover:hover {
-   border-color: linear-gradient(90deg, #c7ff47 0%, #96e6a1 100%);
+   border-color: linear-gradient(90deg, #cc0303 0%, #a80202 100%);
   
+}
+// Keep the job filters in view while scrolling the results, which run to tens
+// of thousands of pixels.
+//
+// Desktop only: below lg the panel stacks above the list, where pinning it
+// would eat most of the viewport. `align-self: flex-start` is required — as a
+// flex child it would otherwise stretch to the container's full height, and a
+// sticky element that is already as tall as its container never moves.
+//
+// The offset clears Prague Morning's pinned header (~149px) plus a gap, and the
+// max-height keeps the panel scrollable on short viewports instead of having
+// its lower filters cut off.
+@media (min-width: 1024px) {
+  .jobs-filter-panel {
+    position: sticky;
+    top: 165px;
+    align-self: flex-start;
+    max-height: calc(100vh - 185px);
+    overflow-y: auto;
+  }
+}
+
+// The jobs pages keep only the top utility row of Prague Morning's header. The
+// logo row and the category nav are hidden, and the jobs bar carries a
+// "prague morning jobs" wordmark instead.
+//
+// Hidden rather than stripped out of the fetched markup: surgically editing
+// WordPress output is far more brittle than a stylesheet rule, and these are
+// duplicate links to the news site rather than content unique to this page.
+body header.header section.logo,
+body header.header .news {
+  display: none;
+}
+
+// The supplied "prague morning jobs" logo.
+.jobs-wordmark {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+
+  img {
+    // The wordmark is roughly 7.7:1, so height drives a lot of width — at 60px
+    // it measured 414px and pushed the row into horizontal overflow. Scaled
+    // down at narrower viewports for the same reason.
+    // .header carries zoom: 0.9, so rendered height is ~0.9x these.
+    height: 44px;
+    width: auto;
+    max-width: none;
+
+    @media (max-width: 1279px) {
+      height: 34px;
+    }
+
+    @media (max-width: 767px) {
+      height: 28px;
+    }
+  }
+}
+
+// News opens the category row as a horizontal panel rather than a vertical
+// dropdown — there are nine categories, and a stacked list would run most of the
+// way down the viewport.
+//
+// Reuses the theme's own category markup, which is already in the DOM (hidden
+// above), so the categories stay in sync with WordPress.
+//
+// Desktop only. Below lg the categories are already reachable through the
+// theme's burger menu, which carries the same links.
+@media (min-width: 1024px) {
+  body header.header .news {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    padding: 16px 0;
+    background: #fff;
+    border-top: 1px solid #e3e4e8;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 8%);
+  }
+
+  // :has() lets the panel react to a hover deep inside the nav — the category
+  // row is a sibling of the nav, not a child of the News item, so no plain
+  // combinator reaches it. Where :has() is unsupported the panel simply never
+  // opens; the categories remain reachable from the news site itself.
+  body header.header:has(.jobs-news-link:hover) .news,
+  body header.header:has(.jobs-news-link:focus-within) .news,
+  body header.header .news:hover,
+  body header.header .news:focus-within {
+    display: block;
+  }
+
+  body header.header .news .container {
+    min-width: 0;
+    max-width: 1300px;
+  }
+
+  body header.header .news .news-top__lists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // The row's own Jobs link, pointing at the page you are already on.
+  body header.header .news .news-top__list:has(> a[href="/jobs"]) {
+    display: none;
+  }
+}
+
+// Align the jobs bar with the site's content column. It ran to the viewport
+// edges while the header nav above and the footer below are both centred in a
+// 1300px column, so the logo and links sat noticeably further left than
+// everything else on the page.
+.jobs-app .header .header-top {
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (max-width: 768px) {
+  .jobs-app .header .header-top {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+// Header sizing. The wordmark is ~7.7:1, so height drives width hard — at 60px
+// it measured 414px and overflowed the row. Sizes step up only where there is
+// room for them.
+@media (min-width: 1400px) {
+  .jobs-wordmark img {
+    height: 52px;
+  }
+
+  .jobs-app .jobs-nav {
+    font-size: 20px;
+  }
+}
+
+// Clear separation between the nav and the Contact us / Log in buttons. The two
+// groups sat 3px apart because the row was full; the tightened nav gaps above
+// are what pays for this.
+.jobs-app .header .header-top .post-btn-group {
+  margin-left: 40px;
+}
+
+@media (max-width: 1023px) {
+  .jobs-app .header .header-top .post-btn-group {
+    margin-left: 0;
+  }
+}
+
+// Nav icons must never absorb the row's overflow. They are flex items with the
+// default flex-shrink: 1 and no intrinsic minimum, so when the row was
+// over-constrained the browser collapsed them to 0px wide instead of
+// overflowing — the header looked like it fitted, and the icons had simply
+// vanished.
+.jobs-app .jobs-nav svg {
+  flex-shrink: 0;
+}
+
+// Above 1500px the jobs bar is allowed a wider column than the site's 1300px,
+// which is what buys room for the larger logo and text while keeping the icons.
+// It does mean the bar is slightly wider than the footer's column below it.
+@media (min-width: 1500px) {
+  .jobs-app .header .header-top {
+    max-width: 1500px;
+  }
+
+  .jobs-wordmark img {
+    height: 56px;
+  }
+
+  .jobs-app .jobs-nav {
+    font-size: 21px;
+  }
 }

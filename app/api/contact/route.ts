@@ -23,11 +23,11 @@ export async function POST(request: NextRequest) {
         });
 
         const mailOptions = {
-            from: '"Joobly Contact Form" <info@praguemorning.cz>',
+            from: '"Prague Morning Contact Form" <info@praguemorning.cz>',
             to: process.env.EMAIL_TO,
             subject: `New contact message from ${firstName} ${lastName}`,
             html: `
-        <h2>New Contact Message - Joobly</h2>
+        <h2>New Contact Message - Prague Morning</h2>
         <p><strong>Name:</strong> ${firstName} ${lastName}</p>
         <p><strong>Company:</strong> ${companyName}</p>
         <p><strong>Email:</strong> ${email}</p>
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
           ${message}
         </div>
         <hr>
-        <p><small>This message was sent from the Joobly contact form</small></p>
+        <p><small>This message was sent from the Prague Morning contact form</small></p>
       `,
             replyTo: email,
         };

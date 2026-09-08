@@ -14,7 +14,7 @@ const MyJobPostItem = ({ data }: any) => {
 
   async function handleDeleteClick() {
 
-    const res = await fetch('/api/my-jobs?_id=' + data._id, {
+    const res = await fetch('/jobs/api/my-jobs?_id=' + data._id, {
       method: 'DELETE',
     });
     if (res.ok) {
@@ -28,7 +28,7 @@ const MyJobPostItem = ({ data }: any) => {
     <div className="w-full flex flex-col gap-6 justify-between bg-light rounded-lg mb-4 shadow-lg p-6 xl:flex-row lg:gap-8 cursor-pointer hover:shadow-xl duration-200">
       <div className="flex flex-col gap-6 cursor-pointer" onClick={() => {
             const slug = slugify(data.jobTitle);
-            router.push(`/jobs/${slug}-${data._id}`);
+            router.push(`/${slug}-${data._id}`);
         }}>
         <h3 className="text-lg font-bold text-gray-800">{data?.jobTitle}</h3>
         <p className="max-w-[800px]"
@@ -39,7 +39,7 @@ const MyJobPostItem = ({ data }: any) => {
         <div className="flex gap-2 items-center justify-between">
           <Button
             onClick={() => router.push(`/dashboard/job-edit/${data._id}`)}
-            className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#006c53] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
+            className="bg-gray-200 text-gray-500 font-bold text-sm border-2 hover:bg-white hover:border-[#a80202] hover:text-black px-3 py-1 rounded-2xl flex items-center duration-200"
 
           >
             <MdEdit />

@@ -1,21 +1,27 @@
 "use client"
 import "./header.scss";
 import { FaUser } from "react-icons/fa";
-import { MdContactMail, MdHome, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
+import { MdContactMail, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
 import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
-import { signOut, useSession } from 'next-auth/react';
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Button from "../button/button";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import jobsLogo from "@/public/images/logos/prague-morning-jobs.svg";
 import LoginBtn from "../loginBtn/loginBtn";
 
 const TopHeader = () => {
-	const { data: session, status, update } = useSession();
+	const { isSignedIn, isLoaded: clerkLoaded } = useAuth();
+	const { signOut: clerkSignOut } = useClerk();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const pathname = usePathname();
+
+	const handleSignOut = async () => {
+		await clerkSignOut({ redirectUrl: `${window.location.origin}/jobs` });
+	};
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -28,45 +34,35 @@ const TopHeader = () => {
 		open: {
 			top: 8,
 			rotate: 45,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		},
 		middleHidden: { opacity: 0 },
 		closeTop: {
 			top: 0,
 			rotate: 0,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		},
 		closeBottom: {
 			top: 16,
 			rotate: 0,
-			backgroundColor: "#006c53",
+			backgroundColor: "#a80202",
 		}
 	};
 
 	return (
 		<div className='header'>
 			<div className='header-top'>
-				<div className='search-post-group flex gap-2 -ml-3 xl:gap-12 items-center'>
-					<div className='search-group'>
-						<Link href={"/"}>
-							<Image
-								src={"/images/logos/logo-joobly.svg"}
-								alt='search'
-								className='header-logo'
-								width={200}
-								height={200}
-							/>
-						</Link>
-						{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
-					</div>
+				<div className='search-post-group flex gap-2 -ml-3 xl:gap-10 items-center'>
+					{/* The section's identity: Prague Morning's logo row is hidden on
+					    these pages, so this stands in for it. */}
+					<Link href='/' className='jobs-wordmark shrink-0'>
+						<Image src={jobsLogo} alt='Prague Morning Jobs' height={44} priority />
+					</Link>
+					{/*<input type="text" className='header-search' placeholder='Company, Job Title...' />*/}
 					{/*hеader nav links*/}
 					{!isMenuOpen && (
-						<div className="text-sm xl:text-base hidden md:flex gap-6 lg:gap-2 xl:gap-12 text-baseBlack50">
+						<div className="jobs-nav text-lg hidden md:flex gap-6 lg:gap-4 xl:gap-8 text-baseBlack50">
 							<Link href='/' className={`flex items-center gap-1 ${pathname === '/' && 'text-black'}`}>
-								<MdHome className='w-5 h-5 package-image' />
-								<span className="text-nowrap">Home</span>
-							</Link>
-							<Link href='/jobs' className={`flex items-center gap-1 ${pathname === '/jobs' && 'text-black'}`}>
 								<MdWork className='w-5 h-5 package-image' />
 								<span className="text-nowrap">Find a job</span>
 							</Link>
@@ -92,27 +88,18 @@ const TopHeader = () => {
 						</Button>
 					</Link>
 
-					<Link href={"/post-resume"}>
-						<Button
-							style={{ width: "200px", height: "62px", borderRadius: "18px", gap: "10px" }}
-							className={`btn-green-outlined`}
-						>
-							<MdAdd className="w-6 h-6" />
-							Post your resume
-						</Button>
-					</Link>
 					<div className="hidden lgl:flex">
-						{status === 'authenticated' ? (
+						{!clerkLoaded ? null : isSignedIn ? (
 							<div className="flex gap-4 items-center">
 								<Link
 									href={'/dashboard'}
-									className="border-2 border-[#006c53] py-[15px] 
-								px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
+									className="border-2 border-[#a80202] py-[15px] 
+								px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<FaUser className="text-black w-7 h-7 cursor-pointer" />
 								</Link>
 								<div
-									onClick={() => signOut()}
-									className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+									onClick={() => void handleSignOut()}
+									className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 								</div>
 							</div>
@@ -150,15 +137,7 @@ const TopHeader = () => {
 					<Link
 						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#006c53]'}`}
-					>
-						<MdHome className='w-5 h-5 package-image' />
-						<span>Home</span>
-					</Link>
-					<Link
-						href='/jobs'
-						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/jobs' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#a80202]'}`}
 					>
 						<MdWork className='w-5 h-5 package-image' />
 						<span>Find a job</span>
@@ -166,7 +145,7 @@ const TopHeader = () => {
 					<Link
 						href='/post-job-info'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#a80202]'}`}
 					>
 						<MdList className='w-5 h-5 package-image' />
 						<span>Post a job</span>
@@ -174,7 +153,7 @@ const TopHeader = () => {
 					<Link
 						href='/packages'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#a80202]'}`}
 					>
 						<MdCardGiftcard className='w-5 h-5 package-image' />
 						<span>Packages</span>
@@ -182,32 +161,24 @@ const TopHeader = () => {
 					<Link
 						href='/contact'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#006c53]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#a80202]'}`}
 					>
 						<MdContactMail className='w-5 h-5 package-image' />
 						<span>Contact us</span>
 					</Link>
-					<Link
-						href='/post-resume'
-						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-resume' && 'text-[#006c53]'}`}
-					>
-						<MdAdd className='w-5 h-5 package-image' />
-						<span>Post resume</span>
-					</Link>
 				</nav>
 				<div className="mt-6 lgl:inline">
-					{status === 'authenticated' ? (
+					{!clerkLoaded ? null : isSignedIn ? (
 						<div className="flex gap-4 items-center">
 							<Link
 								href={'/dashboard'}
-								className="border-2 border-[#006c53] py-[15px] 
-							px-6 rounded-2xl hover:border-[#83cfbe] duration-300">
+								className="border-2 border-[#a80202] py-[15px] 
+							px-6 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<FaUser className="text-black w-7 h-7 cursor-pointer" />
 							</Link>
 							<div
-								onClick={() => signOut()}
-								className="border-2 border-[#006c53] py-2 px-4 rounded-2xl hover:border-[#83cfbe] duration-300">
+								onClick={() => void handleSignOut()}
+								className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 							</div>
 						</div>

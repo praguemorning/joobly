@@ -1,6 +1,6 @@
 import React from 'react';
 type PaperProps = {
-  children: string | JSX.Element | JSX.Element[]
+  children: string | React.JSX.Element | React.JSX.Element[]
   style?: React.CSSProperties | undefined;
   className?:string | undefined
 }

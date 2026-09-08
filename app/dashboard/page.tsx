@@ -2,7 +2,7 @@ import DashboardPage from "@/lib/components/dashboard/DashboardPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Joobly | Profile",
+	title: "Profile",
 	description: "User dashboard",
 };
 

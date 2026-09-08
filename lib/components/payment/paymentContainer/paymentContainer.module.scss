@@ -1,5 +1,4 @@
-@import "@/lib/styles/mixins.scss";
-@import "@/lib/styles/variables.scss";
+@use '@/lib/styles/mixins' as *;
 
 .payment-container {
 	display: flex;
@@ -13,7 +12,7 @@
 		margin-bottom: 16px;
 
 		&__label {
-			color: #1d2427;
+			color: #171821;
 			font-size: 18px;
 			font-style: normal;
 			font-weight: 600;

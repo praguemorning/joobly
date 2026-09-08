@@ -1,5 +1,4 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .service-plans {
   display: flex;
@@ -15,7 +14,7 @@
     padding-left: 8px;
 
     &__label {
-      color: #1D2427;
+      color: #171821;
       font-size: 18px;
       font-style: normal;
       font-weight: 600;

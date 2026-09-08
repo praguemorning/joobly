@@ -1,23 +1,35 @@
 import { getUserFavsJobs, getUserInfo } from "@/lib/user/getUserFavsJobs";
 import { JobsPagePropsTypes } from "@/lib/types/componentTypes";
 import { processOptions, getData, getOptions } from "@/lib/jobs/jobsUtils";
-import HeaderBackground from "@/lib/components/headerBackground/headerBackground";
 import JobItem from "../../lib/components/jobItem/jobItem";
 import React, { Suspense } from "react";
 import Topbar from "../../lib/components/toolBar/topbar";
 import { SALARY_RANGES_DROPDOWN } from "@/lib/constant/constants";
 
 const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
+	const resolvedSearchParams = (await searchParams) ?? {
+		jobTitle: undefined,
+		workType: undefined,
+		jobTime: undefined,
+		jobType: undefined,
+		jobCategory: undefined,
+		language: undefined,
+		location: undefined,
+		education: undefined,
+		experienceLevel: undefined,
+		salary: undefined,
+		salaryLabel: undefined,
+	};
 	const normalizedFilters: Record<string, string> = {
-		jobTitle: searchParams?.jobTitle ?? "",
-		location: searchParams?.location ?? "",
-		language: searchParams?.language ?? "",
-		workType: searchParams?.workType ?? "",
-		jobCategory: searchParams?.jobCategory ?? "",
-		education: searchParams?.education ?? "",
-		jobTime: searchParams?.jobTime ?? "",
-		salary: searchParams?.salary ?? "",
-		experienceLevel: searchParams?.experienceLevel ?? "",
+		jobTitle: resolvedSearchParams.jobTitle ?? "",
+		location: resolvedSearchParams.location ?? "",
+		language: resolvedSearchParams.language ?? "",
+		workType: resolvedSearchParams.workType ?? "",
+		jobCategory: resolvedSearchParams.jobCategory ?? "",
+		education: resolvedSearchParams.education ?? "",
+		jobType: resolvedSearchParams.jobType ?? "",
+		salary: resolvedSearchParams.salary ?? "",
+		experienceLevel: resolvedSearchParams.experienceLevel ?? "",
 	};
 
 	const favoriteJobIds = await getUserFavsJobs();
@@ -29,7 +41,6 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const salary = SALARY_RANGES_DROPDOWN.map((item,indexNo) => ({id: indexNo, label: item.label, value: item.value}));
 	return (
 		<>
-			<HeaderBackground />
 			<section className="mt-16 mb-20 px-4">
 				<div className="container mx-auto flex flex-col lg:flex-row">
 					<Topbar
@@ -61,7 +72,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 						</div>
 
 						<div className="relative mt-16 h-[361px] bg-cover bg-center rounded-lg flex flex-col items-center justify-center text-center"
-							style={{ backgroundImage: "url('/images/green-bg-search.svg')" }}
+							style={{ backgroundImage: "url('/jobs/images/green-bg-search.svg')" }}
 						>
 							<h5 className="text-4xl font-bold tracking-wider text-light">
 								Join our Job group on Facebook

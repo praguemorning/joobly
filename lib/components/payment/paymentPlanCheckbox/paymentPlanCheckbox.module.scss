@@ -1,5 +1,4 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .payment-plan-checkbox {
   display: flex;
@@ -14,7 +13,7 @@
     margin-bottom: 24px;
 
     &__label {
-      color: #1D2427;
+      color: #171821;
       font-size: 18px;
       font-style: normal;
       font-weight: 600;
@@ -58,7 +57,7 @@
       }
 
       &.checked {
-        border: 1px solid #009C77;
+        border: 1px solid #cc0303;
       }
     }
 

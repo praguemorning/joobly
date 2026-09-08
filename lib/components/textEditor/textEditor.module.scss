@@ -1,11 +1,10 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .text-editor-component {
   width: 100%;
   border-radius:8px;
 
-  :global .ck.ck-editor__editable_inline{
+  :global(.ck.ck-editor__editable_inline) {
   border-radius: 0px 0px 8px 8px !important;
   border: 1px solid #F3F3F3;
   background: #FFF;
@@ -15,7 +14,7 @@
       border: unset !important;
     }
 }
- :global .ck.ck-toolbar {
+ :global(.ck.ck-toolbar) {
    border-radius: 8px 8px 0px 0px !important;
    background: #F6F8F9;
    border: unset;
@@ -23,13 +22,59 @@
      border: unset !important;
    }
  }
-  :global .ck-powered-by-balloon{
+  :global(.ck-powered-by-balloon) {
     display: none !important;
   }
-  :global .ck.ck-editor__editable.ck-focused{
+  :global(.ck.ck-editor__editable.ck-focused) {
     border: unset !important;
     outline: 1px solid #F3F3F3 !important;
     box-shadow: unset !important;
+  }
+
+  // Prague Morning's Meyer reset sets `font: inherit` on strong/em/i/b and
+  // clears list styles, so CKEditor markup looks unstyled without this.
+  :global(.ck-content) {
+    strong,
+    b {
+      font-weight: 700;
+    }
+
+    i,
+    em {
+      font-style: italic;
+    }
+
+    h1 {
+      font-size: 1.75em;
+      font-weight: 700;
+      margin: 0.6em 0 0.4em;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      font-weight: 700;
+      margin: 0.6em 0 0.35em;
+    }
+
+    h3 {
+      font-size: 1.15em;
+      font-weight: 700;
+      margin: 0.5em 0 0.3em;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 1.5em;
+    }
+
+    ol {
+      list-style: decimal;
+      padding-left: 1.5em;
+    }
+
+    li {
+      margin-bottom: 0.25em;
+    }
   }
   .text-editor-labels {
     display: flex;
@@ -37,7 +82,7 @@
     margin-bottom: 12px;
 
     .text-editor-label {
-      color: #1D2427;
+      color: #171821;
       font-size: 18px;
       font-style: normal;
       font-weight: 600;

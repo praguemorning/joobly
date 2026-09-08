@@ -1,0 +1,7 @@
+allowBuilds:
+  "@parcel/watcher": true
+  mongodb-memory-server: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - "@clerk/nextjs@7.9.1"
+  - "@clerk/react@6.15.1"

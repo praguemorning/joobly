@@ -16,7 +16,7 @@ export const addNewJob = createAsyncThunk(
 	"jobs/create-job",
 	async (data: JobTypes, { rejectWithValue }): Promise<any> => {
 		try {
-			const response = await fetch(`/api/jobs`, {
+			const response = await fetch(`/jobs/api/jobs`, {
 				method: "POST",
 				cache: "no-cache",
 				body: JSON.stringify(data),

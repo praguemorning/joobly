@@ -1,8 +1,7 @@
 import React from "react";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import styles from "../input/input.module.scss";
-import { Autocomplete, TextField } from "@mui/material";
-import { Box } from "@mui/system";
+import { Autocomplete, Box, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import Image from "next/image";
 
@@ -48,13 +47,15 @@ const FormSelect: React.FC<SelectProps> = ({
 					<>
 						{countrySelect ? (
 							<Autocomplete
-								defaultValue={defaultValue}
+								value={field.value ?? null}
 								className={styles["custom-input"]}
 								disablePortal
 								options={options}
 								autoHighlight
-								onChange={(event, value) => field.onChange(value)}
-								getOptionLabel={(option) => option.label}
+								onChange={(_event, value) => field.onChange(value)}
+								onBlur={field.onBlur}
+								isOptionEqualToValue={(option, value) => option?.code === value?.code}
+								getOptionLabel={(option) => option?.label ?? ""}
 								renderOption={(props, option) => (
 									<Box component='li' sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
 										<Image
@@ -69,8 +70,12 @@ const FormSelect: React.FC<SelectProps> = ({
 								)}
 								renderInput={(params) => (
 									<>
-										{" "}
-										<TextField {...field} {...params} placeholder={placeholder} />
+										<TextField
+											{...params}
+											name={field.name}
+											inputRef={field.ref}
+											placeholder={placeholder}
+										/>
 										{fieldState.error && (
 											<p className={"error-message"}>{fieldState.error.message}</p>
 										)}
@@ -81,14 +86,20 @@ const FormSelect: React.FC<SelectProps> = ({
 							<Autocomplete
 								className={styles["custom-input"]}
 								disablePortal
-								defaultValue={defaultValue}
+								value={field.value ?? null}
 								options={options}
 								autoHighlight
-								onChange={(event, value) => field.onChange(value)}
+								onChange={(_event, value) => field.onChange(value)}
+								onBlur={field.onBlur}
+								isOptionEqualToValue={(option, value) => option === value}
 								renderInput={(params) => (
 									<div style={{ display: "flex", flexDirection: "column" }}>
-										{" "}
-										<TextField {...field} {...params} placeholder={placeholder} />
+										<TextField
+											{...params}
+											name={field.name}
+											inputRef={field.ref}
+											placeholder={placeholder}
+										/>
 										{fieldState.error && (
 											<p
 												style={{ marginBottom: "16px", position: "relative" }}

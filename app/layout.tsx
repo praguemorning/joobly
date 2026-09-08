@@ -1,29 +1,114 @@
-"use client"
-import { Source_Sans_3 } from 'next/font/google';
+import type { Metadata } from 'next';
 import '@/lib/styles/globals.scss';
 import ClientProviders from './providers';
-import Header from './header';
-import Footer from '@/app/footer';
-import { usePathname } from 'next/navigation';
-import { SessionProvider } from 'next-auth/react';
 import TopHeader from '@/lib/components/header/header';
+import { SITE_URL } from '@/lib/seo/jobPosting';
+import { getSiteChrome, PM_ASSETS } from '@/lib/chrome/praguemorning';
 
-const mainFont = Source_Sans_3({ subsets: ['latin'] });
+/**
+ * Prague Morning renders in Poppins, not Inter — the Inter link in their <head>
+ * is not what actually applies. Loaded under its real family name rather than
+ * via next/font, because the theme stylesheet contains literal
+ * `font-family: "Poppins"` declarations that a hashed next/font family would
+ * not match. On praguemorning.cz the font arrives via Elementor's kit CSS,
+ * which this section does not load.
+ */
+const POPPINS_HREF =
+    'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
+// The app is mounted at praguemorning.cz/jobs, so relative metadata URLs must
+// resolve against that prefix, not the bare origin. See SITE_URL in
+// lib/seo/jobPosting for why this is not NEXT_PUBLIC_BASE_URL.
+export const metadata: Metadata = {
+    metadataBase: new URL(SITE_URL),
+    title: {
+        default: 'Jobs in Prague and Czechia',
+        // TODO(branding): confirm the public-facing name before launch.
+        template: '%s | Prague Morning',
+    },
+    description:
+        'Search hundreds of job offers for English, German, French, and Spanish speakers. Updated daily.',
+    robots: { index: true, follow: true },
+};
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const { header, footer, adTags, searchOverlay } = await getSiteChrome();
 
     return (
-        <html lang="en">
-            <body className={mainFont.className}>
-                <SessionProvider>
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                {/* Next hoists its own imported CSS above these tags, so the
+                    theme stylesheet ends up last and wins ties on equal
+                    specificity. Generic class names shared with the theme
+                    (`.header`, `.container`) therefore need explicit overrides
+                    in globals.scss — see the `.header-top` rule there. */}
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+                <link rel="stylesheet" href={POPPINS_HREF} />
+                <link rel="stylesheet" href={PM_ASSETS.reset} />
+                <link rel="stylesheet" href={PM_ASSETS.style} />
+            </head>
+            {/* Clickio CMP mutates <body class> before React hydrates
+                (e.g. clickio-cmp-out-of-scope). suppressHydrationWarning
+                keeps that third-party attribute from erroring the tree. */}
+            <body suppressHydrationWarning>
+                {/* Consent platform and ad tags, in the live site's own order,
+                    so these pages behave like every other page. Server-rendered
+                    rather than injected client-side, which is what lets the
+                    inline loaders execute at parse time. */}
+                {adTags && (
+                    <div
+                        style={{ display: 'contents' }}
+                        suppressHydrationWarning
+                        dangerouslySetInnerHTML={{ __html: adTags }}
+                    />
+                )}
+
+                {/* display:contents so the wrapper generates no box — the theme
+                    CSS expects <header>/<footer> as top-level page elements. */}
+                {header && (
+                    <div
+                        style={{ display: 'contents' }}
+                        suppressHydrationWarning
+                        dangerouslySetInnerHTML={{ __html: header }}
+                    />
+                )}
+
+                {/* Namespaces this app's markup so the theme stylesheet, which
+                    is global, can be neutralised where its class names collide
+                    with Tailwind's. See the .jobs-app rules in globals.scss. */}
+                <div className="jobs-app">
+                    {/* ClientProviders supplies ClerkProvider + Redux. */}
                     <ClientProviders>
+                        {/* The jobs section's own nav, kept as a secondary bar
+                            so Post a job / Packages / Login stay reachable. */}
                         <TopHeader />
-                        {pathname === "/" && <Header needBackgroundHeader={false} />}
                         {children}
-                        {pathname !== "/" && <Footer />}
                     </ClientProviders>
-                </SessionProvider>
+                </div>
+
+                {footer && (
+                    <div
+                        style={{ display: 'contents' }}
+                        suppressHydrationWarning
+                        dangerouslySetInnerHTML={{ __html: footer }}
+                    />
+                )}
+
+                {/* Sits near </body> on the live site, outside <header>. Must be
+                    present before main.js runs: openSearch() binds to its close
+                    button with no null check, and it runs before the mobile nav
+                    is wired, so omitting it throws and kills the burger menu. */}
+                {searchOverlay && (
+                    <div
+                        style={{ display: 'contents' }}
+                        suppressHydrationWarning
+                        dangerouslySetInnerHTML={{ __html: searchOverlay }}
+                    />
+                )}
+
+                {/* Theme behaviour: burger menu, mobile nav close, search. */}
+                <script src={PM_ASSETS.script} defer />
             </body>
         </html>
     );

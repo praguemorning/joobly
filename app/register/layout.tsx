@@ -2,23 +2,23 @@ import type { Metadata } from "next";
 import { Source_Sans_3 } from "next/font/google";
 import "@/lib/styles/globals.scss";
 import Header from "@/app/header";
-import Footer from "@/app/footer";
+import { SITE_URL } from "@/lib/seo/jobPosting";
 
 const mainFont = Source_Sans_3({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	 title: {
-    default: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
-    template: '%s | Joobly.cz',
+    default: 'Jobs in Prague and Czechia',
+    template: '%s | Prague Morning',
   },
   description:
     'Find multilingual jobs in Prague and across Czechia. English, German, French, and more. We connect expats with top employers.',
   openGraph: {
-    title: 'Joobly.cz – Find Multilingual Jobs in Prague and Czechia',
+    title: 'Jobs in Prague and Czechia',
     description:
       'Explore full-time and part-time multilingual job opportunities in Prague and across Czechia. Connect with top international employers.',
-    url: 'https://joobly.cz',
-    siteName: 'Joobly.cz',
+    url: `${SITE_URL}/register`,
+    siteName: 'Prague Morning',
     images: [
       {
         url: '/favicon.ico', // Положи в public/og-image.jpg

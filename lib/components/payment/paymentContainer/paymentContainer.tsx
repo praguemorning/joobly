@@ -20,7 +20,7 @@ const PaymentContainer = ({props}: any) => {
 
 	async function handleSubmit() {
 		try {
-			const response = await fetch("/api/checkout", {
+			const response = await fetch("/jobs/api/checkout", {
 				method: "POST",
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify({
@@ -48,7 +48,7 @@ const PaymentContainer = ({props}: any) => {
 
 	//paypal logic
 	const createOrder = async () => {
-        const response = await fetch("/api/paypal/create-order", {
+        const response = await fetch("/jobs/api/paypal/create-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -64,7 +64,7 @@ const PaymentContainer = ({props}: any) => {
 
 
 	const orderRecord = async () => {
-		const response = await fetch("/api/paypal/order-record", {
+		const response = await fetch("/jobs/api/paypal/order-record", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -100,11 +100,11 @@ const PaymentContainer = ({props}: any) => {
 				<label className={styles["payment-container__labels__subLabel"]}>
 					<div className="flex items-center gap-1 text-sm sm:text-base">
 						Go to secure payment page powered by
-						<FaStripe  className="w-9 h-9 text-[#009c77]"/>
+						<FaStripe  className="w-9 h-9 text-[#cc0303]"/>
 					</div>
 				</label>
 
-				<Button className="bg-[#006c53] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl" onClick={handleSubmit}>
+				<Button className="bg-[#a80202] text-white text-xl font-bold py-3 sml:py-4 max-w-[750px] rounded-xl" onClick={handleSubmit}>
 					Pay with Credit Card
 				</Button>
 
@@ -128,7 +128,7 @@ const PaymentContainer = ({props}: any) => {
 								fundingSource={undefined}
 								createOrder={createOrder}
 								onApprove={async (data) => {
-									const res = await fetch(`/api/paypal/capture-order`, {
+									const res = await fetch(`/jobs/api/paypal/capture-order`, {
 										method: "POST",
 										headers: { "Content-Type": "application/json" },
 										body: JSON.stringify({ orderId: data.orderID }),

@@ -40,7 +40,7 @@ const UploadModal = ({ open, setOpen }: UploadModalPropsTypes) => {
 		formData.append("location", values.location);
 
 		try {
-			const response = await fetch(`/api/resumes/upload`, {
+			const response = await fetch(`/jobs/api/resumes/upload`, {
 				method: "POST",
 				body: formData,
 			  });
