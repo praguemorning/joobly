@@ -13,7 +13,6 @@ import React, { useState } from "react";
 import styles from "./postJob.module.scss";
 import toast from "react-hot-toast";
 import {
-    COMPANY_SIZE,
     //COUNTRIES,
     LANGUAGES,
     CITIES,
@@ -23,9 +22,12 @@ import {
     WORK_TIMES,
     WORK_TYPES,
     JOB_CATEGORIES,
-    EXPERIENCE_LEVEL,
+    FEATURED_DURATION_DAYS,
+    FEATURED_POINTS_COST,
+    FEATURED_PRICE_CZK,
     SALARY_RANGES_DROPDOWN,
 } from "@/lib/constant/constants";
+import { isFeaturedActive } from "@/lib/jobs/featured";
 import CustomDropdown from "../customDropdown/customDropdown";
 
 interface PostJobProps {
@@ -53,7 +55,6 @@ interface Inputs {
     companySize: string;
     companyWebsite: string;
     imageUrl?: string;
-
 }
 const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), {
     ssr: false,
@@ -65,9 +66,20 @@ const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"
 const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
     const [showCompanyDetails, setShowCompanyDetails] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isFeatured, setIsFeatured] = useState<boolean>(
+        Boolean(jobId) && isFeaturedActive(initialJob),
+    );
     const router = useRouter();
     const user = useProfile();
     const isEditMode = Boolean(jobId);
+    const isAdminUser = Boolean(user?.data?.admin);
+    const availablePoints = user?.data?.jobPostPoints ?? 0;
+    const pointsNeededToPost = 1 + (isFeatured ? FEATURED_POINTS_COST : 0);
+    const canAffordFeatured =
+        isAdminUser ||
+        (isEditMode
+            ? availablePoints >= FEATURED_POINTS_COST || isFeaturedActive(initialJob)
+            : availablePoints >= 1 + FEATURED_POINTS_COST);
     const {
         handleSubmit,
         control,
@@ -137,6 +149,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             jobTime: values.jobTime,
             education: values?.education,
             imageUrl: values.imageUrl,
+            isFeatured,
             companyDetails: {
                 ceoCompany: values.ceoCompany,
                 founded: values.founded,
@@ -156,33 +169,43 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             setIsSubmitting(true);
             const data = createDataForJob(values);
 
-            if (user?.data?.jobPostPoints && user.data.jobPostPoints > 0) {
-                const url = jobId ? `/api/jobs/${jobId}` : "/api/jobs";
-                const method = jobId ? "PUT" : "POST";
-                const response = await fetch(url, {
-                    method,
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                });
-                const result = await response.json();
-
-                if (response.ok) {
-                    if (jobId) {
-                        toast.success("Job updated successfully!");
-                        setTimeout(() => {
-                            router.refresh();
-                        }, 1000);
-                    } else {
-                        router.push("/job-creation-success");
+            if (!isEditMode) {
+                if (!isAdminUser && availablePoints < pointsNeededToPost) {
+                    if (availablePoints < 1) {
+                        router.push("/packages");
+                        return;
                     }
+                    toast.error(
+                        `Featured jobs need ${pointsNeededToPost} points. You have ${availablePoints}.`,
+                    );
+                    return;
+                }
+            }
+
+            const url = jobId ? `/jobs/api/jobs/${jobId}` : "/jobs/api/jobs";
+            const method = jobId ? "PUT" : "POST";
+            const response = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+                if (jobId) {
+                    toast.success("Job updated successfully!");
+                    setTimeout(() => {
+                        router.refresh();
+                    }, 1000);
                 } else {
-                    console.error(result.error || "Error al guardar el trabajo");
+                    router.push("/job-creation-success");
                 }
             } else {
-                router.push("/packages");
+                toast.error(result.error || result.message || "Could not save job");
             }
         } catch (error) {
             console.error("Error submitting job:", error);
+            toast.error("Could not save job");
         } finally {
             setIsSubmitting(false);
         }
@@ -294,7 +317,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                         />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        <TextEditor control={control} label={"Job Description"} name='description' />
+                        <TextEditor control={control as any} label={"Job Description"} name='description' />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
                         <Input
@@ -358,6 +381,36 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                             </>
                         )}
                     </section>
+                    <div className="mt-6 mb-2 rounded-lg border border-[#a80202]/25 bg-[#fff5f5] px-4 py-3">
+                        <label className={`flex items-start gap-3 ${canAffordFeatured || isFeatured ? "cursor-pointer" : "cursor-not-allowed opacity-70"}`}>
+                            <input
+                                type="checkbox"
+                                className="mt-1 h-4 w-4 accent-[#a80202]"
+                                checked={isFeatured}
+                                disabled={!canAffordFeatured && !isFeatured}
+                                onChange={(e) => setIsFeatured(e.target.checked)}
+                            />
+                            <span className="text-sm text-dark">
+                                <span className="font-semibold">
+                                    Feature this job for {FEATURED_DURATION_DAYS} days (+{FEATURED_PRICE_CZK} Kč)
+                                </span>
+                                <span className="block text-gray-600 mt-1">
+                                    {isAdminUser
+                                        ? "Admins can feature without using points."
+                                        : isEditMode
+                                            ? isFeaturedActive(initialJob)
+                                                ? "This listing is currently Featured. Uncheck to remove the boost."
+                                                : `Uses ${FEATURED_POINTS_COST} extra job-post point and moves the listing to the top.`
+                                            : `Uses ${FEATURED_POINTS_COST} extra point (2 total). Appears at the top of listings with a Featured badge.`}
+                                </span>
+                                {!canAffordFeatured && !isFeatured && (
+                                    <span className="block text-[#a80202] mt-1">
+                                        You need more job-post points to feature this listing.
+                                    </span>
+                                )}
+                            </span>
+                        </label>
+                    </div>
                     <div className={styles["post-job-page-buttons"]}>
                         <Button onClick={handleSubmit(onSubmitPreview)} type='submit' className={"btn-primary"}>
                             Preview

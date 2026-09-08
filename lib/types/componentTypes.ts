@@ -2,7 +2,7 @@ import bronze from "@/public/images/logos/bronzePlan.svg";
 import { BASIC_PLAN_PERMISSIONS } from "@/lib/constant/constants";
 
 export type ButtonProps = {
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	style?: React.CSSProperties;
 	className?: string;
 	disabled?: boolean;
@@ -57,6 +57,8 @@ export type JobData = {
 	},
 	views: number;
 	jobPostAuthorId: string;
+	isFeatured?: boolean;
+	featuredUntil?: Date | string | null;
 	createdAt?: Date;
 };
 
@@ -93,8 +95,8 @@ export type ServicePlanType = {
 	price?: number | string;
 };
 export interface JobsPagePropsTypes {
-	params?: { value: string | number };
-	searchParams?: {
+	params?: Promise<{ value: string | number }>;
+	searchParams?: Promise<{
 		jobTitle: string | undefined;
 		workType: string | undefined;
 		jobTime: string | undefined;
@@ -106,7 +108,7 @@ export interface JobsPagePropsTypes {
 		experienceLevel: string | undefined;
 		salary: string | undefined;
 		salaryLabel: string | undefined;
-	};
+	}>;
 }
 export type PackageType = {
 	title: string;

@@ -133,7 +133,13 @@ function extractAdTags(html: string): string {
 	if (/clever-core/i.test(tags.join("")) && /clever-core-ads/.test(head)) {
 		tags.push('<div class="clever-core-ads"></div>');
 	}
-	return tags.join("\n");
+
+	// WordPress may emit async="" / defer=""; React SSR vs client can disagree
+	// on that form and trip a hydration warning on dangerouslySetInnerHTML.
+	return tags
+		.join("\n")
+		.replace(/\sasync(?:=["']{0,2})?(?=[\s>])/gi, " async")
+		.replace(/\sdefer(?:=["']{0,2})?(?=[\s>])/gi, " defer");
 }
 
 export async function getSiteChrome(): Promise<SiteChrome> {

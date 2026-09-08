@@ -4,7 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { MdContactMail, MdWork, MdList, MdCardGiftcard, MdAdd } from "react-icons/md";
 import { motion } from "framer-motion";
 import { RiDoorOpenFill } from "react-icons/ri";
-import { signOut, useSession } from 'next-auth/react';
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Button from "../button/button";
@@ -14,9 +14,14 @@ import jobsLogo from "@/public/images/logos/prague-morning-jobs.svg";
 import LoginBtn from "../loginBtn/loginBtn";
 
 const TopHeader = () => {
-	const { data: session, status, update } = useSession();
+	const { isSignedIn, isLoaded: clerkLoaded } = useAuth();
+	const { signOut: clerkSignOut } = useClerk();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const pathname = usePathname();
+
+	const handleSignOut = async () => {
+		await clerkSignOut({ redirectUrl: `${window.location.origin}/jobs` });
+	};
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -84,7 +89,7 @@ const TopHeader = () => {
 					</Link>
 
 					<div className="hidden lgl:flex">
-						{status === 'authenticated' ? (
+						{!clerkLoaded ? null : isSignedIn ? (
 							<div className="flex gap-4 items-center">
 								<Link
 									href={'/dashboard'}
@@ -93,7 +98,7 @@ const TopHeader = () => {
 									<FaUser className="text-black w-7 h-7 cursor-pointer" />
 								</Link>
 								<div
-									onClick={() => signOut()}
+									onClick={() => void handleSignOut()}
 									className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 									<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 								</div>
@@ -163,7 +168,7 @@ const TopHeader = () => {
 					</Link>
 				</nav>
 				<div className="mt-6 lgl:inline">
-					{status === 'authenticated' ? (
+					{!clerkLoaded ? null : isSignedIn ? (
 						<div className="flex gap-4 items-center">
 							<Link
 								href={'/dashboard'}
@@ -172,7 +177,7 @@ const TopHeader = () => {
 								<FaUser className="text-black w-7 h-7 cursor-pointer" />
 							</Link>
 							<div
-								onClick={() => signOut()}
+								onClick={() => void handleSignOut()}
 								className="border-2 border-[#a80202] py-2 px-4 rounded-2xl hover:border-[#e3e4e8] duration-300">
 								<RiDoorOpenFill className="text-black w-10 h-10 cursor-pointer" />
 							</div>

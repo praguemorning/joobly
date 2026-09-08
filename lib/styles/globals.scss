@@ -1,9 +1,10 @@
+@use './mixins' as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import './mixins';
-@import './variables';
+
 
 .no-arrows::-webkit-outer-spin-button,
 .no-arrows::-webkit-inner-spin-button {

@@ -13,8 +13,8 @@ import {
 } from "@/lib/seo/jobPosting";
 
 interface JobDetailsPropsTypes {
-  params: { jobId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: Promise<{ jobId: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // generateMetadata and the page body both need the job; cache() collapses that
@@ -26,7 +26,8 @@ const getJob = cache(
 export async function generateMetadata({
   params,
 }: JobDetailsPropsTypes): Promise<Metadata> {
-  const job = await getJob(params.jobId);
+  const { jobId } = await params;
+  const job = await getJob(jobId);
   if (!job?.jobTitle) return { title: "Job not found", robots: { index: false, follow: false } };
 
   const company = job.companyDetails?.ceoCompany?.trim();
@@ -55,7 +56,8 @@ export async function generateMetadata({
 }
 
 const JobDetails = async ({ params }: JobDetailsPropsTypes) => {
-  const jobDetails = await getJob(params.jobId);
+  const { jobId } = await params;
+  const jobDetails = await getJob(jobId);
   if (!jobDetails?._id) notFound();
 
   const schema = buildJobPostingSchema(jobDetails);

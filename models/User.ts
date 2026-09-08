@@ -3,12 +3,13 @@ import { JobSchema, JobTypes } from "./Job";
 
 export type UserProfileTypes = {
   _id?: FormDataEntryValue;
+  clerkId?: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   phone?: string;
   image?: string;
-  admin?: string;
+  admin?: boolean | string;
   emailVerified: boolean;
   jobPostPoints: number;
   favoriteJobs?: JobTypes[]; 
@@ -16,6 +17,7 @@ export type UserProfileTypes = {
 };
 
 const UserSchema = new Schema({
+  clerkId: { type: String, sparse: true, unique: true },
   name: {type: String},
   email: {type: String, required: true, unique: true},
   password: {type: String},

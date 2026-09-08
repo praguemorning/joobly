@@ -1,5 +1,4 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .header-background {
   background: url('/images/header-bg.svg') $secondary-color no-repeat;

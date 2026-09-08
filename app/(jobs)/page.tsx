@@ -7,16 +7,29 @@ import Topbar from "../../lib/components/toolBar/topbar";
 import { SALARY_RANGES_DROPDOWN } from "@/lib/constant/constants";
 
 const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
+	const resolvedSearchParams = (await searchParams) ?? {
+		jobTitle: undefined,
+		workType: undefined,
+		jobTime: undefined,
+		jobType: undefined,
+		jobCategory: undefined,
+		language: undefined,
+		location: undefined,
+		education: undefined,
+		experienceLevel: undefined,
+		salary: undefined,
+		salaryLabel: undefined,
+	};
 	const normalizedFilters: Record<string, string> = {
-		jobTitle: searchParams?.jobTitle ?? "",
-		location: searchParams?.location ?? "",
-		language: searchParams?.language ?? "",
-		workType: searchParams?.workType ?? "",
-		jobCategory: searchParams?.jobCategory ?? "",
-		education: searchParams?.education ?? "",
-		jobType: searchParams?.jobType ?? "",
-		salary: searchParams?.salary ?? "",
-		experienceLevel: searchParams?.experienceLevel ?? "",
+		jobTitle: resolvedSearchParams.jobTitle ?? "",
+		location: resolvedSearchParams.location ?? "",
+		language: resolvedSearchParams.language ?? "",
+		workType: resolvedSearchParams.workType ?? "",
+		jobCategory: resolvedSearchParams.jobCategory ?? "",
+		education: resolvedSearchParams.education ?? "",
+		jobType: resolvedSearchParams.jobType ?? "",
+		salary: resolvedSearchParams.salary ?? "",
+		experienceLevel: resolvedSearchParams.experienceLevel ?? "",
 	};
 
 	const favoriteJobIds = await getUserFavsJobs();

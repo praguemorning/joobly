@@ -1,56 +1,60 @@
-# Prague Morning Job Portal
+# Prague Morning Jobs (Joobly)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Job portal for Prague Morning — multilingual job listings for Prague and Czechia. Built with the Next.js App Router.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies with **pnpm** (recommended):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy environment variables into `.env.local`, then start the app:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Open [http://localhost:3000](http://localhost:3000).
 
-A modern job portal built with Next.js, designed to connect employers and job seekers in the Prague area.
+### Useful scripts
 
-## Project Overview
-
-This job portal provides a platform for employers to post job listings and for job seekers to find and apply for positions. The project utilizes a robust tech stack to deliver a seamless user experience with features like job posting, application management, and user profiles.
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Next.js development server |
+| `pnpm build` | Production build (includes type-checking) |
+| `pnpm start` | Run the production build |
+| `pnpm lint` | ESLint |
+| `pnpm tsc` / `pnpm typecheck` | TypeScript check without emitting files |
+| `pnpm db:local` | Start an in-memory MongoDB for local work |
+| `pnpm dev:local` | Run local MongoDB + `pnpm dev` together |
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14, React 18
-- **Styling**: SASS, Tailwind CSS
-- **State Management**: Redux Toolkit
-- **UI Components**: Material-UI (MUI)
-- **Form Handling**: React Hook Form
-- **API Requests**: Axios
-- **Database**: MongoDB with Mongoose
-- **Authentication**: (Not specified in the provided files, but likely implemented)
-- **Payment Integration**: Stripe
-- **Rich Text Editing**: CKEditor 5
-- **Date Handling**: Moment.js
-- **File Upload**: React Dropzone
+- **Framework**: Next.js 16 (App Router, Turbopack), React 19, TypeScript
+- **Styling**: SASS, Tailwind CSS, Material UI
+- **Auth**: Clerk
+- **State**: Redux Toolkit
+- **Forms**: React Hook Form, Zod
+- **Database**: MongoDB + Mongoose
+- **Payments**: Stripe, PayPal
+- **Editor**: CKEditor 5
+- **Package manager**: pnpm
 
-## Key Features
+## Features
 
-- Job posting and management
-- User profiles for both employers and job seekers
-- Advanced search and filtering options
-- Responsive design for mobile and desktop
-- Subscription plans (Bronze, Silver, Gold) with different feature sets
-- Payment processing for job postings and premium features
-- Internationalization support (multiple currencies and countries)
+- Browse and filter job listings (location, language, work type, salary, and more)
+- Favorite jobs for signed-in users
+- Employer job posting and package/subscription flows
+- User profiles for employers and job seekers
+- Resume upload and contact flows
+- Responsive layout for desktop and mobile
 
-This project aims to streamline the job search and hiring process in Prague, offering a comprehensive solution for the local job market.
+## Project layout
+
+- `app/` — Next.js App Router pages and API routes
+- `lib/` — shared UI, utils, auth helpers, and styles
+- `models/` — Mongoose schemas (Job, User, …)
+- `database/` — MongoDB connection helpers
+- `scripts/` — local DB and maintenance scripts

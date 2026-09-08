@@ -1,5 +1,4 @@
-@import '@/lib/styles/mixins.scss';
-@import '@/lib/styles/variables.scss';
+@use '@/lib/styles/mixins' as *;
 
 .custom-input-container {
   width: 100%;
@@ -22,7 +21,7 @@
     background: $input-bg;
     width: 100%;
     height: 56px;
-    :global .Mui-focused fieldset {
+    :global(.Mui-focused) fieldset {
       border:unset;
     }
     fieldset {
@@ -39,7 +38,7 @@
     background: #FFF;
     width: 100%;
     height: 56px;
-    :global .Mui-focused fieldset {
+    :global(.Mui-focused) fieldset {
       border:unset;
     }
     fieldset {

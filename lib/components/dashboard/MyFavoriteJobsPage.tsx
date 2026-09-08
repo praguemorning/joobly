@@ -4,14 +4,13 @@ import { redirect } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { UserProfileTypes } from "@/models/User";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import JobItem from "../jobItem/jobItem";
 import Link from "next/link";
 
 const MyFavoriteJobsPage = () => {
-  const session = useSession();
-  const { status } = session;
+  const { isSignedIn, isLoaded } = useAuth();
   const profile = useProfile();
   const jobs = profile.data.favoriteJobs;
   const jobsFavsIds = jobs?.map((job: any) => job._id) ?? [];
@@ -20,7 +19,7 @@ const MyFavoriteJobsPage = () => {
   const [showAll, setShowAll] = useState(false);
   const visibleJobs = showAll ? jobs : jobs?.slice(0, 5);
 
-  if (profile.loading) {
+  if (profile.loading || !isLoaded) {
     return (
       <div className="container mx-auto">
         loading...
@@ -28,7 +27,7 @@ const MyFavoriteJobsPage = () => {
     );
   }
 
-  if (status === "unauthenticated") {
+  if (!isSignedIn) {
     return redirect('/');
   }
 

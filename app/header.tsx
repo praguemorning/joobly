@@ -3,7 +3,6 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import HeaderBackground from '@/lib/components/headerBackground/headerBackground';
-import { SessionProvider } from "next-auth/react";
 
 interface HeaderProps {
     topHeaderTitle?: string,
@@ -17,15 +16,13 @@ const Header: React.FC<HeaderProps> = ({ topHeaderTitle, bottomHeaderTitle, need
     return (
         pathname !== '/main' ?
             <>
-                <SessionProvider>
-                    {needBackgroundHeader && pathname !== '/dashboard/admin' && (
-                        <HeaderBackground
-                            extraBottomHeader={extraBottomHeader}
-                            topHeaderTitle={topHeaderTitle}
-                            bottomHeaderTitle={bottomHeaderTitle}
-                        />
-                    )}
-                </SessionProvider>
+                {needBackgroundHeader && pathname !== '/dashboard/admin' && (
+                    <HeaderBackground
+                        extraBottomHeader={extraBottomHeader}
+                        topHeaderTitle={topHeaderTitle}
+                        bottomHeaderTitle={bottomHeaderTitle}
+                    />
+                )}
             </>
             : null
 

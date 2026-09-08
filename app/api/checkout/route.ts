@@ -1,18 +1,25 @@
-import { authOptions } from "@/lib/authOptions";
 import { PointsOrder } from "@/models/PointsOrder";
-import mongoose from "mongoose";
-import { getServerSession } from "next-auth";
+import { getSessionUser } from "@/lib/auth/session";
+import dbConnect from "@/database/dbConnect";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+function siteBaseUrl(): string {
+  const base =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    process.env.NEXTAUTH_URL ||
+    "https://praguemorning.cz/jobs";
+  return base.replace(/\/$/, "");
+}
+
 export async function POST(req: Request) {
-  await mongoose.connect(process.env.MONGODB_URI as string);
+  await dbConnect();
 
   const { title, price, points } = await req.json();
-  const session = await getServerSession(authOptions);
-  const userEmail = session?.user?.email || undefined;
+  const user = await getSessionUser();
+  const userEmail = user?.email || undefined;
 
   const orderDoc = await PointsOrder.create({
     userEmail,
@@ -20,7 +27,7 @@ export async function POST(req: Request) {
     price,
     points,
     paymentType: "stripe",
-    paid: false, // Default to unpaid
+    paid: false,
   });
 
   const stripeLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
@@ -35,13 +42,14 @@ export async function POST(req: Request) {
   ];
 
   try {
+    const base = siteBaseUrl();
     const stripeSession = await stripe.checkout.sessions.create({
       line_items: stripeLineItems,
       mode: "payment",
       customer_email: userEmail,
-      success_url: `${process.env.NEXTAUTH_URL}success`,
-      cancel_url: `${process.env.NEXTAUTH_URL}error`,
-      metadata: { orderId: orderDoc._id.toString() }, // Attach order ID for webhook
+      success_url: `${base}/success`,
+      cancel_url: `${base}/error`,
+      metadata: { orderId: orderDoc._id.toString() },
     });
 
     return NextResponse.json({ url: stripeSession.url });

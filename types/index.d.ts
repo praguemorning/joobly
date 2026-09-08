@@ -1,6 +1,6 @@
 declare type SearchParamProps = {
-    params: { [key: string]: string };
-    searchParams: { [key: string]: string | string[] | undefined };
+    params: Promise<{ [key: string]: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 declare interface RegisterProps {
@@ -16,4 +16,3 @@ declare interface UserTypes {
 	email: string;
 	image: string;
 }
-
