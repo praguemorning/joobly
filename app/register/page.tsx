@@ -162,7 +162,10 @@ const Register = () => {
 
     const label = strategy === "oauth_google" ? "Google" : "LinkedIn";
     try {
-      const origin = window.location.origin;
+      // Prefer the public apex so OAuth never bakes *.vercel.app into Clerk URLs.
+      const origin = window.location.hostname.endsWith("praguemorning.cz")
+        ? "https://praguemorning.cz"
+        : window.location.origin;
       await clerk.client.signIn.authenticateWithRedirect({
         strategy,
         redirectUrl: `${origin}/jobs/sso-callback`,
