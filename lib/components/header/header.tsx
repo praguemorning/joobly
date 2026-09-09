@@ -40,10 +40,18 @@ const TopHeader = () => {
 			// (HttpOnly). We must let this finish — a reload before it
 			// completes just handshakes a new __session and you look
 			// "still logged in". Dev is fast enough that this rarely shows.
-			await clerkSignOut({ redirectUrl: home });
+			await Promise.race([
+				// Do not pass redirectUrl here; if Clerk rejects redirect_url
+				// (4xx), the promise can stall and the button stays disabled.
+				clerkSignOut(),
+				new Promise<never>((_, reject) =>
+					window.setTimeout(() => reject(new Error("signOut timed out")), 12000),
+				),
+			]);
+			window.location.replace(home);
 		} catch (err) {
 			console.error("Sign out failed:", err);
-			window.location.assign(home);
+			setSigningOut(false);
 		}
 	};
 
