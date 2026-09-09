@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthenticateWithRedirectCallback, useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 /**
@@ -9,9 +8,9 @@ import { useEffect } from "react";
  * Served at /jobs/sso-callback because of next.config basePath.
  *
  * Clerk’s default post-auth redirect is `/`, which on this host is WordPress
- * (outside the jobs app). Force absolute /jobs URLs, and also navigate with
- * the Next router once the session is active — covers the case where the
- * callback component finishes auth but never leaves this page.
+ * (outside the jobs app). Force absolute /jobs URLs, and hard-navigate once the
+ * session is active — soft router redirects often stall behind the Cloudflare
+ * Worker / basePath setup.
  */
 function jobsHomeUrl() {
 	if (typeof window === "undefined") return "/jobs";
@@ -20,13 +19,21 @@ function jobsHomeUrl() {
 
 export default function SSOCallbackPage() {
 	const { isLoaded, isSignedIn } = useAuth();
-	const router = useRouter();
 
 	useEffect(() => {
 		if (isLoaded && isSignedIn) {
-			router.replace("/");
+			window.location.replace(jobsHomeUrl());
 		}
-	}, [isLoaded, isSignedIn, router]);
+	}, [isLoaded, isSignedIn]);
+
+	// Safety net: if Clerk finishes auth but never flips isSignedIn in this
+	// tab (proxy / cookie race), leave the callback page after a short wait.
+	useEffect(() => {
+		const t = window.setTimeout(() => {
+			window.location.replace(jobsHomeUrl());
+		}, 8000);
+		return () => window.clearTimeout(t);
+	}, []);
 
 	const home = jobsHomeUrl();
 
