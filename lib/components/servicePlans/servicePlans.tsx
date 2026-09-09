@@ -2,17 +2,18 @@ import React from "react";
 import styles from "./servicePlans.module.scss";
 import PlanContainer from "@/lib/components/payment/planContainer/planContainer";
 import { PLANS } from "@/lib/constant/constants";
-import { ServicePlanType } from "@/lib/types/componentTypes";
+import { PackageType } from "@/lib/types/componentTypes";
 
 interface ServicePlansPropsTypes {
-	setServicePlan: (value: ServicePlanType) => void;
-	servicePlan: ServicePlanType;
+	setServicePlan: (value: PackageType) => void;
+	servicePlan: PackageType;
 }
 
-const ServicePlans = ({ setServicePlan, servicePlan }: any) => {
+const ServicePlans = ({ setServicePlan, servicePlan }: ServicePlansPropsTypes) => {
+	const selectedPrice = Number(servicePlan?.price);
 	const plans = PLANS.map((item) => ({
 		...item,
-		isActive: item.planPrice === servicePlan.price, 
+		isActive: item.planPrice === selectedPrice,
 	}));
 
 	return (
@@ -27,10 +28,12 @@ const ServicePlans = ({ setServicePlan, servicePlan }: any) => {
 					<PlanContainer
 						onClick={() =>
 							setServicePlan({
-								title: `1 ${title} Joob Post`,
+								title: `1 ${title} Job Post`,
 								price: planPrice,
 								points: 1,
-								isActive: true
+								percent: "",
+								value: `${planPrice} CZK`,
+								active: true,
 							})
 						}
 						key={index}

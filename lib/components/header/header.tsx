@@ -29,24 +29,20 @@ const TopHeader = () => {
 
 		setSigningOut(true);
 		const home = `${window.location.origin}/jobs`;
+
+		// Clear legacy NextAuth/local leftovers so the Log in button
+		// cannot flip back to the old UserMenu after Clerk signs out.
+		localStorage.removeItem("token");
+		localStorage.removeItem("user");
+
 		try {
-			// Clear legacy NextAuth/local leftovers so the Log in button
-			// cannot flip back to the old UserMenu after Clerk signs out.
-			localStorage.removeItem("token");
-			localStorage.removeItem("user");
-			// Clerk FAPI calls can hang forever behind the CF Worker /
-			// custom clerk.* domain — don't wait indefinitely.
-			await Promise.race([
-				clerkSignOut(),
-				new Promise<void>((_, reject) =>
-					window.setTimeout(() => reject(new Error("signOut timed out")), 4000),
-				),
-			]);
+			// Production keeps the real session on clerk.praguemorning.cz
+			// (HttpOnly). We must let this finish — a reload before it
+			// completes just handshakes a new __session and you look
+			// "still logged in". Dev is fast enough that this rarely shows.
+			await clerkSignOut({ redirectUrl: home });
 		} catch (err) {
 			console.error("Sign out failed:", err);
-		} finally {
-			// Hard navigation is more reliable than Clerk's soft redirect
-			// behind the Cloudflare Worker / basePath setup.
 			window.location.assign(home);
 		}
 	};
