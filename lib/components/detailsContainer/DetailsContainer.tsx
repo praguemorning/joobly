@@ -18,7 +18,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import RelatedJobs from "./RelatedJobs";
-import LanguageFlags from "@/lib/components/languageFlags/LanguageFlags";
 import { isFeaturedActive } from "@/lib/jobs/featured";
 
 const DetailsContainer = ({ data }: any) => {
@@ -173,17 +172,43 @@ const DetailsContainer = ({ data }: any) => {
 					<div className={styles["job-details-wrapper"]} >
 						<Paper className='details-component-paper'>
 							<section className={styles["job-details-page-info"]}>
-								<div className={styles["job-details-page-actions"]}  style={{marginTop:0}}>
-									{/* share popup start */}
+								<div className={styles["job-general-details"]} style={{marginTop:0}}>
+									<div
+										className={`flex flex-col w-full gap-3 pb-2 ${
+											featured ? "rounded-lg border-2 border-[#a80202] bg-[#fff5f5] px-4 pt-3 pb-3" : ""
+										}`}
+									>
+										<div className="flex flex-col mdl:flex-row mdl:items-start mdl:justify-between gap-3 w-full">
+											<div className="flex flex-wrap items-center gap-x-3 gap-y-2 min-w-0 flex-1">
+												{featured && (
+													<span className="inline-flex items-center rounded px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-[#a80202] text-white shrink-0">
+														Featured
+													</span>
+												)}
+												<p className={styles["job-general-job-title"]}>{data?.jobTitle}</p>
+											</div>
+											<div className={styles["job-general-buttons"]}>
+												<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer' className="block w-full mdl:w-auto">
+													<Button
+														style={{ width: "145px" }}
+														className={`btn-secondary-search`}
+														hoverIcon='/jobs/images/icons/list-white.svg'
+													>
+														Apply Now
+													</Button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className={styles["job-details-page-actions"]}>
 									{isDropdownOpen && (
-										<div
-											onClick={toggleDropdown}
-											className="absolute top-0 left-0 w-screen h-screen">
+										<>
 											<div
 												onClick={toggleDropdown}
-												className="absolute mt-2 bg-white top-[22%] 
-										left-[39%] sml:left-[58%] sml:left-[73%] lg:left-[58%] 
-										border border-gray-300 rounded shadow-lg z-10">
+												className="fixed inset-0 z-10"
+											/>
+											<div className="absolute right-0 top-full mt-2 bg-white border border-gray-300 rounded shadow-lg z-20">
 												<ul className="p-2 space-y-2">
 													{socialPlatforms?.map((platform) => (
 														<li key={platform.name}>
@@ -199,7 +224,7 @@ const DetailsContainer = ({ data }: any) => {
 													))}
 												</ul>
 											</div>
-										</div>
+										</>
 									)}
 									{isSignedIn &&
 										<div className="flex justify-end gap-4 items-center">
@@ -221,41 +246,6 @@ const DetailsContainer = ({ data }: any) => {
 										width={44}
 										height={44}
 									/>
-								</div>
-								<div className={styles["job-general-details"]} style={{marginTop:0}}>
-									<div
-										className={`flex flex-col items-center justify-center w-full gap-4 pb-4 ${
-											featured ? "rounded-lg border-2 border-[#a80202] bg-[#fff5f5] px-4 pt-4" : ""
-										}`}
-									>
-										{/* <img
-											src={data?.imageUrl || defaultJobLogo}
-											alt={data.jobTitle || "Job image"}
-											className="rounded-lg object-cover shadow-md w-60 sm:w-80 md:w-full max-w-md mb-2"
-										/> */}
-										{featured && (
-											<span className="inline-flex items-center rounded px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-[#a80202] text-white">
-												Featured
-											</span>
-										)}
-										<p className={styles["job-general-job-title"] + " text-center text-xl font-semibold mt-2 mb-2"}>{data?.jobTitle}</p>
-										{data?.language && (
-											<div className="flex justify-center">
-												<LanguageFlags language={data.language} size="md" showLabel />
-											</div>
-										)}
-										<div className={styles["job-general-buttons"] + " flex justify-center w-full"}>
-											<a href={data?.jobUrl} target='_blank' rel='noopener noreferrer'>
-												<Button
-													style={{ width: "145px" }}
-													className={`btn-secondary-search`}
-													hoverIcon='/jobs/images/icons/list-white.svg'
-												>
-													Apply Now
-												</Button>
-											</a>
-										</div>
-									</div>
 								</div>
 								<Divider />
 								<KeyValueComponent data={jobDetails || []} />
