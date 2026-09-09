@@ -34,7 +34,14 @@ const TopHeader = () => {
 			// cannot flip back to the old UserMenu after Clerk signs out.
 			localStorage.removeItem("token");
 			localStorage.removeItem("user");
-			await clerkSignOut();
+			// Clerk FAPI calls can hang forever behind the CF Worker /
+			// custom clerk.* domain — don't wait indefinitely.
+			await Promise.race([
+				clerkSignOut(),
+				new Promise<void>((_, reject) =>
+					window.setTimeout(() => reject(new Error("signOut timed out")), 4000),
+				),
+			]);
 		} catch (err) {
 			console.error("Sign out failed:", err);
 		} finally {
