@@ -28,31 +28,44 @@ const TopHeader = () => {
 		if (signingOut) return;
 
 		setSigningOut(true);
-		const home = `${window.location.origin}/jobs`;
 
-		// Clear legacy NextAuth/local leftovers so the Log in button
-		// cannot flip back to the old UserMenu after Clerk signs out.
+		// Always land on the apex jobs URL — www / vercel.app hosts break
+		// Clerk redirect_url allowlists in production.
+		const home = window.location.hostname.endsWith("praguemorning.cz")
+			? "https://praguemorning.cz/jobs"
+			: `${window.location.origin}/jobs`;
+
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
 
-		try {
-			// Production keeps the real session on clerk.praguemorning.cz
-			// (HttpOnly). We must let this finish — a reload before it
-			// completes just handshakes a new __session and you look
-			// "still logged in". Dev is fast enough that this rarely shows.
-			await Promise.race([
-				// Do not pass redirectUrl here; if Clerk rejects redirect_url
-				// (4xx), the promise can stall and the button stays disabled.
-				clerkSignOut(),
-				new Promise<never>((_, reject) =>
-					window.setTimeout(() => reject(new Error("signOut timed out")), 12000),
-				),
-			]);
-			window.location.replace(home);
-		} catch (err) {
-			console.error("Sign out failed:", err);
-			setSigningOut(false);
+		// Best-effort clear of browser-visible Clerk cookies on this host.
+		for (const name of ["__session", "__client_uat", "__clerk_db_jwt"]) {
+			document.cookie = `${name}=; Max-Age=0; path=/`;
+			document.cookie = `${name}=; Max-Age=0; path=/jobs`;
 		}
+
+		try {
+			// 1) Revoke on the server (works even when client signOut hangs).
+			await fetch(`${home}/api/auth/sign-out`, {
+				method: "POST",
+				credentials: "same-origin",
+			});
+		} catch (err) {
+			console.error("Server sign-out request failed:", err);
+		}
+
+		try {
+			// 2) Also ask the Clerk client to clear local state (short timeout).
+			await Promise.race([
+				clerkSignOut(),
+				new Promise<void>((resolve) => window.setTimeout(resolve, 2500)),
+			]);
+		} catch (err) {
+			console.error("Client sign-out failed:", err);
+		}
+
+		// 3) Always leave — never leave the button stuck gray.
+		window.location.replace(home);
 	};
 
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
