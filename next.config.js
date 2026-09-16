@@ -65,6 +65,14 @@ const nextConfig = {
   // Mounted behind praguemorning.cz/jobs via a Cloudflare Worker.
   // basePath also prefixes /_next assets, so no assetPrefix is needed.
   basePath: "/jobs",
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "praguemorning.cz",
+        "*.vercel.app",
+      ],
+    },
+  },
   async redirects() {
     return legacyRedirects();
   },
