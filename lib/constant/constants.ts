@@ -554,7 +554,7 @@ export const CITIES = [
   ];
 
 export const SALARY_DETAILS = ["Year", "Month", "Week"];
-export const EDUCATION = ["Not Specified", "High School", "Master", "PhD", "Bachelor", "College", "Coursework"];
+export const EDUCATION = ["High School", "Master", "PhD", "Bachelor", "College", "Coursework", "Not Specified"];
 export const COMPANY_SIZE = [
 	"10,000+ Employees",
 	"5,000+ Employees",

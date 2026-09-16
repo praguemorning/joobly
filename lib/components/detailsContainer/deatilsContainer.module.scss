@@ -67,10 +67,11 @@
 
                 .job-general-buttons {
                     display: flex;
-                    gap: 16px;
                     flex-shrink: 0;
+                    align-items: center;
                 }
             }
+            
 
             .job-date-info {
                 display: flex;
@@ -250,12 +251,18 @@
                 .job-general-buttons {
                     width: 100%;
 
-                    a {
+                    > a {
                         width: 100%;
                     }
 
                     button {
                         width: 100% !important;
+                    }
+
+                    > div a {
+                        flex-shrink: 0;
+                        width: 36px !important;
+                        height: 36px !important;
                     }
                 }
             }

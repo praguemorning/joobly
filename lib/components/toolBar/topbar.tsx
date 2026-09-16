@@ -2,6 +2,7 @@
 
 import { JOB_CATEGORIES } from "@/lib/constant/jobCategories";
 import { LANGUAGES, EXPERIENCE_LEVELS, JOB_TYPES, SALARY_BANDS } from "@/lib/constant/filters";
+import { EDUCATION } from "@/lib/constant/constants";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -76,9 +77,9 @@ const Topbar: React.FC<TopbarProps> = ({ filterOptions, initialFilters }) => {
 				/> */}
 				{renderSelect({ name: "location", value: filters.location, onChange: handleChange, options: filterOptions.locations, label: "Location" })}
 				{renderSelect({ name: "language", value: filters.language, onChange: handleChange, options: LANGUAGES.map((label) => ({ id: label, label })), label: "Language" })}
-				{renderSelect({ name: "workType", value: filters.workType, onChange: handleChange, options: filterOptions.workTypes, label: "Work Type" })}
-				{renderSelect({ name: "jobCategory", value: filters.jobCategory, onChange: handleChange, options: JOB_CATEGORIES.map((label) => ({ id: label, label })), label: "Category", placeholder: "All Categories" })}
-				{renderSelect({ name: "education", value: filters.education, onChange: handleChange, options: filterOptions.educations, label: "Education" })}
+				{renderSelect({ name: "workType", value: filters.workType, onChange: handleChange, options: filterOptions.workTypes.filter((opt: { label: string }) => opt.label !== "Any"), label: "Work Type" })}
+				{renderSelect({ name: "jobCategory", value: filters.jobCategory, onChange: handleChange, options: JOB_CATEGORIES.map((label) => ({ id: label, label })), label: "Category", placeholder: "Industry" })}
+				{renderSelect({ name: "education", value: filters.education, onChange: handleChange, options: EDUCATION.map((label) => ({ id: label, label })), label: "Education" })}
 				{renderSelect({ name: "jobType", value: filters.jobType, onChange: handleChange, options: JOB_TYPES.map((label) => ({ id: label, label })), label: "Job Type" })}
 				{renderSelect({ name: "salary", value: filters.salary, onChange: handleChange, options: SALARY_BANDS.map((label) => ({ id: label, label })), label: "Salary Range" })}
 				{renderSelect({ name: "experienceLevel", value: filters.experienceLevel, onChange: handleChange, options: EXPERIENCE_LEVELS.map((label) => ({ id: label, label })), label: "Experience" })}
