@@ -67,11 +67,9 @@ const nextConfig = {
   basePath: "/jobs",
   // The Cloudflare Worker rewrites x-forwarded-host to the *.vercel.app
   // deployment URL while the browser origin stays praguemorning.cz.
-  // Without this, Next.js 15 blocks Server Actions (CSRF host-mismatch check).
-  experimental: {
-    serverActions: {
-      allowedOrigins: ["praguemorning.cz", "www.praguemorning.cz"],
-    },
+  // Without this, Next.js blocks Server Actions (CSRF host-mismatch check).
+  serverActions: {
+    allowedOrigins: ["praguemorning.cz", "www.praguemorning.cz"],
   },
   async redirects() {
     return legacyRedirects();
