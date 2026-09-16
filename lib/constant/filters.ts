@@ -69,10 +69,10 @@ export const SALARY_BANDS = [
 	"CZK 60,000–80,000",
 	"CZK 80,000–100,000",
 	"CZK 100,000+",
-	"Salary not specified",
+	"Not specified",
 ];
 
-export const SALARY_NOT_SPECIFIED = "Salary not specified";
+export const SALARY_NOT_SPECIFIED = "Not specified";
 
 /** Inclusive lower bound, exclusive upper bound. null means unbounded. */
 export const SALARY_RANGES: Record<string, { min: number; max: number | null }> = {

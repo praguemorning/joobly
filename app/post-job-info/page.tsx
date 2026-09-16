@@ -32,8 +32,10 @@ const PostJobInfo = () => {
     <section className={styles["post-job-info"]}>
       <div style={{backgroundImage: `url(${bg.src})`}} className={styles["post-job-info__top"]}>
         <div className={styles["post-job-info__top__content"]}>
-          <h1>Post jobs directly </h1>
-          <h4>Publish your vacancies and start receiving applications.</h4>
+          <div className={styles["post-job-info__top__content__heading"]}>
+            <h1>Post jobs directly </h1>
+            <h4>Publish your vacancies and start receiving applications.</h4>
+          </div>
           <PostJobActions data={POST_JOB_ACTIONS_SECTION_1} image={checkMarkLight} color="white"/>
           {profile && jobPostPoints > 0 ? (
               <Button onClick={()=>push("/post-job")} style={{marginTop:"35px"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg" hoverIcon="/jobs/images/icons/list-white.svg">
@@ -52,17 +54,17 @@ const PostJobInfo = () => {
         </div>
       </div>
       <div className={styles["post-job-info__bottom"]}>
-        <div>
-          <h1>Automatically index jobs </h1>
-          <h4>Jobs already online? Save time and have them
-            listed automatically.</h4>
+          <div className={styles["post-job-info__bottom__heading"]}>
+            <h1>Automatically index jobs </h1>
+            <h4>Jobs already online? Save time and have them
+              listed automatically.</h4>
+          </div>
           <PostJobActions data={POST_JOB_ACTIONS_SECTION_2} image={checkMark} color="black"/>
           <Button 
           style={{marginTop: "35px",maxWidth:"210px",width:"100%"}} className={`btn-secondary-search`} icon="/jobs/images/icons/note.svg"
                   hoverIcon="/jobs/images/icons/list-white.svg">
             <Link href="/contact">Contact us</Link>
           </Button>
-        </div>
       </div>
     </section>
   );
