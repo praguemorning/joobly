@@ -65,6 +65,14 @@ const nextConfig = {
   // Mounted behind praguemorning.cz/jobs via a Cloudflare Worker.
   // basePath also prefixes /_next assets, so no assetPrefix is needed.
   basePath: "/jobs",
+  // The Cloudflare Worker rewrites x-forwarded-host to the *.vercel.app
+  // deployment URL while the browser origin stays praguemorning.cz.
+  // Without this, Next.js 15 blocks Server Actions (CSRF host-mismatch check).
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["praguemorning.cz", "www.praguemorning.cz"],
+    },
+  },
   async redirects() {
     return legacyRedirects();
   },
