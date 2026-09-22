@@ -53,6 +53,7 @@ interface Inputs {
     education: string;
     founded: string;
     ceoCompany: string;
+    companyDescription: string;
     companySize: string;
     companyWebsite: string;
     imageUrl?: string;
@@ -104,6 +105,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             companySize: initialJob?.companyDetails?.companySize || "",
             founded: initialJob?.companyDetails?.founded || "",
             ceoCompany: initialJob?.companyDetails?.ceoCompany || "",
+            companyDescription: initialJob?.companyDetails?.companyDescription || "",
             companyWebsite: initialJob?.companyDetails?.companyWebsite || "",
             imageUrl: initialJob?.imageUrl || "",
         } : {
@@ -123,6 +125,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             companySize: "",
             founded: "",
             ceoCompany: "",
+            companyDescription: "",
             companyWebsite: "",
             imageUrl: "",
         },
@@ -153,6 +156,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
             isFeatured,
             companyDetails: {
                 ceoCompany: values.ceoCompany,
+                companyDescription: values.companyDescription,
                 founded: values.founded,
                 companySize: values.companySize,
                 companyWebsite: values.companyWebsite,
@@ -354,6 +358,15 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                                         label='Company website'
                                         isRequired
                                         placeholder='e.g. https://www.mycompany.com'
+                                    />
+                                </div>
+                                <div className={styles["post-job-page-input-wrapper"]}>
+                                    <Input
+                                        control={control}
+                                        errors={errors}
+                                        name={"companyDescription"}
+                                        label='Short company description'
+                                        placeholder='One or two sentences about the company'
                                     />
                                 </div>
                                 {/* <div className={styles["post-job-page-input-wrapper"]}>

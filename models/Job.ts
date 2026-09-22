@@ -22,6 +22,7 @@ export type JobTypes = {
   imageUrl?: string;
   companyDetails: {
     ceoCompany: string;
+    companyDescription?: string;
     founded: string;
     companySize: string;
     companyWebsite: string;
@@ -56,6 +57,7 @@ export const JobSchema = new Schema({
   imageUrl: { type: String },
   companyDetails: {
     ceoCompany: { type: String },
+    companyDescription: { type: String },
     founded: { type: String },
     companySize: { type: String },
     companyWebsite: { type: String },

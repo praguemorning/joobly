@@ -1,0 +1,80 @@
+@use '@/lib/styles/mixins' as *;
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  // <button> picks up padding from the theme, and without border-box that is
+  // added to the width — the buttons came out 48px against the links' 42px.
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: #f1f2f4;
+  color: $grey-dark;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  // The theme stylesheet collapses SVGs inside <button> to zero width; the
+  // width attribute alone is not enough.
+  svg {
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    // globals.scss puts max-width: 100% on every svg, which resolves to 0
+    // against a button's shrink-to-fit content box.
+    max-width: none;
+  }
+
+  &:hover {
+    background: #e4e6ea;
+    color: $primary-dark;
+  }
+
+  &--active {
+    background: $secondary-light;
+    color: $primary-dark;
+  }
+}
+
+.share-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  &__options {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+  }
+
+  .share-menu {
+    // The trigger and its options are one flex item in the actions row, so
+    // without this they cannot break apart on a very narrow screen.
+    flex-wrap: wrap;
+    gap: 5px;
+
+    &__options {
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+  }
+}
