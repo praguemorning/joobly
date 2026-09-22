@@ -29,6 +29,7 @@ import {
 } from "@/lib/constant/constants";
 import { isFeaturedActive } from "@/lib/jobs/featured";
 import CustomDropdown from "../customDropdown/customDropdown";
+import ImageUpload from "../imageUpload/imageUpload";
 
 interface PostJobProps {
     initialJob?: any;
@@ -320,13 +321,7 @@ const PostJob: React.FC<PostJobProps> = ({ initialJob, jobId }) => {
                         <TextEditor control={control as any} label={"Job Description"} name='description' />
                     </div>
                     <div className={styles["post-job-page-input-wrapper"]}>
-                        <Input
-                            control={control}
-                            errors={errors}
-                            name={"imageUrl"}
-                            label='Job Image URL (optional)'
-                            placeholder='e.g. https://example.com/job-image.jpg'
-                        />
+                        <ImageUpload control={control} name={"imageUrl"} label='Company logo' />
                     </div>
                     <section className={styles["post-job-page-company-section"]}>
                         <div className={styles["post-job-page-company-section-title"]}>

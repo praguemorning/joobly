@@ -71,8 +71,8 @@ const TopHeader = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	const menuVariants = {
-		open: { opacity: 1, x: 0 },
-		closed: { opacity: 0, x: "-100%" },
+		open: { opacity: 1, y: 0, pointerEvents: "auto" as const },
+		closed: { opacity: 0, y: -12, pointerEvents: "none" as const },
 	};
 
 	const lineVariants = {
@@ -175,7 +175,8 @@ const TopHeader = () => {
 			{/* Mobile Menu */}
 			<motion.div
 				onClick={toggleMenu}
-				className="z-50 mobile-menu fixed top-20 left-0 bg-white w-full h-full p-6"
+				className="mobile-menu p-6"
+				aria-hidden={!isMenuOpen}
 				initial="closed"
 				animate={isMenuOpen ? "open" : "closed"}
 				variants={menuVariants}
@@ -185,7 +186,7 @@ const TopHeader = () => {
 					<Link
 						href='/'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' && 'text-[#a80202]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/' ? 'is-active' : ''}`}
 					>
 						<MdWork className='w-5 h-5 package-image' />
 						<span>Find a job</span>
@@ -193,7 +194,7 @@ const TopHeader = () => {
 					<Link
 						href='/post-job-info'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' && 'text-[#a80202]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/post-job-info' ? 'is-active' : ''}`}
 					>
 						<MdList className='w-5 h-5 package-image' />
 						<span>Post a job</span>
@@ -201,7 +202,7 @@ const TopHeader = () => {
 					<Link
 						href='/packages'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' && 'text-[#a80202]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/packages' ? 'is-active' : ''}`}
 					>
 						<MdCardGiftcard className='w-5 h-5 package-image' />
 						<span>Packages</span>
@@ -209,7 +210,7 @@ const TopHeader = () => {
 					<Link
 						href='/contact'
 						onClick={toggleMenu}
-						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' && 'text-[#a80202]'}`}
+						className={`flex items-center gap-3 lgl:hidden ${pathname === '/contact' ? 'is-active' : ''}`}
 					>
 						<MdContactMail className='w-5 h-5 package-image' />
 						<span>Contact us</span>

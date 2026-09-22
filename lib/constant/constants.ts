@@ -692,7 +692,7 @@ export const POST_JOB_ACTIONS_SECTION_1 = [
 
 export const POST_JOB_ACTIONS_SECTION_2 = [
 	"Provide the file to your existing job post, and we’ll do the rest.",
-	"Any changes made to your posts are automatically reflected on Prague Morning.",
+	"Any changes made to your posts are automatically reflected.",
 	"Your jobs appear on our website as soon as they're indexed.",
 	"Focus on hiring while we handle the indexing for you!",
 ];
