@@ -231,7 +231,7 @@ const DetailsContainer = ({ data }: any) => {
 								</div>
 							</section>
 						</Paper>
-						<div className='details-component-paper'>
+						<div className={styles["job-details-sidebar"]}>
 							{data?.companyDetails?.ceoCompany && (
 								<Paper className='details-component-paper' style={{ marginBottom: "10px" }}>
 									<section className={styles["job-company-details"]} style={{ marginTop: 0, marginBottom: 0 }}>

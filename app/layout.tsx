@@ -29,6 +29,8 @@ export const metadata: Metadata = {
     description:
         'Search hundreds of job offers for English, German, French, and Spanish speakers. Updated daily.',
     robots: { index: true, follow: true },
+    openGraph: { siteName: 'Prague Morning Jobs', locale: 'en_US' },
+    twitter: { card: 'summary_large_image' },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

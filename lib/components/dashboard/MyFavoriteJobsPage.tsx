@@ -92,21 +92,6 @@ const MyFavoriteJobsPage = () => {
             </div>
           )}
 
-          {/* Background section */}
-          <div className="relative mt-16 h-[361px] bg-cover bg-center rounded-lg flex flex-col items-center justify-center text-center"
-            style={{ backgroundImage: "url('/images/green-bg-search.svg')" }}
-          >
-            <h5 className="text-4xl font-bold tracking-wider text-light">
-              Join our Job group on Facebook
-            </h5>
-            <a
-              href="https://www.facebook.com/groups/jobsinpragueforeigners---"
-              target="_blank"
-              className="mt-5 px-8 py-4 bg-dark text-light font-bold text-xl rounded-lg hover:opacity-80"
-            >
-              Join Here
-            </a>
-          </div>
         </div>
       </div>
     </div>

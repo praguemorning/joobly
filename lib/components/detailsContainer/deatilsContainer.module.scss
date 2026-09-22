@@ -10,6 +10,21 @@
         align-items: flex-start;
         gap: 27px;
 
+        > section:first-child {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .job-details-sidebar {
+            flex: 0 0 380px;
+            width: 380px;
+            max-width: 380px;
+
+            h3 {
+                line-height: 1.35;
+            }
+        }
+
         .job-banner {
             position: relative;
 
@@ -224,6 +239,12 @@
     .job-details-page {
         .job-details-wrapper {
             padding: 0 24px;
+
+            .job-details-sidebar {
+                flex-basis: 320px;
+                width: 320px;
+                max-width: 320px;
+            }
         }
         .job-details-bottom-buttons {
             margin-top: 16px;
@@ -236,6 +257,12 @@
         .job-details-wrapper {
             padding: 0 16px;
             flex-direction: column;
+
+            .job-details-sidebar {
+                flex: 1 1 auto;
+                width: 100%;
+                max-width: 100%;
+            }
         }
     }
 }

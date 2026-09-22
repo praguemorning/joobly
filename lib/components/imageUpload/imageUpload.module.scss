@@ -1,0 +1,177 @@
+@use '@/lib/styles/mixins' as *;
+
+.image-upload {
+  width: 100%;
+
+  &__label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.1px;
+    color: $grey-medium;
+    margin-bottom: 12px;
+  }
+
+  &__optional {
+    color: $grey-light-help-icon;
+  }
+
+  &__dropzone {
+    border-radius: 8px;
+    border: 1px dashed $grey-button-border;
+    background: $light;
+    padding: 28px 16px;
+    text-align: center;
+    @include flex-col-center;
+    gap: 10px;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+
+    h4 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 20px;
+      color: $dark;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0.1px;
+      color: $grey-medium;
+    }
+
+    &--active {
+      border-color: $primary-dark;
+      background: $secondary-light;
+    }
+  }
+
+  &__choose {
+    border: 1px solid $primary-dark;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $primary-dark;
+    background: $light;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: $primary-dark;
+      color: $light;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+  }
+
+  &__preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid $grey-button-border;
+    background: $light;
+
+    img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid $linear-gradient;
+      background: $grey-light;
+      flex-shrink: 0;
+    }
+  }
+
+  &__preview-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  &__preview-state {
+    font-size: 14px;
+    font-weight: 600;
+    color: $dark;
+  }
+
+  &__remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid $grey-button-border;
+    background: $light;
+    color: $grey-medium;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      color: $primary-dark;
+      border-color: $primary-dark;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+
+  &__link-btn {
+    margin-top: 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: $primary-dark;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+  }
+
+  &__url-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  &__url-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid $grey-button-border;
+    background: $input-bg;
+    font-size: 14px;
+    color: $dark;
+
+    &::placeholder {
+      color: $grey-medium;
+    }
+  }
+
+  &__error {
+    margin-top: 8px;
+    font-size: 13px;
+    color: $required;
+  }
+}

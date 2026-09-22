@@ -9,6 +9,7 @@ import {
   isExpired,
   jobUrl,
   plainTextExcerpt,
+  SITE_URL,
   type JobLike,
 } from "@/lib/seo/jobPosting";
 
@@ -36,6 +37,7 @@ export async function generateMetadata({
     plainTextExcerpt(job.description) ||
     `${job.jobTitle} in ${job.location?.trim() || "Prague"}.`;
   const canonical = jobUrl(job);
+  const shareCard = `${SITE_URL}/api/og/${job._id}`;
 
   return {
     title,
@@ -50,7 +52,22 @@ export async function generateMetadata({
       description,
       url: canonical,
       type: "article",
-      ...(job.imageUrl ? { images: [{ url: job.imageUrl }] } : {}),
+      siteName: "Prague Morning Jobs",
+      locale: "en_US",
+      images: [
+        {
+          url: shareCard,
+          width: 1200,
+          height: 630,
+          alt: "Job posting on Prague Morning Jobs",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [shareCard],
     },
   };
 }

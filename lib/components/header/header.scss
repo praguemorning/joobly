@@ -134,3 +134,34 @@
 
 
 
+.jobs-app .header {
+	position: relative;
+	z-index: 200;
+}
+
+.jobs-app .mobile-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: $light;
+	border-top: 1px solid $linear-gradient;
+	box-shadow: 0 12px 32px rgba(23, 24, 33, 0.12);
+	max-height: 80vh;
+	overflow-y: auto;
+}
+
+.jobs-app .mobile-nav-links a {
+	color: $dark;
+
+	&:hover,
+	&.is-active {
+		color: $primary-dark;
+	}
+}
+
+@media screen and (min-width: 1025px) {
+	.jobs-app .mobile-menu {
+		display: none;
+	}
+}
