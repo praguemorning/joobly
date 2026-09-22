@@ -4,7 +4,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import Paper from "@/lib/components/paper/Paper";
 import styles from "./deatilsContainer.module.scss";
-import saveIcon from "@/public/images/icons/archive.svg";
 import Button from "@/lib/components/button/button";
 import Divider from "@/lib/components/devider/divider";
 import KeyValueComponent from "@/lib/components/keyValueComponent/keyValueComponent";
@@ -14,7 +13,6 @@ import DateConverter from "../dateConverter/DateConverter";
 import toast from "react-hot-toast";
 import { useAuth } from "@clerk/nextjs";
 import { useProfile } from "@/lib/hooks/useProfile";
-import Image from "next/image";
 import defaultJobLogo from "@/public/images/logos/company-placeholder.svg";
 import RelatedJobs from "./RelatedJobs";
 import ShareMenu from "@/lib/components/shareMenu/shareMenu";
@@ -25,7 +23,7 @@ const DetailsContainer = ({ data }: any) => {
 	const { isSignedIn } = useAuth();
 	const profile = useProfile();
 	const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-	const { back } = useRouter();
+	const { back, push } = useRouter();
 	const isClient = useClient();
 	const featured = isFeaturedActive(data);
 
@@ -68,18 +66,12 @@ const DetailsContainer = ({ data }: any) => {
 	}
 
 	async function addJobToFavorite() {
-		setIsFavorite(true);
-
 		if (!isSignedIn) {
-			toast(() => (
-				<div className="flex flex-col gap-4 text-[#a80202] text-center items-center mb-2">
-					<span className="font-medium">
-						To add the job to favorite, you need to be logged in
-					</span>
-				</div>
-			));
+			push("/login");
 			return;
 		}
+
+		setIsFavorite(true);
 
 		try {
 			const response = await fetch("/jobs/api/favorite-jobs", {
@@ -138,22 +130,18 @@ const DetailsContainer = ({ data }: any) => {
 											</div>
 										</div>
 										<div className={styles["job-secondary-actions"]}>
-											{isSignedIn && (
-												<button
-													type="button"
-													onClick={isFavorite ? handleDeleteClick : addJobToFavorite}
-													className={styles["job-save-btn"]}
-												>
-													<Image
-														src={saveIcon}
-														alt=""
-														width={18}
-														height={18}
-														style={{ filter: isFavorite ? "invert(41%) sepia(77%) saturate(355%) hue-rotate(70deg) brightness(95%) contrast(92%)" : "grayscale(100%) brightness(80%)" }}
-													/>
-													{isFavorite ? "Saved" : "Save"}
-												</button>
-											)}
+											<button
+												type="button"
+												onClick={isFavorite ? handleDeleteClick : addJobToFavorite}
+												className={`${styles["job-save-btn"]} ${isFavorite ? styles["job-save-btn--on"] : ""}`}
+												aria-label={isFavorite ? "Remove from saved jobs" : "Save this job"}
+												aria-pressed={isFavorite}
+												title={isFavorite ? "Saved" : "Save"}
+											>
+												<svg viewBox="0 0 24 24" width={19} height={19} fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+													<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+												</svg>
+											</button>
 											<ShareMenu url={shareUrl} title={data?.jobTitle ?? ""} />
 										</div>
 									</div>

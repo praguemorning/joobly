@@ -90,28 +90,58 @@
             .job-secondary-actions {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                flex-wrap: wrap;
+                gap: 5px;
                 margin-top: 4px;
             }
 
             .job-save-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                height: 38px;
-                padding: 0 16px;
-                border-radius: 8px;
-                border: 1px solid $grey-button-border;
-                background: $light;
-                font-size: 15px;
-                font-weight: 600;
+                justify-content: center;
+                flex-shrink: 0;
+                width: 42px;
+                height: 42px;
+                box-sizing: border-box;
+                padding: 0;
+                border: none;
+                border-radius: 12px;
+                background: #f1f2f4;
                 color: $grey-dark;
                 cursor: pointer;
-                transition: border-color 0.15s ease, color 0.15s ease;
+                transition: background-color 0.15s ease, color 0.15s ease;
+
+                // The theme collapses SVGs inside <button> to zero width.
+                svg {
+                    flex-shrink: 0;
+                    width: 19px;
+                    height: 19px;
+                  // globals.scss puts max-width: 100% on every svg, which resolves to 0
+                  // against a button's shrink-to-fit content box.
+                  max-width: none;
+                }
 
                 &:hover {
-                    border-color: $primary-dark;
+                    background: #e4e6ea;
                     color: $primary-dark;
+                }
+
+                &--on {
+                    background: $secondary-light;
+                    color: $primary-dark;
+                }
+            }
+
+            @media screen and (max-width: 560px) {
+                .job-save-btn {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 10px;
+
+                    svg {
+                        width: 17px;
+                        height: 17px;
+                    }
                 }
             }
             
