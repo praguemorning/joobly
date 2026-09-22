@@ -1,0 +1,70 @@
+@use '@/lib/styles/mixins' as *;
+
+.share-menu {
+  position: relative;
+  display: inline-block;
+
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid $grey-button-border;
+    background: $light;
+    font-size: 15px;
+    font-weight: 600;
+    color: $grey-dark;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: $primary-dark;
+      color: $primary-dark;
+    }
+  }
+
+  &__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 50;
+    min-width: 190px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid $grey-button-border;
+    background: $light;
+    box-shadow: 0 12px 32px rgba(23, 24, 33, 0.14);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    font-size: 15px;
+    color: $dark;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: $grey-light;
+      color: $primary-dark;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: $grey-medium;
+    }
+
+    &:hover svg {
+      color: $primary-dark;
+    }
+  }
+}

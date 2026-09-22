@@ -86,6 +86,34 @@
                     align-items: center;
                 }
             }
+
+            .job-secondary-actions {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-top: 4px;
+            }
+
+            .job-save-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                height: 38px;
+                padding: 0 16px;
+                border-radius: 8px;
+                border: 1px solid $grey-button-border;
+                background: $light;
+                font-size: 15px;
+                font-weight: 600;
+                color: $grey-dark;
+                cursor: pointer;
+                transition: border-color 0.15s ease, color 0.15s ease;
+
+                &:hover {
+                    border-color: $primary-dark;
+                    color: $primary-dark;
+                }
+            }
             
 
             .job-date-info {
@@ -224,6 +252,50 @@
             padding: 24px;
             margin-top: 54px;
             margin-bottom: 45px;
+        }
+
+        .job-company-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 24px;
+
+            &__logo {
+                width: 100%;
+                max-width: 220px;
+                height: 64px;
+                object-fit: contain;
+                object-position: left center;
+            }
+
+            &__name {
+                font-size: 18px;
+                font-weight: 700;
+                line-height: 1.35;
+                color: $dark;
+            }
+
+            &__description {
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 1.55;
+                color: $grey-medium;
+            }
+
+            &__website {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 15px;
+                font-weight: 600;
+                color: $primary-dark;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
     }
     .job-details-bottom-buttons {
