@@ -172,9 +172,11 @@ const DetailsContainer = ({ data }: any) => {
 											src={data?.imageUrl || defaultJobLogo.src}
 											alt={data.companyDetails.ceoCompany}
 										/>
-										<p className={styles["job-company-card__name"]}>
-											{data.companyDetails.ceoCompany}
-										</p>
+										{!hasValue(data?.imageUrl) && (
+											<p className={styles["job-company-card__name"]}>
+												{data.companyDetails.ceoCompany}
+											</p>
+										)}
 										{hasValue(data.companyDetails.companyDescription) && (
 											<p className={styles["job-company-card__description"]}>
 												{data.companyDetails.companyDescription}
